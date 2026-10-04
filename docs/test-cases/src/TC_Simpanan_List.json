@@ -1,0 +1,320 @@
+{
+  "modul": "Nasabah - Simpanan",
+  "kode": "SMP",
+  "aksi": "LIST",
+  "halaman": "/saving",
+  "notion": [
+    {
+      "judul": "List Simpanan Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf1819cbb00d802b517c943"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-list.cy.js",
+  "catatan": "",
+  "cases": [
+    {
+      "id": "TC-SMP-LIST-001",
+      "kategori": "Happy",
+      "skenario": "List simpanan terbuka",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Daftar Simpanan', GET /saving/data 200, tabel termuat",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kartu ringkasan saldo tampil",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving"
+      ],
+      "test_data": "-",
+      "expected": "Kartu JUMLAH NASABAH, SALDO REKENING AKTIF/DORMANT/ON HOLD tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Kolom list sesuai PRD",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving",
+        "Baca thead"
+      ],
+      "test_data": "-",
+      "expected": "Ada kolom Tanggal Buka Rekening, Nomor Rekening, Nama Nasabah, Produk Simpanan, Cabang, Saldo, Status",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada kolom Tanggal Buka Rekening; label lain berbeda (No Rekening/Nama/Produk/Kantor Cabang)"
+    },
+    {
+      "id": "TC-SMP-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Aksi Lihat tiap baris",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving"
+      ],
+      "test_data": "-",
+      "expected": "Kolom aksi 'Lihat' href /saving/{refId}",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Status hanya Aktif/Tidak Aktif",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving",
+        "Baca kolom Status"
+      ],
+      "test_data": "-",
+      "expected": "Semua status ∈ {Aktif, Tidak Aktif}",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Source punya Aktif/Dorman/Dibekukan/Ditutup; REJECTED dirender 'Ditutup'. Konfirmasi ke PO."
+    },
+    {
+      "id": "TC-SMP-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Urutan terbaru di atas",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving",
+        "Baca kolom ID"
+      ],
+      "test_data": "-",
+      "expected": "ID menurun",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: urut tanggal buka terbaru; tidak ada kolom tanggal → ID dipakai sebagai proxy. Source tidak set order (default kolom 0)."
+    },
+    {
+      "id": "TC-SMP-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Filter saldo min & maks inklusif",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi Saldo minimum 100000",
+        "Isi Saldo maksimum 500000"
+      ],
+      "test_data": "100000 - 500000",
+      "expected": "Request membawa balance_min/balance_max; semua saldo dalam rentang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Hanya saldo minimum",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi Saldo minimum 100000"
+      ],
+      "test_data": "100000",
+      "expected": "Semua saldo >= 100000",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-009",
+      "kategori": "Edge",
+      "skenario": "Saldo maksimum 0 (rekening tidur)",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi Saldo maksimum 0"
+      ],
+      "test_data": "0",
+      "expected": "Request balance_max=0; semua saldo = 0 (atau kosong)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Isian saldo angka + pemisah ribuan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Ketik 1000000 di minimum",
+        "Ketik 12ab3 di maksimum"
+      ],
+      "test_data": "1000000; 12ab3",
+      "expected": "Nilai tampil '1.000.000' dan '123'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-011",
+      "kategori": "Negatif",
+      "skenario": "Minimum > maksimum",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi minimum 500000",
+        "Isi maksimum 100000"
+      ],
+      "test_data": "500000 > 100000",
+      "expected": "Pesan 'Saldo minimum tidak boleh lebih besar dari saldo maksimum.'; tidak ada reload tabel",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-012",
+      "kategori": "Positif",
+      "skenario": "Ringkasan mengikuti filter",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi Saldo maksimum 0",
+        "Baca JUMLAH NASABAH & Saldo Total"
+      ],
+      "test_data": "0",
+      "expected": "Jumlah = recordsFiltered hasil filter; Saldo Total = 0",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: ringkasan server-render; hanya diperbarui saat filter cabang (filterCabangSaving), tidak mengikuti filter saldo/produk/status/pencarian"
+    },
+    {
+      "id": "TC-SMP-LIST-013",
+      "kategori": "Positif",
+      "skenario": "Pencarian nama nasabah",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Cari nama baris pertama"
+      ],
+      "test_data": "Nama baris pertama",
+      "expected": "Nomor rekening baris itu ada di hasil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-014",
+      "kategori": "Positif",
+      "skenario": "Pencarian nomor rekening",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Cari nomor rekening baris pertama"
+      ],
+      "test_data": "No rekening baris pertama",
+      "expected": "Hasil tepat rekening tsb",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-015",
+      "kategori": "Negatif",
+      "skenario": "Hasil pencarian kosong",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Cari kata kunci acak"
+      ],
+      "test_data": "ZZQA-TIDAK-ADA-0000000000",
+      "expected": "Tabel menampilkan empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-016",
+      "kategori": "Positif",
+      "skenario": "Tombol Reset Filter saat hasil kosong",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Cari kata kunci acak",
+        "Klik Reset Filter"
+      ],
+      "test_data": "-",
+      "expected": "Tombol tampil; isian kosong lagi & data kembali",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada tombol Reset Filter (hanya tombol refresh ikon)"
+    },
+    {
+      "id": "TC-SMP-LIST-017",
+      "kategori": "Positif",
+      "skenario": "Filter Rentang Tanggal Buka Rekening tersedia",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Buka /saving",
+        "Periksa toolbar"
+      ],
+      "test_data": "-",
+      "expected": "Ada filter tanggal buka rekening",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: toolbar tidak punya filter tanggal"
+    },
+    {
+      "id": "TC-SMP-LIST-018",
+      "kategori": "Positif",
+      "skenario": "Filter Status Aktif",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Pilih Status = Aktif"
+      ],
+      "test_data": "ACTIVE",
+      "expected": "Semua baris berstatus 'Aktif'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-019",
+      "kategori": "Positif",
+      "skenario": "Filter Produk Simpanan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Pilih produk pertama"
+      ],
+      "test_data": "Produk pertama di dropdown",
+      "expected": "Semua baris kolom Produk = produk terpilih",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-LIST-020",
+      "kategori": "Positif",
+      "skenario": "Filter Cabang (user pusat)",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan; akun = user pusat",
+      "langkah": [
+        "Pilih cabang baris pertama"
+      ],
+      "test_data": "Kantor baris pertama",
+      "expected": "Semua baris Kantor Cabang = cabang terpilih",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "#filter_office hanya untuk user pusat → gagal jelas bila akun cabang"
+    },
+    {
+      "id": "TC-SMP-LIST-021",
+      "kategori": "Positif",
+      "skenario": "Export Excel mengikuti filter",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya rekening simpanan",
+      "langkah": [
+        "Isi filter saldo 100000-500000",
+        "Klik Export Excel"
+      ],
+      "test_data": "100000 - 500000",
+      "expected": "GET /export/saving membawa balance_min/max; kembali ke /saving dengan pesan 'File telah masuk dalam antrian sistem...'",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Export mengunduh Excel; source mengantrikan ke halaman Download (efek samping: 1 baris antrian download milik user, kedaluwarsa 1 hari)"
+    }
+  ]
+}

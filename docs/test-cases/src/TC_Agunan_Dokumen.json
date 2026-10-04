@@ -1,0 +1,144 @@
+{
+  "modul": "Agunan - Dokumen Agunan Pinjaman",
+  "kode": "AGN",
+  "aksi": "DOK",
+  "halaman": "/loan/{refId}?menu=collateral",
+  "spec": "cypress/e2e/cbs/17-Agunan/agunan-dokumen.cy.js",
+  "notion": [
+    {
+      "judul": "BKD - Agunan Pinjaman",
+      "url": "https://app.notion.com/209f80e3bbf180ae9299f7292ef7eb70"
+    },
+    {
+      "judul": "BKD - Data Agunan",
+      "url": "https://app.notion.com/209f80e3bbf18099bcdce3c27023be07"
+    }
+  ],
+  "catatan": "Halaman detail = tab Agunan di detail pinjaman (LoanController, role super-admin/supervisor/auditor/customer-service/sales-lending/sales-funding/teller). Data uji: agunan baris pertama /collateral. window.open di-stub; URL cetak di-request (GET).",
+  "cases": [
+    {
+      "id": "TC-AGN-DOK-001",
+      "kategori": "Happy",
+      "skenario": "Tab Agunan dengan 4 sub-tab dokumen",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Buka /collateral",
+        "Buka href Lihat baris pertama"
+      ],
+      "test_data": "-",
+      "expected": "Tab Agunan aktif; sub-tab Dokumen, Surat Kuasa Menjual, Surat Penyerahan, Tanda Terima; Dokumen aktif default",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-DOK-002",
+      "kategori": "Positif",
+      "skenario": "Isi tab Dokumen",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Buka ?tab=document"
+      ],
+      "test_data": "-",
+      "expected": "Memuat Nomor Dokumen, Kepemilikan Agunan, CIF, Tanggal Penilaian, Harga Penilaian, Harga Pasar Wajar, Catatan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD 'Nilai Agunan (untuk PPAP)' di source berlabel 'Biaya PPAP'/'Nilai Jaminan/NJOP' — tidak di-assert (ambigu)."
+    },
+    {
+      "id": "TC-AGN-DOK-003",
+      "kategori": "Positif",
+      "skenario": "Cetak Dokumen",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Klik Print di tab Dokumen"
+      ],
+      "test_data": "-",
+      "expected": "window.open('/loan/{refId}/collateral/print-new/?view=print-detail'); URL cetak 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-DOK-004",
+      "kategori": "Positif",
+      "skenario": "Cetak Surat Kuasa Menjual dengan Pihak II",
+      "precondition": "Akun login (CollateralController tanpa cek role); ada data signature",
+      "langkah": [
+        "Buka ?tab=sell_document",
+        "Pilih Pihak II",
+        "Print"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "Placeholder 'Pilih PIHAK II'; URL cetak view=print-sell-document & sell_second_party = pilihan; 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-DOK-005",
+      "kategori": "Positif",
+      "skenario": "Cetak Surat Penyerahan dengan Pihak II",
+      "precondition": "Akun login (CollateralController tanpa cek role); ada data signature",
+      "langkah": [
+        "Buka ?tab=submission_document",
+        "Pilih Pihak II",
+        "Print"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "URL cetak view=print-submission-document & submission_second_party = pilihan; 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: data pihak ke 2 saat dicetak harus sama dengan yang dipilih."
+    },
+    {
+      "id": "TC-AGN-DOK-006",
+      "kategori": "Positif",
+      "skenario": "Cetak Tanda Terima dengan Kepala Unit & Pengelola",
+      "precondition": "Akun login (CollateralController tanpa cek role); ada data signature",
+      "langkah": [
+        "Buka ?tab=receipt_document",
+        "Pilih Kepala Unit & Pengelola",
+        "Print"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "Placeholder 'Pilih Kepala Unit'/'Pilih Pengelola'; URL cetak view=print-receipt-document, receipt_head_office & receipt_officer sesuai pilihan; 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-DOK-007",
+      "kategori": "Edge",
+      "skenario": "Tanda Terima setelah memilih Pihak II Surat Penyerahan",
+      "precondition": "Akun login (CollateralController tanpa cek role); ada data signature",
+      "langkah": [
+        "Buka ?tab=submission_document",
+        "Pilih Pihak II",
+        "Pindah ke Tanda Terima",
+        "Pilih Kepala Unit & Pengelola",
+        "Print"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "URL cetak Tanda Terima tetap membawa receipt_head_office & receipt_officer sesuai pilihan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: printNewDocument memakai 'else if (is_receipt)' setelah cek submission_second_party (loan/detail.blade.php:1271-1284) sehingga pilihan Kepala Unit/Pengelola terbuang. Diperkirakan GAGAL."
+    },
+    {
+      "id": "TC-AGN-DOK-008",
+      "kategori": "Positif",
+      "skenario": "Detail agunan memiliki tab Data Agunan",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Buka detail dari daftar",
+        "Periksa sub-tab"
+      ],
+      "test_data": "-",
+      "expected": "Ada sub-tab 'Data Agunan' (form Nomor Dokumen, Kepemilikan, field per jenis SHM/BPKB/SK)",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD Data Agunan mensyaratkan tab Data Agunan; PRD Agunan Pinjaman (lebih baru) hanya 4 tab dokumen. Diperkirakan GAGAL."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "modul": "Transaksi - Riwayat Kasir",
+  "kode": "TRX",
+  "aksi": "RKASIR",
+  "halaman": "/transaction/history",
+  "spec": "cypress/e2e/cbs/10-Transaksi/riwayat-kasir.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD khusus Riwayat Kasir (PRD Overbooking Masal hanya menyebut transaksi tercatat di riwayat kasir). Tabel memakai endpoint /transaction/general_ledger/history_gl/data (route transaction.history.data tidak dipakai view). Void tidak disubmit.",
+  "cases": [
+    {"id": "TC-TRX-RKASIR-001", "kategori": "Happy", "skenario": "Halaman Riwayat Kasir tampil", "precondition": "Akun teller/super-admin", "langkah": ["Buka /transaction/history", "Tunggu tabel"], "test_data": "-", "expected": "Breadcrumb 'Riwayat Kasir'; catatan pembatalan hari yang sama; kolom: Tanggal Transaksi, Reff ID, Officer, Transaksi, Nama General Ledger, Credit, Debit, No Rekening, Status, Catatan, Action", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-002", "kategori": "Positif", "skenario": "Opsi filter jenis transaksi", "precondition": "Akun teller/super-admin", "langkah": ["Periksa dropdown filter"], "test_data": "-", "expected": "Semua Transaksi, Angsuran Pinjaman, Pencairan Pinjaman, Pelunasan Pinjaman, Setoran Simpanan, Penarikan Simpanan, Jurnal, Pembatalan Transaksi, Bon Kas, Setor Kas, Admin Fee; default ALL", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-003", "kategori": "Positif", "skenario": "Filter rentang tanggal", "precondition": "Akun teller/super-admin", "langkah": ["Set 2026-09-01 s/d 2026-09-30"], "test_data": "2026-09-01 s/d 2026-09-30", "expected": "Request memuat date & date2; semua baris dalam rentang (atau empty-state)", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-004", "kategori": "Positif", "skenario": "Filter jenis Jurnal", "precondition": "Akun teller/super-admin", "langkah": ["Pilih 'Jurnal'"], "test_data": "JOURNAL", "expected": "Request memuat type=JOURNAL dan tabel dimuat ulang (200)", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-005", "kategori": "Positif", "skenario": "Tombol export", "precondition": "Akun teller/super-admin", "langkah": ["Periksa area tombol export"], "test_data": "-", "expected": "Tombol CSV & Excel tersedia", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-006", "kategori": "Edge", "skenario": "Pencarian tanpa kecocokan", "precondition": "Akun teller/super-admin", "langkah": ["Ketik teks acak di search"], "test_data": "QA-TIDAK-ADA-ZZZ999", "expected": "Empty-state tampil", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RKASIR-007", "kategori": "Positif", "skenario": "Tombol Void membuka modal PIN", "precondition": "Write-guard aktif", "langkah": ["Bila ada tombol Void: klik", "Tutup modal"], "test_data": "-", "expected": "Modal 'Masukan PIN Supervisor Anda' tampil lalu tertutup tanpa submit; bila tidak ada transaksi hari ini, tombol Void tidak ada (kedua kemungkinan ditangani eksplisit)", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""}
+  ]
+}

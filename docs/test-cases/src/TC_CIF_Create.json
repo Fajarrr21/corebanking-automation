@@ -1,0 +1,315 @@
+{
+  "modul": "Nasabah - CIF",
+  "kode": "CIF",
+  "aksi": "CREATE",
+  "halaman": "/cif/create",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    }
+  ],
+  "spec": [
+    "cypress/e2e/cbs/06-Nasabah/CIF/cif-create.cy.js",
+    "cypress/e2e/cbs/06-Nasabah/CIF/cif-create.irreversible.cy.js"
+  ],
+  "catatan": "TC 016-020 di spec .irreversible (flag allowCreateCif). Data uji bernama QA<ts>, NIK diawali 99.",
+  "cases": [
+    {
+      "id": "TC-CIF-CREATE-001",
+      "kategori": "Happy",
+      "skenario": "Form Buat CIF terbuka",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Buka /cif/create"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Buat CIF', tombol 'Proses'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-CREATE-002",
+      "kategori": "Positif",
+      "skenario": "Field wajib bertanda *",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Buka /cif/create",
+        "Baca label dengan span.required"
+      ],
+      "test_data": "-",
+      "expected": "Bertanda *: NIK, Nama Lengkap, Tempat Lahir, Tanggal Lahir, Jenis Kelamin, Alamat Lengkap, Provinsi, Kabupaten/Kota, Kecamatan, Desa/Kelurahan, Pekerjaan, Penghasilan Pertahun, Nama Ibu Kandung",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Pekerjaan opsional, source wajib"
+    },
+    {
+      "id": "TC-CIF-CREATE-003",
+      "kategori": "Positif",
+      "skenario": "Nomor Handphone wajib",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Buka /cif/create"
+      ],
+      "test_data": "-",
+      "expected": "Label 'Nomor Handphone' bertanda * dan input phone ber-atribut required",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: create.blade.php phone tanpa * / required; CreateCifRequest phone 'nullable'"
+    },
+    {
+      "id": "TC-CIF-CREATE-004",
+      "kategori": "Positif",
+      "skenario": "Form memuat Jenis Nasabah dan Cabang",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Buka /cif/create"
+      ],
+      "test_data": "-",
+      "expected": "Field 'Jenis Nasabah' dan 'Cabang' ada",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: field tidak ada di form; CIF selalu memakai office_id user"
+    },
+    {
+      "id": "TC-CIF-CREATE-005",
+      "kategori": "Positif",
+      "skenario": "Status Kawin menampilkan data Suami/Istri",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Pilih Status Perkawinan = Kawin",
+        "Pilih = Belum Kawin"
+      ],
+      "test_data": "MARRIED / SINGLE",
+      "expected": "Grup Suami/Istri tampil saat Kawin, tersembunyi selain itu",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-CREATE-006",
+      "kategori": "Positif",
+      "skenario": "Wilayah berantai Provinsi → Kab/Kota",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Pilih Provinsi"
+      ],
+      "test_data": "JAWA TENGAH",
+      "expected": "GET /data/cities/{id} 200, opsi kota terisi, kecamatan masih kosong",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-CREATE-007",
+      "kategori": "Negatif",
+      "skenario": "NIK hanya angka",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Ketik NIK berhuruf"
+      ],
+      "test_data": "12ab34cd",
+      "expected": "Nilai NIK menjadi '1234'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: NIK 16 digit angka"
+    },
+    {
+      "id": "TC-CIF-CREATE-008",
+      "kategori": "Negatif",
+      "skenario": "NIK kurang dari 16 digit",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Ketik NIK pendek",
+        "Blur"
+      ],
+      "test_data": "12345",
+      "expected": "#nik_feedback 'NIK harus terdiri dari 16 digit angka.'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-CREATE-009",
+      "kategori": "Negatif",
+      "skenario": "NIK sudah terdaftar",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create; ada CIF ber-NIK 16 digit",
+      "langkah": [
+        "Ketik NIK CIF pertama di list",
+        "Blur"
+      ],
+      "test_data": "NIK CIF existing",
+      "expected": "GET /cif/check-nik exists=true; feedback 'NIK sudah terdaftar atas nama {nama}'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: ditolak & menampilkan nama pemilik"
+    },
+    {
+      "id": "TC-CIF-CREATE-010",
+      "kategori": "Positif",
+      "skenario": "NIK unik tersedia",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Ketik NIK acak 16 digit",
+        "Blur"
+      ],
+      "test_data": "99<timestamp>",
+      "expected": "exists=false; feedback 'NIK tersedia.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-CREATE-011",
+      "kategori": "Negatif",
+      "skenario": "Submit form kosong",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Klik Proses tanpa isi"
+      ],
+      "test_data": "-",
+      "expected": "Tetap di /cif/create, NIK :invalid, tidak ada request tulis",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: field required kosong → Simpan tidak bekerja"
+    },
+    {
+      "id": "TC-CIF-CREATE-012",
+      "kategori": "Negatif",
+      "skenario": "Format email salah",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Isi semua field wajib valid",
+        "Email tidak valid",
+        "Klik Proses"
+      ],
+      "test_data": "qa-bukan-email",
+      "expected": "Email :invalid, tidak ada request tulis",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: email diperiksa formatnya"
+    },
+    {
+      "id": "TC-CIF-CREATE-013",
+      "kategori": "Negatif",
+      "skenario": "Tanggal Lahir masa depan ditolak (client)",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Isi semua field valid",
+        "Tanggal Lahir 01-01-2099",
+        "Klik Proses"
+      ],
+      "test_data": "01-01-2099",
+      "expected": "Form menolak sebelum POST (tidak ada percobaan request tulis), tetap di /cif/create",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: datepicker tanpa endDate & CreateCifRequest tanpa aturan before:today. Bila POST terkirim, write-guard memblokir (data tidak sampai server)."
+    },
+    {
+      "id": "TC-CIF-CREATE-014",
+      "kategori": "Positif",
+      "skenario": "Tombol Batal kembali ke list",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create",
+      "langkah": [
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Kembali ke /cif tanpa menyimpan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: create.blade.php tidak punya tombol Batal"
+    },
+    {
+      "id": "TC-CIF-CREATE-015",
+      "kategori": "Negatif",
+      "skenario": "Validasi server NIK terdaftar + HP tidak valid",
+      "precondition": "Login akun test (cy.session); write-guard aktif; halaman /cif/create; POST /cif/create diizinkan guard",
+      "langkah": [
+        "Isi field valid dengan NIK existing & HP '12345'",
+        "Klik Proses",
+        "Cari nama QA di list"
+      ],
+      "test_data": "NIK existing; phone 12345; nama QA<ts>",
+      "expected": "Kembali ke /cif/create; error 'NIK sudah terdaftar...' dan 'Nomor handphone \"12345\" tidak valid...'; nama QA tidak ada di list",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Submit sungguhan, pasti gagal 2 aturan (nik.unique + PhoneNumberRule) → tidak ada data tercipta"
+    },
+    {
+      "id": "TC-CIF-CREATE-016",
+      "kategori": "Happy",
+      "skenario": "Buat CIF lengkap tersimpan termasuk Nomor HP",
+      "precondition": "allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Isi semua field valid + HP",
+        "Klik Proses"
+      ],
+      "test_data": "Nama QA<ts>, NIK 99..., HP 081234567890",
+      "expected": "Redirect /cif/{code}, alert 'Data CIF Berhasil ditambahkan', detail menampilkan Nama, NIK, Nomor HP, Tempat Lahir, Alamat sesuai input",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (CIF tidak bisa dihapus). PRD: seluruh field termasuk HP wajib tersimpan & tampil di detail"
+    },
+    {
+      "id": "TC-CIF-CREATE-017",
+      "kategori": "Positif",
+      "skenario": "CIF baru muncul di list",
+      "precondition": "allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Buat CIF QA",
+        "Cari namanya di /cif"
+      ],
+      "test_data": "Nama QA<ts>",
+      "expected": "Tepat 1 baris dengan Nama = nama QA",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE"
+    },
+    {
+      "id": "TC-CIF-CREATE-018",
+      "kategori": "Negatif",
+      "skenario": "Buat CIF tanpa Nomor HP ditolak",
+      "precondition": "allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Isi field wajib tanpa HP (atribut required dilepas bila ada)",
+        "Klik Proses"
+      ],
+      "test_data": "phone kosong",
+      "expected": "Tetap di /cif/create dengan error pada Nomor HP",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: CreateCifRequest phone nullable → CIF QA tanpa HP tercipta (irreversible)"
+    },
+    {
+      "id": "TC-CIF-CREATE-019",
+      "kategori": "Positif",
+      "skenario": "Nomor HP +62 diterima",
+      "precondition": "allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Isi field valid, HP +6281234567890",
+        "Klik Proses"
+      ],
+      "test_data": "+6281234567890",
+      "expected": "CIF tersimpan, HP tampil di detail",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: rule 'numeric' + PhoneNumberRule (harus diawali 08/62) menolak tanda +"
+    },
+    {
+      "id": "TC-CIF-CREATE-020",
+      "kategori": "Negatif",
+      "skenario": "Server menolak Tanggal Lahir masa depan",
+      "precondition": "allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Isi field valid, Tanggal Lahir 01-01-2099",
+        "Klik Proses"
+      ],
+      "test_data": "01-01-2099",
+      "expected": "Tetap di /cif/create dengan error pada Tanggal Lahir",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tanpa aturan before:today → CIF QA bertanggal lahir masa depan tercipta (irreversible)"
+    }
+  ]
+}

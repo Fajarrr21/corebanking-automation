@@ -1,0 +1,37 @@
+{
+  "_note": "Cek Nasabah (route customer.check GET/POST /check, CustomerController@check/checkPost, view customer/check.blade.php). Tidak ada PRD — TC Asumsi dari source.",
+  "urls": {
+    "check": "/check",
+    "checkPostPath": "^/check$",
+    "cifData": "/cif/data?draw=1&start=0&length=25",
+    "savingData": "/saving/data?draw=1&start=0&length=25&filter_balance=NON_ZERO",
+    "cifDetailPrefix": "/cif/"
+  },
+  "labels": {
+    "breadcrumb": "Cek Nasabah",
+    "note": "Silahkan Masukan NIK/Nomor Kartu/Kode CIF/Nomor Rekening untuk memulai transaksi",
+    "placeholder": "NIK/No Kartu/Kode CIF/No Rekening",
+    "helpText": "Masukan salah satu nomor diatas",
+    "button": "Cek Nasabah",
+    "notFoundPrefix": "Data tidak ditemukan untuk",
+    "openCifDetail": "Buka Detail CIF",
+    "savingCaption": "Daftar Simpanan",
+    "loanCaption": "Daftar Pinjaman",
+    "savingHeaders": ["Nomor Rekening", "Produk", "Cabang", "Saldo", "Status", ""],
+    "loanHeaders": ["Nomor Rekening", "Produk", "Cabang", "Jumlah Pinjaman", "Status", "Kolektibilitas", ""],
+    "savingEmpty": "Tidak ada rekening simpanan",
+    "createSavingButton": "Buat Rekening Baru",
+    "createLoanButton": "Ajukan Pinjaman Baru",
+    "pusatOfficeHeader": "Tanpa Office",
+    "metaLabels": ["Kode CIF", "NIK", "No HP", "Alamat"]
+  },
+  "messages": {
+    "required": "The NIK/No Kartu/Kode CIF/Rekening field is required.",
+    "max": "The NIK/No Kartu/Kode CIF/Rekening may not be greater than 255 characters."
+  },
+  "testData": {
+    "notFoundPrefix": "QA-TIDAK-ADA-",
+    "tooLongLength": 256
+  },
+  "timeouts": { "request": 30000 }
+}

@@ -1,0 +1,76 @@
+{
+  "modul": "Approval - Perubahan Status Pinjaman",
+  "kode": "APVSTS",
+  "aksi": "IRR",
+  "halaman": "/approval?menu=loan_status_change_approval",
+  "notion": [
+    {
+      "judul": "Approval Perubahan Status Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf1814f9513c2966ad8719e"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-perubahan-status.irreversible.cy.js",
+  "catatan": "IRREVERSIBLE - spec dibungkus describeIfFlag('allowApproval'); butuh --env allowApproval=true --env approvalPin=<PIN>. Hanya memproses pengajuan dengan Nama Nasabah diawali 'QA' (column-scoped, dicek ulang sebelum klik); jika tidak ada, test GAGAL dengan pesan jelas.",
+  "cases": [
+    {
+      "id": "TC-APVSTS-IRR-001",
+      "kategori": "Negatif",
+      "skenario": "Tidak bisa menyetujui pengajuan sendiri",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan Menunggu dengan Nama Nasabah diawali 'QA' yang diajukan oleh akun test sendiri",
+      "langkah": [
+        "Pilih baris QA dengan Pengaju = user login",
+        "Setujui -> PIN benar + alasan -> Proses"
+      ],
+      "test_data": "PIN dari env",
+      "expected": "Alert danger 'Pengajuan yang Anda buat sendiri harus disetujui orang lain'; pengajuan tetap Menunggu",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD keputusan f. Server melempar exception sebelum menyimpan (data tidak berubah) tapi butuh PIN asli -> gated."
+    },
+    {
+      "id": "TC-APVSTS-IRR-002",
+      "kategori": "Negatif",
+      "skenario": "Tolak dengan alasan spasi saja",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan Menunggu dengan Nama Nasabah diawali 'QA'",
+      "langkah": [
+        "Pilih baris QA",
+        "Tolak -> PIN benar + alasan '   ' -> Proses"
+      ],
+      "test_data": "Alasan = 3 spasi",
+      "expected": "Alert danger 'Alasan penolakan wajib diisi'; pengajuan tetap Menunggu",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Lolos HTML5 required tapi di-trim server. Gated karena butuh PIN asli."
+    },
+    {
+      "id": "TC-APVSTS-IRR-003",
+      "kategori": "Happy",
+      "skenario": "Setujui pengajuan milik test",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan Menunggu dengan Nama Nasabah diawali 'QA' yang diajukan user LAIN",
+      "langkah": [
+        "Pilih baris QA (Pengaju != user login)",
+        "Setujui -> PIN + alasan -> Proses"
+      ],
+      "test_data": "Alasan 'QA otomatis setujui <ts>'",
+      "expected": "Alert 'Perubahan status pinjaman disetujui'; baris Disetujui tanpa tombol keputusan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE: loans.status ACTIVE->PAID, tidak bisa dibalik. Status di detail pinjaman tidak diverifikasi (modul Pinjaman)."
+    },
+    {
+      "id": "TC-APVSTS-IRR-004",
+      "kategori": "Happy",
+      "skenario": "Tolak pengajuan milik test",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan Menunggu dengan Nama Nasabah diawali 'QA'",
+      "langkah": [
+        "Pilih baris QA",
+        "Tolak -> PIN + alasan -> Proses"
+      ],
+      "test_data": "Alasan 'QA otomatis tolak <ts>'",
+      "expected": "Alert 'Pengajuan perubahan status ditolak'; baris Ditolak dengan alasan = input",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (keputusan final)."
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "modul": "Produk",
+  "kode": "PRODUK",
+  "aksi": "IRREV",
+  "halaman": "/product/loan (POST /product/loan, /product/loan/edit)",
+  "spec": "cypress/e2e/cbs/05-Produk/produk-lifecycle.irreversible.cy.js",
+  "notion": [
+    {
+      "judul": "Pengaturan Produk Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf181e1a121f28abf0d6566"
+    }
+  ],
+  "catatan": "IRREVERSIBLE — flag allowProdukCreate. Produk tidak punya fitur hapus dan loanCreate membuat akun SUB GL 'Pendapatan Bunga Produk <nama>' di setiap kantor. Cleanup: produk QA dinonaktifkan (after()). Edit hanya pada produk QA run ini.",
+  "cases": [
+    {
+      "id": "TC-PRODUK-IRREV-001",
+      "kategori": "Happy",
+      "skenario": "Tambah produk pinjaman QA valid",
+      "precondition": "Run dengan --env allowProdukCreate=true; ada kode 2 digit yang belum terpakai",
+      "langkah": [
+        "Buka /product/loan",
+        "Isi Nama QA<ts>, kode belum terpakai, Bulanan, bunga 1.5, Flat, Agunan Tidak, Simpanan Wajib Tidak, Online Tidak, deskripsi",
+        "Klik Simpan"
+      ],
+      "test_data": "Nama QA<timestamp> Produk; bunga 1.5",
+      "expected": "Alert 'Produk pinjaman berhasil ditambahkan'; produk tampil di list status Aktif, kode/angsuran/metode/bunga sesuai",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE: produk tidak bisa dihapus & akun SUB GL 'Pendapatan Bunga Produk <nama>' tercipta di semua kantor. Cleanup: nonaktifkan di after()."
+    },
+    {
+      "id": "TC-PRODUK-IRREV-002",
+      "kategori": "Positif",
+      "skenario": "Ubah bunga produk QA",
+      "precondition": "Flag allowProdukCreate; produk QA dari TC-PRODUK-IRREV-001",
+      "langkah": [
+        "Buka modal Edit produk QA",
+        "Isi Suku Bunga 2.25",
+        "Klik Ubah"
+      ],
+      "test_data": "2.25",
+      "expected": "Alert 'Produk pinjaman berhasil diubah'; bunga produk QA = 2.25",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Hanya produk QA (nama diawali QA)"
+    },
+    {
+      "id": "TC-PRODUK-IRREV-003",
+      "kategori": "Negatif",
+      "skenario": "Bunga negatif pada produk QA ditolak server",
+      "precondition": "Flag allowProdukCreate; produk QA dengan bunga 2.25",
+      "langkah": [
+        "Buka modal Edit produk QA",
+        "Isi Suku Bunga -1",
+        "Submit"
+      ],
+      "test_data": "-1",
+      "expected": "Tidak ada alert sukses; alert-danger tampil; bunga produk QA tetap 2.25",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: ProductController::loanEdit tanpa validasi → nilai negatif tersimpan. Hanya produk QA."
+    },
+    {
+      "id": "TC-PRODUK-IRREV-004",
+      "kategori": "Positif",
+      "skenario": "Nonaktifkan produk QA",
+      "precondition": "Flag allowProdukCreate; produk QA Aktif",
+      "langkah": [
+        "Buka modal Edit produk QA",
+        "Pilih Status Non Aktif",
+        "Klik Ubah"
+      ],
+      "test_data": "INACTIVE",
+      "expected": "Alert 'Produk pinjaman berhasil diubah'; status produk QA 'Tidak Aktif'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Sekaligus cleanup (after() memastikan produk QA Tidak Aktif)."
+    }
+  ]
+}

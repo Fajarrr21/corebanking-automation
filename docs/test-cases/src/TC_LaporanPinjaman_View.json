@@ -1,0 +1,147 @@
+{
+  "modul": "Laporan - Sub-laporan Pinjaman",
+  "kode": "LPJ",
+  "aksi": "VIEW",
+  "halaman": "/due-date, /paid-off, /customer-due, /principal-installment, /loan-recap, /interest-installment, /loan-realization, /loan-statistic",
+  "spec": "cypress/e2e/cbs/09-Laporan/laporan-pinjaman.cy.js",
+  "notion": [],
+  "catatan": "Menu tanpa PRD: smoke + struktur kolom (Sumber=Asumsi). Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-LPJ-VIEW-001",
+      "kategori": "Positif",
+      "skenario": "Daftar Tagih Angsuran: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /due-date",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Daftar Tagih Angsuran'; header = Action | Tanggal Jatuh Tempo | Nama Kantor | Nama Peminjam | Produk | Nomor Rekening | Jumlah Pinjaman / Realisasi | Jumlah Tagihan Pokok | Jumlah Tagihan Bunga | Jumlah Tagihan Simpanan | Status; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Daftar Pinjaman Akan Lunas: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /paid-off",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Daftar Pinjaman Akan Lunas'; header = Action | Tanggal Jatuh Tempo | Nama Kantor | Nama Peminjam | Produk | Nomor Rekening | Jumlah Pinjaman / Realisasi | Jumlah Tagihan Pokok | Jumlah Tagihan Bunga | Jumlah Tagihan Simpanan | Sisa Pokok | Status; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Daftar Nasabah Jatuh Tempo: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /customer-due",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Daftar Nasabah Jatuh Tempo'; header = Action | Tanggal Jatuh Tempo | Nama Kantor | Nama Peminjam | Produk | Nomor Rekening | Jumlah Pinjaman / Realisasi | Jumlah Tagihan Pokok | Jumlah Tagihan Bunga | Jumlah Tagihan Simpanan | Sisa Pokok | Status; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-004",
+      "kategori": "Positif",
+      "skenario": "Lap Angsuran Pokok Pinjaman (tab Pokok Aktif): halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /principal-installment",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Angsuran Pokok Pinjaman'; header = Tanggal | Nama Kantor | Nama Kasir Penerima | Nama Nasabah | Nomor Rekening | Tipe Pinjaman | Pembayaran Pokok | Sisa Pokok | Notes; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-005",
+      "kategori": "Positif",
+      "skenario": "Lap Rekap Pinjaman: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /loan-recap",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Rekap Pinjaman'; header = Tanggal Realisasi | ID | Nama | Nomor Rekening | Jumlah Realisasi | Produk | Jangka Waktu | Pokok yang Terbayar | Bunga yang Terbayar | Simpanan yang Terbayar; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-006",
+      "kategori": "Positif",
+      "skenario": "Lap Pembayaran Bunga: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /interest-installment",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Pembayaran Bunga'; header = Tanggal | Nama Kantor | Nama Kasir Penerima | Nama Nasabah | Nomor Rekening | Tipe Pinjaman | Pembayaran Bunga | Sisa Bunga | Notes; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-007",
+      "kategori": "Positif",
+      "skenario": "Lap Realisasi Pinjaman: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /loan-realization",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Realisasi pinjaman'; header = Action | Tanggal Pencairan | Nama Kantor | Nama Nasabah | Jenis Kelamin | Produk | Jenis Pinjaman | Jumlah Pinjaman; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LPJ-VIEW-008",
+      "kategori": "Positif",
+      "skenario": "Lap Statistik Pinjaman: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /loan-statistic",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Statistik Pinjaman'; header = Nama Produk | OS Lancar | Jml Orang Lancar | OS Perhatian Khusus | Jml Orang Perhatian Khusus | OS Kurang Lancar | Jml Orang Kurang Lancar | OS Diragukan | Jml Orang Diragukan | OS Macet | Jml Orang Macet; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    }
+  ]
+}

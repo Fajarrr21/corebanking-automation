@@ -1,0 +1,140 @@
+{
+  "modul": "Approval - Perubahan Status Pinjaman",
+  "kode": "APVSTS",
+  "aksi": "PROSES",
+  "halaman": "/approval?menu=loan_status_change_approval",
+  "notion": [
+    {
+      "judul": "Approval Perubahan Status Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf1814f9513c2966ad8719e"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-perubahan-status.proses.cy.js",
+  "catatan": "Modal Setujui (PIN + Alasan Persetujuan) / Tolak (PIN + Alasan Penolakan) -> POST /approval/approved|rejected/loan-status-change. Semua TC di file ini aman (cy.guardWrites). Approve/Reject sungguhan: TC_ApprovalStatus_Irreversible.",
+  "cases": [
+    {
+      "id": "TC-APVSTS-PROSES-001",
+      "kategori": "Positif",
+      "skenario": "Baris Menunggu: tombol untuk approver",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan perubahan status Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Filter Menunggu",
+        "Periksa kolom Action"
+      ],
+      "test_data": "-",
+      "expected": "Lihat, Disetujui, Ditolak tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: tombol Setujui/Tolak ada di DETAIL; source: di list (PRD-ambigu lokasi)"
+    },
+    {
+      "id": "TC-APVSTS-PROSES-002",
+      "kategori": "Positif",
+      "skenario": "Pengajuan yang sudah diputuskan final",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Filter Disetujui lalu Ditolak"
+      ],
+      "test_data": "-",
+      "expected": "Hanya Lihat, tanpa tombol keputusan (atau empty-state)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: keputusan bersifat final"
+    },
+    {
+      "id": "TC-APVSTS-PROSES-003",
+      "kategori": "Positif",
+      "skenario": "Modal Setujui & batal",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan perubahan status Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Disetujui",
+        "Periksa modal",
+        "Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Setujui Perubahan Status' (PIN type password + Alasan Persetujuan), id = id baris; Batal menutup tanpa request",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD tidak menyebut PIN/alasan saat Setujui"
+    },
+    {
+      "id": "TC-APVSTS-PROSES-004",
+      "kategori": "Positif",
+      "skenario": "Modal Tolak & batal",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan perubahan status Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Ditolak",
+        "Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Tolak Perubahan Status' dengan PIN + Alasan Penolakan; Batal menutup tanpa request",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-PROSES-005",
+      "kategori": "Negatif",
+      "skenario": "Tolak tanpa alasan",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan perubahan status Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Ditolak",
+        "Isi PIN",
+        "Proses tanpa alasan"
+      ],
+      "test_data": "Alasan kosong",
+      "expected": "Validasi required, modal tetap, tidak ada request",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Alasan Penolakan wajib"
+    },
+    {
+      "id": "TC-APVSTS-PROSES-006",
+      "kategori": "Negatif",
+      "skenario": "Setujui tanpa PIN",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan perubahan status Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Disetujui",
+        "Isi alasan",
+        "Proses tanpa PIN"
+      ],
+      "test_data": "PIN kosong",
+      "expected": "Validasi required, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-PROSES-007",
+      "kategori": "Negatif",
+      "skenario": "Setujui dengan PIN salah",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan')",
+      "langkah": [
+        "Buka modal Setujui id 0",
+        "PIN salah + alasan",
+        "Proses"
+      ],
+      "test_data": "id=0, PIN=QA-PIN-SALAH",
+      "expected": "Redirect ke tab, alert danger memuat 'PIN salah'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "POST aman: PIN dicek sebelum pengajuan dicari; id 0 tidak ada"
+    },
+    {
+      "id": "TC-APVSTS-PROSES-008",
+      "kategori": "Negatif",
+      "skenario": "Tolak dengan PIN salah",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan')",
+      "langkah": [
+        "Buka modal Tolak id 0",
+        "PIN salah + alasan",
+        "Proses"
+      ],
+      "test_data": "id=0, PIN=QA-PIN-SALAH",
+      "expected": "Alert danger memuat 'PIN salah'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Sama seperti 007"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "path": "/customer",
+  "breadcrumb": "Nasabah",
+  "menuTitle": "Nasabah",
+  "cards": ["Data CIF", "Simpanan", "Pinjaman Aktif", "Daftar Hitam", "Pinjaman Lunas"],
+  "hiddenCards": ["Deposito"],
+  "detailButton": "Lihat Detail",
+  "links": {
+    "cif": "/cif",
+    "saving": "/saving"
+  },
+  "superAdminMenuMarker": "Kantor",
+  "timeout": 30000
+}

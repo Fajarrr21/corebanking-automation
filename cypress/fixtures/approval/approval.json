@@ -1,0 +1,93 @@
+{
+  "_comment": "Fixture modul 08-Approval. Sumber teks/selector: resources/views/approval/*.blade.php + ApprovalController.php (origin/develop). PIN approver TIDAK disimpan di sini — wajib lewat --env approvalPin=<PIN> (hanya untuk spec *.irreversible).",
+  "path": "/approval",
+  "timeout": { "table": 30000, "redirect": 20000 },
+  "page": {
+    "documentTitle": "Daftar Persetujuan",
+    "breadcrumb": "List",
+    "sidebarMenu": "Approval",
+    "superAdminOnlyMenu": "Karyawan"
+  },
+  "tabs": {
+    "customer": { "menu": "customer_approval", "label": "Pembukuan", "pane": "#customer_approval", "table": "#data-table-customer", "data": "/approval/data" },
+    "office": { "menu": "office_approval", "label": "Transaksi", "pane": "#office_approval", "table": "#data-table-office", "data": "/approval/data/office" },
+    "online": { "menu": "online_approval", "label": "Pengajuan Online", "pane": "#online_approval", "table": "#data-table-online", "data": "/approval/data/online" },
+    "adjustment": { "menu": "loan_adjustment_approval", "label": "Penyesuaian Pinjaman", "pane": "#loan_adjustment_approval", "table": "#data-table-loan-adjustment", "data": "/approval/data/loan-adjustment" },
+    "statusChange": { "menu": "loan_status_change_approval", "label": "Perubahan Status Pinjaman", "pane": "#loan_status_change_approval", "table": "#data-table-loan-status-change", "data": "/approval/data/loan-status-change" }
+  },
+  "headers": {
+    "customer": ["ID", "Tanggal", "Account Officer", "Nama Kantor Asal", "Produk", "Nama Nasabah", "No Rekening", "Jumlah Pinjaman", "Lama Pinjaman", "Status", ""],
+    "office": ["ID", "Tanggal", "Account Officer", "Kantor Pemohon", "Tipe Transaksi", "Nominal", "Status", ""],
+    "online": ["ID", "Tanggal", "Nama Kantor Asal", "Produk", "Nama Nasabah", "Status", "Action"],
+    "adjustmentPrd": ["Action", "Tanggal", "Account Officer", "Nama Kantor Asal", "Produk", "Nama Nasabah", "No Rekening", "Jumlah Pinjaman", "Penyesuaian Pokok", "Penyesuaian Bunga", "Jangka Waktu", "Status"],
+    "statusChangePrd": ["Tanggal Pengajuan", "Cabang", "Nama Nasabah", "Nomor Pinjaman", "Status Saat Ini", "Status Baru", "Diajukan Oleh", "Aksi"]
+  },
+  "columns": {
+    "adjustment": { "tanggal": 0, "officer": 1, "kantor": 2, "produk": 3, "nama": 4, "rekening": 5, "jumlah": 6, "pokok": 7, "bunga": 8, "tenor": 9, "status": 10, "aksi": 11 },
+    "statusChange": { "tanggal": 0, "pengaju": 1, "kantor": 2, "produk": 3, "nama": 4, "rekening": 5, "perubahan": 6, "alasan": 7, "status": 8, "aksi": 9 }
+  },
+  "filters": {
+    "adjustment": { "office": "#filter_office_loan_adjustment", "product": "#filter_product_loan_adjustment", "status": "#filter_status_loan_adjustment" },
+    "statusChange": { "office": "#filter_office_loan_status_change", "status": "#filter_status_loan_status_change" },
+    "statusOptions": ["Semua Status", "Menunggu", "Disetujui", "Ditolak"],
+    "allOfficeLabel": "Semua Kantor",
+    "allProductLabel": "Semua Produk"
+  },
+  "status": {
+    "PENDING": "Menunggu Persetujuan",
+    "APPROVED": "Disetujui",
+    "REJECTED": "Ditolak"
+  },
+  "buttons": {
+    "view": "Lihat",
+    "approve": "Disetujui",
+    "reject": "Ditolak",
+    "cancel": "Batal",
+    "submit": "Proses",
+    "close": "Tutup",
+    "excel": "Excel"
+  },
+  "modals": {
+    "adjustment": {
+      "approve": { "id": "#approvedLoanAdjustment", "hiddenId": "#approved_adjustment_id", "title": "Disetujui", "action": "/approval/approved/loan-adjustment" },
+      "reject": { "id": "#rejectedLoanAdjustment", "hiddenId": "#rejected_adjustment_id", "title": "Ditolak", "action": "/approval/rejected/loan-adjustment" }
+    },
+    "statusChange": {
+      "approve": { "id": "#approvedLoanStatusChange", "hiddenId": "#approved_status_change_id", "title": "Setujui Perubahan Status", "action": "/approval/approved/loan-status-change" },
+      "reject": { "id": "#rejectedLoanStatusChange", "hiddenId": "#rejected_status_change_id", "title": "Tolak Perubahan Status", "action": "/approval/rejected/loan-status-change" }
+    },
+    "rejectReason": { "id": "#rejectReason", "text": "#rejectReasonText", "title": "Alasan Penolakan" }
+  },
+  "labels": {
+    "pin": "PIN Anda",
+    "approveReason": "Alasan Persetujuan",
+    "rejectReason": "Alasan Penolakan"
+  },
+  "messages": {
+    "adjustmentApproved": "Permintaan Approval berhasil disetujui",
+    "adjustmentRejected": "Permintaan Approval berhasil ditolak",
+    "adjustmentWrongPin": "PIN Supervisor salah",
+    "statusApproved": "Perubahan status pinjaman disetujui",
+    "statusRejected": "Pengajuan perubahan status ditolak",
+    "statusWrongPin": "PIN salah",
+    "statusOwnRequest": "Pengajuan yang Anda buat sendiri harus disetujui orang lain",
+    "statusRejectReasonRequired": "Alasan penolakan wajib diisi",
+    "errorPrefix": "Terjadi kesalahan saat memproses permintaan"
+  },
+  "transitions": {
+    "_comment": "tests/Unit/LoanStatusChangeTransitionTest.php + LoanStatusChangeApproval::ALLOWED_TRANSITIONS — satu-satunya transisi: ACTIVE -> PAID",
+    "allowed": ["ACTIVE → PAID"]
+  },
+  "testData": {
+    "qaPrefix": "QA",
+    "wrongPin": "QA-PIN-SALAH",
+    "bogusApprovalId": "0",
+    "searchNotFound": "QA-TIDAK-ADA-DATA-ZZZ",
+    "approveNote": "QA otomatis setujui",
+    "rejectNote": "QA otomatis tolak",
+    "blankNote": "   "
+  },
+  "urls": {
+    "loanDetail": "/loan/"
+  }
+}

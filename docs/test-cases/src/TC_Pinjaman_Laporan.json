@@ -1,0 +1,16 @@
+{
+  "modul": "Nasabah - Pinjaman",
+  "kode": "LOAN",
+  "aksi": "LAPORAN",
+  "halaman": "/paid-off, /principal-installment, /interest-installment, /loan-realization",
+  "spec": "cypress/e2e/cbs/06-Nasabah/Pinjaman/loan-reports.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD Done khusus untuk halaman ini → TC dasar Sumber=Asumsi dari ReportController & resources/views/report/loan/**. Read-only + write-guard.",
+  "cases": [
+    {"id": "TC-LOAN-LAPORAN-001", "kategori": "Happy", "skenario": "Daftar Pinjaman Akan Lunas", "precondition": "Login", "langkah": ["Buka /paid-off", "Tunggu ajax /paid-off/data"], "test_data": "-", "expected": "Title & breadcrumb 'Daftar Pinjaman Akan Lunas'; header kolom sesuai; ajax membawa date & date2", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-LAPORAN-002", "kategori": "Happy", "skenario": "Laporan Angsuran Pokok (Aktif & DH)", "precondition": "Login", "langkah": ["Buka /principal-installment", "Klik tab Pokok DH"], "test_data": "-", "expected": "Tab 'Pokok Aktif' & 'Pokok DH'; kedua tabel memuat data (ajax 200) dengan header Tanggal, Nama Kantor, Nama Kasir Penerima, Nama Nasabah, Nomor Rekening, Tipe Pinjaman, Pembayaran Pokok, Sisa Pokok, Notes", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-LAPORAN-003", "kategori": "Happy", "skenario": "Laporan Pembayaran Bunga", "precondition": "Login", "langkah": ["Buka /interest-installment"], "test_data": "-", "expected": "Title 'Laporan Pembayaran Bunga'; header kolom sesuai; ajax membawa rentang tanggal", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Breadcrumb di source bertulisan 'Laproan Pembayaran Bunga' (typo) — assert memakai 'Pembayaran Bunga'."},
+    {"id": "TC-LOAN-LAPORAN-004", "kategori": "Happy", "skenario": "Laporan Realisasi Pinjaman", "precondition": "Login", "langkah": ["Buka /loan-realization"], "test_data": "-", "expected": "Title & breadcrumb 'Laporan Realisasi pinjaman'; 8 kolom awal: Action, Tanggal Pencairan, Nama Kantor, Nama Nasabah, Jenis Kelamin, Produk, Jenis Pinjaman, Jumlah Pinjaman", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-LAPORAN-005", "kategori": "Positif", "skenario": "Tautan dari Laporan Pinjaman", "precondition": "Login", "langkah": ["Buka /report/loan"], "test_data": "-", "expected": "Ada tautan 'Lihat Detail' ke /paid-off, /principal-installment, /interest-installment, /loan-realization", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "PRD Angsuran Aktif menyebut Laporan > Pinjaman > Daftar Tagih Angsuran (/due-date) — halaman itu milik grup Laporan."}
+  ]
+}

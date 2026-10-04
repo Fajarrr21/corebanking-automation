@@ -1,0 +1,158 @@
+{
+  "modul": "Agunan - Daftar Agunan",
+  "kode": "AGN",
+  "aksi": "LIST",
+  "halaman": "/collateral",
+  "spec": "cypress/e2e/cbs/17-Agunan/agunan.cy.js",
+  "notion": [
+    {
+      "judul": "BKD - Data Agunan",
+      "url": "https://app.notion.com/209f80e3bbf18099bcdce3c27023be07"
+    }
+  ],
+  "catatan": "PRD menyebut menu Nasabah > Data Agunan; source: menu top-level 'Agunan' (/collateral). Route store/update/destroy di CollateralController TIDAK terdaftar di web.php (hanya index & data) -> list read-only.",
+  "cases": [
+    {
+      "id": "TC-AGN-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Menu Agunan membuka Daftar Agunan",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Agunan"
+      ],
+      "test_data": "-",
+      "expected": "URL /collateral; breadcrumb 'List'; judul 'Daftar Agunan'; GET /collateral/data 200",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: menu Nasabah > Data Agunan; source: menu Agunan."
+    },
+    {
+      "id": "TC-AGN-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kolom list sesuai PRD",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Buka /collateral",
+        "Periksa header"
+      ],
+      "test_data": "-",
+      "expected": "Header memuat Nomor Dokumen, Nomor CIF, Jenis Agunan, Atas Nama, Harga Penilaian, Status (+ Aksi)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: kolom 'Status' tidak ada & 'Atas Nama' diganti 'Nasabah' (collateral/index.blade.php:50-58). Diperkirakan GAGAL."
+    },
+    {
+      "id": "TC-AGN-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Format Jenis Agunan & Harga Penilaian",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Periksa kolom tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Jenis Agunan ∈ {SHM/Letter C, BPKB Kendaraan, SK Karyawan}; Harga Penilaian 'IDR 1.234,00'; Nomor Dokumen terisi",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Data bisa kosong (assertion per-baris lulus bila kosong)."
+    },
+    {
+      "id": "TC-AGN-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan nama nasabah",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Ketik nama nasabah baris pertama di search"
+      ],
+      "test_data": "Nama baris pertama",
+      "expected": "Semua baris hasil memuat nama tsb di kolom Nasabah",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD objective: mencari berdasarkan nama nasabah."
+    },
+    {
+      "id": "TC-AGN-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan nomor CIF",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Ketik Nomor CIF baris pertama"
+      ],
+      "test_data": "CIF baris pertama",
+      "expected": "CIF tsb ada di hasil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan nomor dokumen",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Ketik Nomor Dokumen baris pertama"
+      ],
+      "test_data": "Nomor dokumen baris pertama",
+      "expected": "Agunan dengan nomor dokumen tsb ada di hasil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Kolom Nomor Dokumen dirender client-side tanpa 'data' (collateral/index.blade.php) sehingga kemungkinan tidak ikut pencarian server — perlu dicek di run."
+    },
+    {
+      "id": "TC-AGN-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Filter jenis agunan",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Periksa kontrol filter di halaman"
+      ],
+      "test_data": "-",
+      "expected": "Tersedia dropdown filter Jenis Agunan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: collateral/index.blade.php tidak memiliki filter jenis agunan. Diperkirakan GAGAL."
+    },
+    {
+      "id": "TC-AGN-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Tombol export",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Periksa tombol"
+      ],
+      "test_data": "-",
+      "expected": "Tombol CSV & Excel tersedia",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-LIST-009",
+      "kategori": "Edge",
+      "skenario": "Cari tanpa kecocokan",
+      "precondition": "Akun login (CollateralController tanpa cek role)",
+      "langkah": [
+        "Ketik teks acak"
+      ],
+      "test_data": "QA-TIDAK-ADA-ZZZ999",
+      "expected": "Empty-state tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-AGN-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Tombol Lihat ke detail",
+      "precondition": "Akun login (CollateralController tanpa cek role); minimal 1 agunan",
+      "langkah": [
+        "Periksa tombol aksi tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Setiap baris punya tombol 'Lihat' ke /loan/{refId}?menu=collateral",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: klik detail pada kolom aksi menampilkan halaman detail."
+    }
+  ]
+}

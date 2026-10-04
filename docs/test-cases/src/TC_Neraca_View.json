@@ -1,0 +1,263 @@
+{
+  "modul": "Laporan - Neraca",
+  "kode": "NRC",
+  "aksi": "VIEW",
+  "halaman": "/sheet-balance",
+  "spec": "cypress/e2e/cbs/09-Laporan/neraca.cy.js",
+  "notion": [
+    {
+      "judul": "Laporan Neraca BKD Pekalongan",
+      "url": "https://app.notion.com/1dff80e3bbf1806a9278fc03d8bbb458"
+    },
+    {
+      "judul": "Laporan Laba Rugi BKD Pekalongan",
+      "url": "https://app.notion.com/1e0f80e3bbf180869840e9f14e900333"
+    }
+  ],
+  "catatan": "Read-only. Data via GET /sheet-balance/data?date=M - yyyy&office=..&pusat=... Export CSV/Excel = DataTables Buttons (Blob di browser), diverifikasi dengan spy URL.createObjectURL. Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-NRC-VIEW-001",
+      "kategori": "Happy",
+      "skenario": "Membuka Neraca lewat menu Laporan > Umum > Neraca",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Laporan > Umum",
+        "Klik Lihat Detail pada kartu Neraca"
+      ],
+      "test_data": "-",
+      "expected": "URL /sheet-balance, breadcrumb 'Laporan Neraca', caption 'Neraca Perusahaan', data neraca termuat (200) dan tabel berisi baris",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Elemen halaman Neraca lengkap",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Periksa filter kantor, filter bulan, tombol CSV & Excel, kotak search, header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Filter kantor (#filter_branch) default 'Akumulasi' (999); filter bulan default bulan berjalan 'M - yyyy'; tombol CSV & Excel tampil; search tampil; header = Jenis Data | Akun | Jumlah (IDR)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Default memuat Akumulasi semua kantor pada bulan berjalan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Tangkap request data pertama"
+      ],
+      "test_data": "-",
+      "expected": "Request office=999 dan date=bulan berjalan; response 200",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: 'pilihan akumulasi'. Default Akumulasi diambil dari source."
+    },
+    {
+      "id": "TC-NRC-VIEW-004",
+      "kategori": "Positif",
+      "skenario": "Semua baris template PRD tampil",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Baca JSON data neraca"
+      ],
+      "test_data": "Daftar baris: fixture neraca.rowsWajib",
+      "expected": "Seluruh baris Aset, Liabilitas, Ekuitas, Lain-lain (termasuk NPL, Jumlah Nasabah) ada",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-005",
+      "kategori": "Positif",
+      "skenario": "Kolom Akun sesuai nomor akun PRD",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Bandingkan norek tiap baris dengan PRD"
+      ],
+      "test_data": "fixture neraca.norekPrd (110,122,123,131..141,211..213,311..341,900,800)",
+      "expected": "Nomor akun tiap baris sama dengan PRD",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-006",
+      "kategori": "Negatif",
+      "skenario": "Giro Pada Bank tampil di bawah Penempatan Dana dengan akun 124",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Kantor memiliki akun Giro (kode 120/124).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Cari baris anak 'Giro Pada Bank' di bawah 'Penempatan Dana'"
+      ],
+      "test_data": "Akun PRD: 124",
+      "expected": "Baris Giro Pada Bank ada sebagai anak Penempatan Dana dengan akun berakhiran 124",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: source memakai akun 120 (ReportController.php:1032, 1327)."
+    },
+    {
+      "id": "TC-NRC-VIEW-007",
+      "kategori": "Positif",
+      "skenario": "JUMLAH ASET = jumlah seluruh komponen aset termasuk Giro Pada Bank",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Jumlahkan Kas, Tabungan/Deposito/Sertifikat pada Bank, Giro Pada Bank, Saldo Cazhbox, Pinjaman (131-134), ATI (140-141), Aset Lain-lain",
+        "Bandingkan dengan JUMLAH ASET"
+      ],
+      "test_data": "Toleransi 1 rupiah",
+      "expected": "JUMLAH ASET = jumlah komponen aset",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD mendaftar Giro Pada Bank sebagai komponen Aset tetapi tidak menulis rumus eksplisit. KANDIDAT BUG: JUMLAH ASET tidak memasukkan saldo Giro (ReportController.php:680-692; Penempatan Dana dikosongkan baris 736)."
+    },
+    {
+      "id": "TC-NRC-VIEW-008",
+      "kategori": "Positif",
+      "skenario": "JUMLAH LIABILITAS, JUMLAH EKUITAS, JUMLAH LIABILITAS DAN EKUITAS sesuai komponen",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Jumlahkan komponen liabilitas & ekuitas",
+        "Bandingkan dengan baris total"
+      ],
+      "test_data": "Toleransi 1 rupiah",
+      "expected": "Total = jumlah komponen; JUMLAH LIABILITAS DAN EKUITAS = JUMLAH LIABILITAS + JUMLAH EKUITAS",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Rumus tersirat dari struktur template PRD."
+    },
+    {
+      "id": "TC-NRC-VIEW-009",
+      "kategori": "Edge",
+      "skenario": "Neraca seimbang: JUMLAH ASET = JUMLAH LIABILITAS DAN EKUITAS",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance (Akumulasi, bulan berjalan)",
+        "Bandingkan JUMLAH ASET dengan JUMLAH LIABILITAS DAN EKUITAS"
+      ],
+      "test_data": "Toleransi 1 rupiah",
+      "expected": "Kedua total sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Identitas akuntansi neraca; PRD tidak menulis eksplisit. Bila gagal, cek data staging (rekening penampungan 800/900, Giro) sebelum dianggap bug."
+    },
+    {
+      "id": "TC-NRC-VIEW-010",
+      "kategori": "Edge",
+      "skenario": "Saldo Laba (Rugi) Tahun Berjalan di Neraca = I. Laba (Rugi) Tahun Berjalan di Laba Rugi",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance, baca 'Saldo Laba (Rugi) Tahun Berjalan'",
+        "Buka /profit-loss (Akumulasi, bulan sama), baca 'I. LABA (RUGI) TAHUN BERJALAN'"
+      ],
+      "test_data": "Toleransi 1 rupiah",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Konsistensi antar-laporan diturunkan dari source (keduanya dihitung dari akun 4xx-8xx)."
+    },
+    {
+      "id": "TC-NRC-VIEW-011",
+      "kategori": "Positif",
+      "skenario": "Filter kantor memuat Neraca kantor terpilih",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 kantor cabang (role BRANCH).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Pilih kantor cabang pertama di filter kantor"
+      ],
+      "test_data": "Kantor cabang pertama di dropdown",
+      "expected": "Request data baru dengan office=<id kantor> terkirim (200) dan tabel dimuat ulang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Source: ganti cabang memanggil datepicker setDate lalu handler change; bila request tidak terkirim, cek perilaku bootstrap-datepicker di DOM asli."
+    },
+    {
+      "id": "TC-NRC-VIEW-012",
+      "kategori": "Positif",
+      "skenario": "Filter bulan memuat Neraca periode terpilih",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Pilih bulan lalu pada filter bulan"
+      ],
+      "test_data": "Bulan lalu (format 'M - yyyy')",
+      "expected": "Request data dengan date=bulan lalu (200); label NPL mengikuti periode ('NPL - Akhir Bulan <Mon YYYY>')",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-013",
+      "kategori": "Positif",
+      "skenario": "Search jenis data menampilkan baris yang dicari",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Ketik kata kunci di kotak search"
+      ],
+      "test_data": "Kata kunci: Kas",
+      "expected": "Request dengan search[value]=Kas; semua baris induk yang tampil memuat 'Kas'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-014",
+      "kategori": "Negatif",
+      "skenario": "Search jenis data yang tidak ada menampilkan tabel kosong",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Ketik kata kunci yang tidak ada"
+      ],
+      "test_data": "Kata kunci: 'zzqqxx tidak ada'",
+      "expected": "Tabel menampilkan empty-state, tidak ada baris data",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-015",
+      "kategori": "Positif",
+      "skenario": "Export CSV",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Klik tombol CSV"
+      ],
+      "test_data": "-",
+      "expected": "File CSV dibuat; baris header memuat Jenis Data, Akun, Jumlah (IDR)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NRC-VIEW-016",
+      "kategori": "Positif",
+      "skenario": "Export Excel",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /sheet-balance",
+        "Klik tombol Excel"
+      ],
+      "test_data": "-",
+      "expected": "File xlsx dibuat (tipe spreadsheet, signature PK)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

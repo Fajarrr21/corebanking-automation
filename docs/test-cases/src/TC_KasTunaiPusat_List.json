@@ -1,0 +1,111 @@
+{
+  "modul": "Kas Tunai Pusat - Daftar",
+  "kode": "KTP",
+  "aksi": "LIST",
+  "halaman": "/account/center",
+  "spec": "cypress/e2e/cbs/12-KasTunaiPusat/kas-tunai-pusat.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Kas Tunai Pusat; TC diturunkan dari source (AccountCenterController.php, resources/views/account_center/**). Menu hanya tampil untuk super-admin bila APP_NAME = 'PT. LKM BKD KABUPATEN PEKALONGAN' (navigation.blade.php:567-568), tetapi controller tidak memeriksa APP_NAME (URL tetap bisa dibuka super-admin di instalasi lain). GET /account/center/data membuat baris account_centers untuk kantor yang belum punya (efek samping di GET).",
+  "cases": [
+    {
+      "id": "TC-KTP-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Menu Kas Tunai Pusat membuka halaman daftar",
+      "precondition": "Akun super-admin; APP_NAME staging = PT. LKM BKD KABUPATEN PEKALONGAN",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Kas Tunai Pusat"
+      ],
+      "test_data": "-",
+      "expected": "Menu tampil (href /account/center); halaman terbuka; breadcrumb 'Kas Tunai Pusat'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Gagal dgn pesan precondition bila menu tidak tampil (role / APP_NAME)."
+    },
+    {
+      "id": "TC-KTP-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kartu ringkasan & tabel",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka /account/center",
+        "Tunggu tabel"
+      ],
+      "test_data": "-",
+      "expected": "Kartu 'Jumlah Setoran bulan ini' & 'Jumlah penarikan bulan ini' tampil; GET /account/center/data 200; header kolom: (aksi), Kantor, Saldo",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Tombol Lihat & format saldo",
+      "precondition": "Akun super-admin; minimal 1 kantor",
+      "langkah": [
+        "Periksa setiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Tiap baris punya tombol 'Lihat' ke /account/center/{id}; Saldo berformat 'IDR 1.234,00'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Tombol export",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Periksa tombol export"
+      ],
+      "test_data": "-",
+      "expected": "Tombol PDF & Excel tersedia",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-LIST-005",
+      "kategori": "Edge",
+      "skenario": "Kartu Setoran menampilkan nilai setoran",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Periksa elemen nilai di bawah label kartu"
+      ],
+      "test_data": "-",
+      "expected": "Label 'Jumlah Setoran bulan ini' memuat #deposit (deposit_this_month); label 'Jumlah penarikan bulan ini' memuat #withdraw",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Temuan source (tanpa PRD): label tertukar — Setoran menampilkan withdraw_this_month (account_center/index.blade.php:58-62). Diperkirakan GAGAL."
+    },
+    {
+      "id": "TC-KTP-LIST-006",
+      "kategori": "Edge",
+      "skenario": "Pencarian tanpa kecocokan",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Ketik teks acak di search"
+      ],
+      "test_data": "QA-TIDAK-ADA-ZZZ999",
+      "expected": "Empty-state tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-LIST-007",
+      "kategori": "Negatif",
+      "skenario": "Akun tanpa super-admin membuka /account/center",
+      "precondition": "Akun TANPA role super-admin",
+      "langkah": [
+        "Buka /account/center langsung"
+      ],
+      "test_data": "-",
+      "expected": "Dialihkan ke /home; alert-danger 'Akses anda terbatas!'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Gagal dgn pesan precondition bila akun test super-admin."
+    }
+  ]
+}

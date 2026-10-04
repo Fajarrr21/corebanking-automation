@@ -1,0 +1,106 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "SUB",
+  "halaman": "/setting?menu=sub_account",
+  "spec": [
+    "cypress/e2e/cbs/13-Pengaturan/pengaturan-sub-account.cy.js",
+    "cypress/e2e/cbs/13-Pengaturan/pengaturan-sub-account.irreversible.cy.js"
+  ],
+  "notion": [
+    {
+      "judul": "Menu COA BKD Pekalongan (konteks akun GL; halaman COA sendiri ada di Laporan Umum)",
+      "url": "https://app.notion.com/1dff80e3bbf1808fab41f875a52fefed"
+    }
+  ],
+  "catatan": "001-005 read-only (tabel akun GL/sub account). 006 IRREVERSIBLE (akun SUB dibuat di setiap kantor, UI tanpa hapus) → flag allowSettingSubAccount; cleanup best-effort via POST /setting/subaccount/delete (endpoint tanpa UI) dengan nama QA persis.",
+  "cases": [
+    {
+      "id": "TC-SET-SUB-001",
+      "kategori": "Happy",
+      "skenario": "Form tambah & list sub account tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=sub_account"
+      ],
+      "test_data": "-",
+      "expected": "Akun GL & Nama Sub Account required; tombol Simpan; header: Tanggal Pembuatan, Nama Sub Account, Akun GL",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SUB-002",
+      "kategori": "Positif",
+      "skenario": "Opsi Akun GL berformat '<nama> (AKTIVA|PASSIVA)'",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Baca opsi select Akun GL"
+      ],
+      "test_data": "-",
+      "expected": "Setiap opsi diakhiri (AKTIVA) atau (PASSIVA)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari config('constants.accounts')"
+    },
+    {
+      "id": "TC-SET-SUB-003",
+      "kategori": "Positif",
+      "skenario": "Setiap sub account punya nama & Akun GL induk",
+      "precondition": "Minimal 1 sub account",
+      "langkah": [
+        "Baca semua baris list"
+      ],
+      "test_data": "-",
+      "expected": "Tanggal format 'dd Mon YYYY'; nama & Akun GL tidak kosong",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SUB-004",
+      "kategori": "Negatif",
+      "skenario": "Nama sub account kosong",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan Nama Sub Account",
+        "Klik Simpan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SUB-005",
+      "kategori": "Edge",
+      "skenario": "List sub account read-only",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Periksa tombol aksi di tabel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada tombol Edit/Delete di baris (aksi dinonaktifkan di view)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Endpoint update/delete masih aktif di routes/web.php:228-229"
+    },
+    {
+      "id": "TC-SET-SUB-006",
+      "kategori": "Happy",
+      "skenario": "Tambah sub account QA",
+      "precondition": "Flag allowSettingSubAccount",
+      "langkah": [
+        "Pilih Akun GL pertama",
+        "Isi nama QA<ts>",
+        "Klik Simpan"
+      ],
+      "test_data": "QA<ts> Sub",
+      "expected": "Alert 'Sub Account Berhasil Disimpan'; sub account QA tampil dengan Akun GL yang dipilih",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE; cleanup afterEach POST /setting/subaccount/delete + verifikasi hilang dari list"
+    }
+  ]
+}

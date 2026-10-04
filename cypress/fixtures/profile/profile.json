@@ -1,0 +1,19 @@
+{
+  "_note": "Profile (/profile, ProfileController@profile → view dashboard/profile.blade.php; profile/index.blade.php TIDAK dipakai). READ-ONLY: dilarang ganti password/PIN/edit profil.",
+  "urls": {
+    "profile": "/profile",
+    "home": "/home",
+    "passwordTab": "/profile?menu=password"
+  },
+  "labels": {
+    "breadcrumb": "Profile",
+    "caption": "Profile Instansi",
+    "tabs": ["Info Akun", "Password", "PIN"],
+    "infoNote": "Jika ada perubahan silahkan hubungi instansi pusat anda atau email ke hello@cazh.id",
+    "passwordNote": "Ubah password anda secara berkala",
+    "noOffice": "Tanpa Office",
+    "accountMenu": "Akun Saya",
+    "sidebarTitle": "Profile"
+  },
+  "tabPanes": { "info": "#tab_1_1", "password": "#tab_1_2", "pin": "#tab_1_3" }
+}

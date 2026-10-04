@@ -1,0 +1,250 @@
+{
+  "modul": "Approval - Penyesuaian Pinjaman",
+  "kode": "APVADJ",
+  "aksi": "LIST",
+  "halaman": "/approval?menu=loan_adjustment_approval",
+  "notion": [
+    {
+      "judul": "Approval Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/23bf80e3bbf1800089eac652d471bccc"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-penyesuaian.list.cy.js",
+  "catatan": "Read-only. Endpoint data GET /approval/data/loan-adjustment?office_id&product_id&status (+param DataTables).",
+  "cases": [
+    {
+      "id": "TC-APVADJ-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Tab Penyesuaian Pinjaman tampil",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval?menu=loan_adjustment_approval"
+      ],
+      "test_data": "-",
+      "expected": "Tabel tampil; filter default Semua Kantor / Semua Produk / Semua Status",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kolom list sesuai PRD",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab",
+        "Baca header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Memuat Action, Tanggal, Account Officer, Nama Kantor Asal, Produk, Nama Nasabah, No Rekening, Jumlah Pinjaman, Penyesuaian Pokok, Penyesuaian Bunga, Jangka Waktu, Status",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-003",
+      "kategori": "Edge",
+      "skenario": "Format nominal & jangka waktu",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Buka tab",
+        "Periksa kolom nominal & Jangka Waktu tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Nominal 'IDR 1.234,00'; Jangka Waktu '<n> Bulan|Minggu|Hari'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Format dari render.number('.', ',', 2, 'IDR ') di index.blade.php:685-687"
+    },
+    {
+      "id": "TC-APVADJ-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Opsi filter status",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab",
+        "Lihat opsi filter status"
+      ],
+      "test_data": "-",
+      "expected": "Semua Status, Menunggu, Disetujui, Ditolak",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Filter status Menunggu",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih status Menunggu"
+      ],
+      "test_data": "status=PENDING",
+      "expected": "Semua baris 'Menunggu Persetujuan' atau empty-state bila tidak ada data",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Filter status Disetujui",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih status Disetujui"
+      ],
+      "test_data": "status=APPROVED",
+      "expected": "Semua baris 'Disetujui' atau empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Filter status Ditolak",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih status Ditolak"
+      ],
+      "test_data": "status=REJECTED",
+      "expected": "Semua baris 'Ditolak' atau empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Filter kantor",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ambil Nama Kantor Asal baris pertama",
+        "Pilih kantor tsb di filter"
+      ],
+      "test_data": "Kantor dari baris pertama",
+      "expected": "Hasil tidak kosong, semua baris kantor = pilihan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-009",
+      "kategori": "Positif",
+      "skenario": "Filter produk",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ambil Produk baris pertama",
+        "Pilih produk tsb di filter"
+      ],
+      "test_data": "Produk dari baris pertama",
+      "expected": "Hasil tidak kosong, semua baris produk = pilihan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL (KANDIDAT BUG): opsi berisi NAMA produk (loanadjustmentapproval.blade.php:22) tapi controller membandingkan ke products.id (ApprovalController.php:1285-1288) sehingga hasil selalu kosong."
+    },
+    {
+      "id": "TC-APVADJ-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Filter tanggal tersedia",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab",
+        "Periksa toolbar filter"
+      ],
+      "test_data": "-",
+      "expected": "Ada input filter tanggal",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL (KANDIDAT BUG): toolbar hanya punya filter kantor/produk/status (loanadjustmentapproval.blade.php:8-34)."
+    },
+    {
+      "id": "TC-APVADJ-LIST-011",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan No Rekening",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ketik No Rekening baris pertama di kotak Search"
+      ],
+      "test_data": "No Rekening dari data",
+      "expected": "Hasil tidak kosong, semua baris No Rekening memuat kata kunci",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-012",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan Nama Nasabah",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ketik Nama Nasabah baris pertama di kotak Search"
+      ],
+      "test_data": "Nama dari data",
+      "expected": "Ada baris dengan Nama Nasabah tsb",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-013",
+      "kategori": "Negatif",
+      "skenario": "Cari data yang tidak ada",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Ketik kata kunci acak"
+      ],
+      "test_data": "QA-TIDAK-ADA-DATA-ZZZ",
+      "expected": "Empty-state DataTables, 0 baris",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-LIST-014",
+      "kategori": "Positif",
+      "skenario": "Tombol Lihat ke detail pinjaman",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan penyesuaian (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ambil href tombol Lihat baris pertama",
+        "GET href tanpa follow redirect"
+      ],
+      "test_data": "-",
+      "expected": "href /loan/<refId>, target _blank, respons 200 (bukan redirect login)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Tab baru tidak dibuka; dicek via cy.request"
+    },
+    {
+      "id": "TC-APVADJ-LIST-015",
+      "kategori": "Edge",
+      "skenario": "Badge Ditolak menampilkan alasan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; ada pengajuan Ditolak dengan catatan",
+      "langkah": [
+        "Filter Ditolak",
+        "Klik badge Ditolak",
+        "Klik Tutup"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Alasan Penolakan' berisi catatan = data-notes; Tutup menutup modal",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari Helpers::approvalStatusBadge + index.blade.php:772-776"
+    },
+    {
+      "id": "TC-APVADJ-LIST-016",
+      "kategori": "Positif",
+      "skenario": "Export Excel",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab",
+        "Klik tombol Excel"
+      ],
+      "test_data": "-",
+      "expected": "Berkas .xlsx terunduh ke cypress/downloads",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Nama berkas diasumsikan = <title> halaman (default DataTables Buttons) - perlu dicek ke DOM asli. PRD: export memuat SEMUA data; excelHtml5 client-side + serverSide hanya mengekspor halaman yang tampil (KANDIDAT BUG, tidak di-assert otomatis)."
+    }
+  ]
+}

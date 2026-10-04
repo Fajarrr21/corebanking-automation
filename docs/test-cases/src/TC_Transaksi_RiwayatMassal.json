@@ -1,0 +1,18 @@
+{
+  "modul": "Transaksi - Riwayat Massal",
+  "kode": "TRX",
+  "aksi": "RMASSAL",
+  "halaman": "/transaction/mass-history",
+  "spec": "cypress/e2e/cbs/10-Transaksi/riwayat-massal.cy.js",
+  "notion": [
+    {"judul": "Transaksi Overbooking Masal (m: tercatat di riwayat)", "url": "https://app.notion.com/26af80e3bbf180fb9b10fc0cb331a09c"}
+  ],
+  "catatan": "Void tidak disubmit. Data hanya transaksi massal milik akun login (created_by).",
+  "cases": [
+    {"id": "TC-TRX-RMASSAL-001", "kategori": "Happy", "skenario": "Halaman Riwayat Massal tampil", "precondition": "Akun teller/super-admin", "langkah": ["Buka /transaction/mass-history"], "test_data": "-", "expected": "Breadcrumb 'Riwayat Massal'; keterangan; kolom: ID, Tanggal Transaksi, Reff ID, Officer, Transaksi, Nama General Ledger, Credit, Debit, No Rekening, Status, Catatan, Aksi", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RMASSAL-002", "kategori": "Positif", "skenario": "Rentang tanggal default dikirim ke server", "precondition": "Akun teller/super-admin", "langkah": ["Buka halaman", "Bandingkan request awal dengan input tanggal"], "test_data": "-", "expected": "date_from/date_to request = nilai #date/#date2", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RMASSAL-003", "kategori": "Positif", "skenario": "Filter rentang tanggal", "precondition": "Akun teller/super-admin", "langkah": ["Set 2026-09-01 s/d 2026-09-30"], "test_data": "2026-09-01 s/d 2026-09-30", "expected": "Request date_from/date_to sesuai; semua baris dalam rentang (atau empty-state)", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RMASSAL-004", "kategori": "Positif", "skenario": "Tombol export", "precondition": "Akun teller/super-admin", "langkah": ["Periksa tombol export"], "test_data": "-", "expected": "Tombol CSV & Excel tersedia", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-RMASSAL-005", "kategori": "Positif", "skenario": "Modal Void", "precondition": "Write-guard aktif", "langkah": ["Bila ada tombol Void: klik", "Tutup modal"], "test_data": "-", "expected": "Modal berisi Supervisor (wajib) & PIN Supervisor (password, wajib) lalu tertutup tanpa submit; bila tidak ada data, tombol Void tidak ada", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""}
+  ]
+}

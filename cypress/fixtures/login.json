@@ -1,0 +1,42 @@
+{
+  "urls": {
+    "base": "https://staging-cbs.cazh.id",
+    "login": "/login",
+    "home": "/home"
+  },
+  "credentials": {
+    "_note": "Kredensial ASLI dipakai dari cypress.env.json (git-ignored) lewat env-switch. Nilai di bawah hanya untuk skenario negatif/format.",
+    "wrongPassword": {
+      "email": "rizal@cazh.dev",
+      "password": "passwordsalah123"
+    },
+    "unregisteredEmail": {
+      "email": "tidakterdaftar@lkm-bkd.id",
+      "password": "cazh2019"
+    },
+    "invalidFormat": {
+      "email": "rizalcazhdev",
+      "password": "cazh2019"
+    }
+  },
+  "labels": {
+    "emailPlaceholder": "nama@lkm-bkd.id",
+    "submitButton": "Masuk",
+    "forgotPasswordLink": "Lupa password?",
+    "rememberMe": "Ingat saya"
+  },
+  "menu": {
+    "_note": "Menu sidebar CBS (teks judul + href). Dipakai untuk verifikasi pasca-login.",
+    "dashboard": "/home",
+    "cekNasabah": "/check",
+    "nasabah": "/customer",
+    "approval": "/approval",
+    "download": "/downloads",
+    "collateral": "/collateral",
+    "loanPlan": "/loan-plan",
+    "profile": "/profile"
+  },
+  "timeouts": {
+    "redirect": 20000
+  }
+}

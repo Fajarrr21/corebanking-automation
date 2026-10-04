@@ -1,0 +1,99 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "KOL",
+  "halaman": "/setting?menu=collectibility",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-kolektibilitas.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. READ-ONLY: simpan kolektibilitas meng-upsert aturan nyata (nama+produk) dan pengaturan 'Pinjaman melewati jatuh tempo' global; tidak diotomasi submit-nya.",
+  "cases": [
+    {
+      "id": "TC-SET-KOL-001",
+      "kategori": "Happy",
+      "skenario": "Form jatuh tempo, form & tabel kolektibilitas tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=collectibility"
+      ],
+      "test_data": "-",
+      "expected": "Opsi loan_due_date: Otomatis Macet, Otomatis Diragukan, Mengikuti Kolektibilitas; field form kolektibilitas lengkap; header tabel: Tgl Buat, Kolektibilitas, Tipe Kolektibilitas, Produk Pinjaman, Min Jml Tunggakan, MaxJml Tunggakan, Min Hari Tunggakan, Max Hari Tunggakan, PPAP, (aksi)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-KOL-002",
+      "kategori": "Positif",
+      "skenario": "Toggle field Otomatis Macet",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Pilih 'Otomatis Diragukan'",
+        "Pilih 'Mengikuti Kolektibilitas'"
+      ],
+      "test_data": "DOUBTFUL / MANUAL",
+      "expected": "DOUBTFUL → #automatic_bad_form tampil; MANUAL → tersembunyi",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-KOL-003",
+      "kategori": "Positif",
+      "skenario": "Produk Anuitas mengunci Tipe Kolektibilitas",
+      "precondition": "Ada produk pinjaman aktif (idealnya Anuitas)",
+      "langkah": [
+        "Pilih produk (Anuitas) di form kolektibilitas",
+        "Pilih produk Flat"
+      ],
+      "test_data": "-",
+      "expected": "Anuitas → tipe = 'Pokok, Bunga dan atau Simpanan' & disabled; Flat → tipe dapat dipilih. Bila tidak ada produk Anuitas, hanya cabang Flat yang diverifikasi (dicatat di log)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-KOL-004",
+      "kategori": "Negatif",
+      "skenario": "Tambah kolektibilitas dengan field angka kosong",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan 5 field angka",
+        "Klik Tambahkan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit (total_principal_arrear_min invalid), tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-KOL-005",
+      "kategori": "Positif",
+      "skenario": "Kolom Kolektibilitas berisi label baku",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Baca kolom Kolektibilitas semua baris"
+      ],
+      "test_data": "-",
+      "expected": "Setiap nilai salah satu: Lancar, Perhatian Khusus, Kredit Kurang Lancar, Diragukan, Macet (empty-state bila kosong)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-KOL-006",
+      "kategori": "Negatif",
+      "skenario": "Batal hapus kolektibilitas (Close)",
+      "precondition": "Minimal 1 aturan kolektibilitas",
+      "langkah": [
+        "Klik Delete pada baris pertama",
+        "Klik Close"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "guardWrites aktif"
+    }
+  ]
+}

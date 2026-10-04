@@ -1,0 +1,9 @@
+cypress/reports/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+node_modules/
+
+# Kredensial per-environment — RAHASIA, JANGAN commit.
+# Template (aman): cypress.env.example.json
+cypress.env.json

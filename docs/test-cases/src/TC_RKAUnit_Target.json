@@ -1,0 +1,136 @@
+{
+  "modul": "RKA - Cabang (Unit)",
+  "kode": "RKAUNIT",
+  "aksi": "TARGET",
+  "halaman": "/rka/unit",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-unit-target.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Setting Target Unit",
+      "url": "https://app.notion.com/271f80e3bbf1803eb671f4970479beb4"
+    },
+    {
+      "judul": "BKDP RKA - Edit Setting Target Unit",
+      "url": "https://app.notion.com/271f80e3bbf180d290d6e5ee0e6b2a4f"
+    },
+    {
+      "judul": "BKDP RKA - Delete Setting Target Unit",
+      "url": "https://app.notion.com/271f80e3bbf18097a2fbdea8d7ee972e"
+    },
+    {
+      "judul": "BKDP RKA - Unit",
+      "url": "https://app.notion.com/268f80e3bbf180709473ee3a62efe09e"
+    }
+  ],
+  "catatan": "Spec di-gate flag allowRkaTarget (target unit menempel ke kantor asli, tanpa kolom nama). Cleanup afterEach: hapus rka_entity (Nama Cabang, Tahun uji).",
+  "cases": [
+    {
+      "id": "TC-RKAUNIT-TARGET-001",
+      "kategori": "Happy",
+      "skenario": "Simpan target unit baru",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()).",
+      "langkah": [
+        "Pilih wilayah, cabang, tahun uji",
+        "Isi semua baris (Kenaikan 1.000.000 10%)",
+        "Tab Lainnya",
+        "Simpan"
+      ],
+      "test_data": "Kenaikan / 1000000 / 10%",
+      "expected": "Alert 'Target KPI berhasil disimpan', baris (cabang, tahun) tampil dengan '<n> Produk', '3 Parameter'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-002",
+      "kategori": "Negatif",
+      "skenario": "Indikator Lainnya kosong",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()).",
+      "langkah": [
+        "Isi Pinjaman & Simpanan saja",
+        "Simpan"
+      ],
+      "test_data": "-",
+      "expected": "Alert error memuat 'NPL target type is required', data tidak tersimpan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Submit sungguhan, pasti gagal validasi server (rule required di RkaUnitController@setTarget). Pesan berbahasa Inggris."
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-003",
+      "kategori": "Happy",
+      "skenario": "Edit target unit",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()). Target di-seed via POST /rka/unit/target.",
+      "langkah": [
+        "Klik Edit RKA",
+        "Periksa nilai lama",
+        "Ubah persentase 15%",
+        "Simpan"
+      ],
+      "test_data": "15%",
+      "expected": "Nilai lama tampil; alert 'Target KPI berhasil diperbarui'; detail persentase 15, target 1150000",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-004",
+      "kategori": "Positif",
+      "skenario": "Nama unit tidak bisa diubah",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()). Target di-seed via POST /rka/unit/target.",
+      "langkah": [
+        "Klik Edit RKA"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada dropdown cabang; office_id hidden = kantor uji",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-005",
+      "kategori": "Happy",
+      "skenario": "Aktifkan status RKA unit",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()). Target di-seed via POST /rka/unit/target.",
+      "langkah": [
+        "Klik toggle",
+        "Konfirmasi"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'RKA berhasil diaktifkan', status 'Aktif'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-006",
+      "kategori": "Happy",
+      "skenario": "Hapus target unit (Yes)",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()). Target di-seed via POST /rka/unit/target.",
+      "langkah": [
+        "Klik Hapus RKA",
+        "Ya, Hapus RKA"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'RKA berhasil dihapus', baris hilang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-TARGET-007",
+      "kategori": "Positif",
+      "skenario": "Batal hapus (No)",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Flag --env allowRkaTarget=true. Kombinasi kantor uji + tahun (tahun berjalan+2) belum punya RKA (dicek before()). Target di-seed via POST /rka/unit/target.",
+      "langkah": [
+        "Klik Hapus RKA",
+        "Batal"
+      ],
+      "test_data": "-",
+      "expected": "Popup tertutup, baris tetap ada, tidak ada DELETE",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

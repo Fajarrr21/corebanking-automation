@@ -1,0 +1,31 @@
+{
+  "_note": "Kantor (/office, OfficeController, view office/index.blade.php). Hanya super-admin. TIDAK ada fitur tambah/hapus kantor; Edit = rename (Office::renameTo) & status = buka/tutup operasional kantor ASLI → tidak ada test yang mengubah data kantor.",
+  "urls": {
+    "office": "/office",
+    "home": "/home",
+    "statusPath": "^/office/status$"
+  },
+  "labels": {
+    "breadcrumb": "daftar Kantor",
+    "note": "Silahkan hubungi vendor anda untuk menambahkan kantor operasional",
+    "headers": ["ID", "Kode Cabang", "Nama Kantor", "Alamat", "No Telepon", "Kepala Kantor", "No Handphone", "Auto Debit", "Role", "Wilayah", "Action", "Status"],
+    "roleFilterOptions": ["Semua Jenis Kantor", "Wilayah", "Cabang"],
+    "roleValues": { "BRANCH": "Wilayah", "UNIT": "Cabang" },
+    "statusValues": ["Aktif", "Non Aktif"],
+    "autoDebitValues": ["Aktif", "Non Aktif"],
+    "openOperation": "Open operation",
+    "closedOperation": "Closed operation",
+    "editButton": "Edit",
+    "editModalTitle": "Edit Tipe Kantor",
+    "tipeKantorOptions": ["Pilih Tipe Kantor", "Wilayah", "Cabang"],
+    "menuTitle": "Kantor",
+    "superAdminMenu": "Kantor"
+  },
+  "columns": { "id": 0, "code": 1, "name": 2, "role": 8, "wilayah": 9, "action": 10, "status": 11 },
+  "messages": {
+    "noOfficeSelected": "Silahkan pilih kantor dulu"
+  },
+  "forbiddenTermPattern": "\\bunit\\b",
+  "rawRolePattern": "\\b(UNIT|BRANCH)\\b",
+  "pageLengthAll": "-1"
+}

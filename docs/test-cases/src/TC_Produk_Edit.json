@@ -1,0 +1,158 @@
+{
+  "modul": "Produk",
+  "kode": "PRODUK",
+  "aksi": "EDIT",
+  "halaman": "/product/loan (modal #edit, POST /product/loan/edit)",
+  "spec": "cypress/e2e/cbs/05-Produk/produk-edit.cy.js",
+  "notion": [
+    {
+      "judul": "Pengaturan Produk Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf181e1a121f28abf0d6566"
+    }
+  ],
+  "catatan": "001-009 read-only terhadap produk NYATA (guardWrites memblokir semua POST). loanEdit tidak punya validasi server → submit ke produk nyata dilarang. Edit yang menyimpan (produk QA) ada di TC_Produk_Irreversible.",
+  "cases": [
+    {
+      "id": "TC-PRODUK-EDIT-001",
+      "kategori": "Happy",
+      "skenario": "Klik Edit membuka modal berisi nama, kode, bunga produk",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka /product/loan",
+        "Klik Edit pada produk pertama"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Edit Produk Pinjaman' tampil; id, nama, kode, bunga sesuai data baris; note 'Perubahan data tidak berpengaruh pada existing nasabah...' tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Read-only"
+    },
+    {
+      "id": "TC-PRODUK-EDIT-002",
+      "kategori": "Positif",
+      "skenario": "Modal Edit terisi Model Angsuran, Agunan, Simpanan Wajib, Online",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka /product/loan",
+        "Klik Edit produk pertama",
+        "Bandingkan select dengan data-* tombol"
+      ],
+      "test_data": "-",
+      "expected": "installment_type, collateral, need_saving, online sesuai data produk",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Read-only"
+    },
+    {
+      "id": "TC-PRODUK-EDIT-003",
+      "kategori": "Positif",
+      "skenario": "Perhitungan Bunga di modal Edit menyediakan Flat & Anuitas dan terisi sesuai produk",
+      "precondition": "Minimal 1 produk pinjaman (diutamakan produk Anuitas bila ada)",
+      "langkah": [
+        "Buka /product/loan",
+        "Klik Edit pada produk Anuitas (atau produk pertama)",
+        "Baca opsi & nilai Perhitungan Bunga"
+      ],
+      "test_data": "-",
+      "expected": "Opsi FLAT dan ANNUITY tersedia; nilai = metode produk",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: select interest_count modal edit hanya punya opsi FLAT (loan.blade.php:408-411) — produk Anuitas yang diedit tersimpan sebagai Flat."
+    },
+    {
+      "id": "TC-PRODUK-EDIT-004",
+      "kategori": "Positif",
+      "skenario": "Status di modal Edit terisi sesuai status produk",
+      "precondition": "Idealnya ada produk Tidak Aktif (bila tidak ada, dipakai produk pertama — dicatat di log)",
+      "langkah": [
+        "Buka /product/loan",
+        "Klik Edit produk Tidak Aktif",
+        "Baca nilai select Status"
+      ],
+      "test_data": "-",
+      "expected": "Status = INACTIVE untuk produk Tidak Aktif (ACTIVE untuk produk Aktif)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: JS getLoanId (loan.blade.php:549-589) tidak mengisi select status → default 'Aktif'; menyimpan produk Tidak Aktif tanpa sadar mengaktifkannya kembali."
+    },
+    {
+      "id": "TC-PRODUK-EDIT-005",
+      "kategori": "Negatif",
+      "skenario": "Menutup modal Edit tanpa menyimpan",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka modal Edit",
+        "Ubah nama",
+        "Klik Close"
+      ],
+      "test_data": "QA-batal",
+      "expected": "Modal tertutup, tidak ada request tulis, nama produk di tabel tidak berubah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Read-only"
+    },
+    {
+      "id": "TC-PRODUK-EDIT-006",
+      "kategori": "Negatif",
+      "skenario": "Nama dikosongkan lalu klik Ubah",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka modal Edit",
+        "Kosongkan Nama Pinjaman",
+        "Klik Ubah"
+      ],
+      "test_data": "nama kosong",
+      "expected": "Tombol Ubah tidak bekerja (field required, valueMissing) dan tidak ada request terkirim",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: input modal edit tanpa atribut required (loan.blade.php:369) & loanEdit tanpa validasi. guardWrites memblokir request sehingga produk nyata tidak berubah."
+    },
+    {
+      "id": "TC-PRODUK-EDIT-007",
+      "kategori": "Negatif",
+      "skenario": "Bunga negatif di modal Edit",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka modal Edit",
+        "Isi Suku Bunga -1",
+        "Klik Ubah"
+      ],
+      "test_data": "-1",
+      "expected": "Nilai negatif ditolak sebelum terkirim (tidak ada request tulis)",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: bunga tidak boleh negatif. Karena produk nyata & loanEdit tanpa validasi server, test mensyaratkan penolakan sisi klien. Penolakan server diuji di TC-PRODUK-IRREV-003 (produk QA)."
+    },
+    {
+      "id": "TC-PRODUK-EDIT-008",
+      "kategori": "Positif",
+      "skenario": "Peringatan saat mengubah bunga produk yang dipakai pinjaman aktif",
+      "precondition": "Produk Aktif pertama di list dipakai pinjaman aktif (PERLU DICEK di staging)",
+      "langkah": [
+        "Buka modal Edit produk Aktif",
+        "Ubah bunga +0.01",
+        "Klik Ubah (confirm dijawab Batal)"
+      ],
+      "test_data": "bunga lama + 0.01",
+      "expected": "Sebelum menyimpan muncul peringatan berisi jumlah pinjaman aktif yang memakai produk & keterangan tidak ikut berubah",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada peringatan di loan.blade.php / loanEdit. guardWrites memblokir request."
+    },
+    {
+      "id": "TC-PRODUK-EDIT-009",
+      "kategori": "Positif",
+      "skenario": "Jenis Angsuran terkunci pada produk yang dipakai pinjaman aktif",
+      "precondition": "Produk Aktif pertama di list dipakai pinjaman aktif (PERLU DICEK)",
+      "langkah": [
+        "Buka modal Edit produk Aktif",
+        "Periksa select Model Angsuran"
+      ],
+      "test_data": "-",
+      "expected": "Select installment_type disabled",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: select selalu aktif & loanEdit menimpa installment_type tanpa cek pinjaman aktif."
+    }
+  ]
+}

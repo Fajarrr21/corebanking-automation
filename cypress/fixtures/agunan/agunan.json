@@ -1,0 +1,30 @@
+{
+  "_sumber": "routes/web.php:358-359,297-298, CollateralController.php, resources/views/collateral/index.blade.php, loan/detail.blade.php (tab Agunan, printNewDocument), loan/detail/collateral.blade.php, loan/detail/document/new-collateral/*.blade.php",
+  "home": "/home",
+  "path": "/collateral",
+  "menuTitle": "Agunan",
+  "title": "Daftar Agunan",
+  "breadcrumb": "List",
+  "dataUrl": "/collateral/data*",
+  "table": "#data-table-collateral",
+  "headersSource": ["ID", "Tanggal", "Nomor Rekening", "Nomor Cif", "Nomor Dokumen", "Jenis Agunan", "Nasabah", "Harga Penilaian", ""],
+  "headersPrd": ["Nomor Dokumen", "Nomor CIF", "Jenis Agunan", "Atas Nama", "Harga Penilaian", "Status", "Aksi"],
+  "col": { "id": 0, "tanggal": 1, "rekening": 2, "cif": 3, "dokumen": 4, "jenis": 5, "nasabah": 6, "harga": 7, "aksi": 8 },
+  "jenisLabels": ["SHM/Letter C", "BPKB Kendaraan", "SK Karyawan"],
+  "viewButton": "Lihat",
+  "searchNoMatch": "QA-TIDAK-ADA-ZZZ999",
+  "detail": {
+    "menu": "collateral",
+    "tabs": [
+      { "hash": "#tab_document", "label": "Dokumen", "view": "print-detail" },
+      { "hash": "#tab_sell_document", "label": "Surat Kuasa Menjual", "view": "print-sell-document", "select": "#sell_filter_second_party", "param": "sell_second_party" },
+      { "hash": "#tab_submission_document", "label": "Surat Penyerahan", "view": "print-submission-document", "select": "#filter_submission_second_party", "param": "submission_second_party" },
+      { "hash": "#tab_receipt_document", "label": "Tanda Terima", "view": "print-receipt-document", "select": "#receipt_filter_head_office", "param": "receipt_head_office", "select2": "#receipt_filter_officer", "param2": "receipt_officer" }
+    ],
+    "prdDataTab": "Data Agunan",
+    "documentLabels": ["Nomor Dokumen", "Kepemilikan Agunan", "CIF", "Tanggal Penilaian", "Harga Penilaian", "Harga Pasar Wajar", "Catatan"],
+    "selectPlaceholders": { "sell": "Pilih PIHAK II", "submission": "Pilih PIHAK II", "head": "Pilih Kepala Unit", "officer": "Pilih Pengelola" },
+    "printPath": "/collateral/print-new/"
+  },
+  "timeouts": { "table": 30000 }
+}

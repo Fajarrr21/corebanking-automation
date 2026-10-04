@@ -1,0 +1,126 @@
+{
+  "modul": "Produk",
+  "kode": "PRODUK",
+  "aksi": "LIST",
+  "halaman": "/product, /product/loan, /product/saving",
+  "spec": "cypress/e2e/cbs/05-Produk/produk-list.cy.js",
+  "notion": [
+    {"judul": "Pengaturan Produk Pinjaman", "url": "https://app.notion.com/3b9f80e3bbf181e1a121f28abf0d6566"}
+  ],
+  "catatan": "Read-only (cy.guardWrites + assertNoWritesLeaked). Akses halaman produk hanya role super-admin (ProductController::__construct). PRD menyebut menu 'Pengaturan > Produk Pinjaman'; di aplikasi menu-nya 'Produk' di sidebar (/product → /product/loan). Produk Simpanan tidak punya PRD (Asumsi).",
+  "cases": [
+    {
+      "id": "TC-PRODUK-LIST-001", "kategori": "Happy",
+      "skenario": "Halaman Daftar Produk tampil dengan kartu Simpanan dan Pinjaman",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product", "Amati breadcrumb, note, kartu, tombol"],
+      "test_data": "-",
+      "expected": "Breadcrumb aktif 'Daftar Produk'; note 'Silahkan tambahkan produk sesuai layanan yang ada di instansi anda'; kartu SIMPANAN & PINJAMAN dengan jumlah 'Produk Tersedia'; tombol 'Tambah Produk Simpanan' (/product/saving) dan 'Tambah Produk Pinjaman' (/product/loan)",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Diturunkan dari product/index.blade.php"
+    },
+    {
+      "id": "TC-PRODUK-LIST-002", "kategori": "Positif",
+      "skenario": "Navigasi menu sidebar Produk ke list produk pinjaman",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /home", "Klik menu sidebar 'Produk'", "Klik tombol 'Tambah Produk Pinjaman'"],
+      "test_data": "-",
+      "expected": "Pindah ke /product lalu ke /product/loan dengan breadcrumb aktif 'Pinjaman'",
+      "sumber": "PRD-ambigu", "status": "Belum dijalankan",
+      "catatan": "PRD: 'buka menu Pengaturan kemudian klik Produk Pinjaman'. Aplikasi: menu terpisah 'Produk'. Test mengikuti navigasi aktual; perbedaan dilaporkan."
+    },
+    {
+      "id": "TC-PRODUK-LIST-003", "kategori": "Happy",
+      "skenario": "Halaman produk pinjaman menampilkan form tambah dan tabel daftar produk",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product/loan"],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Pinjaman'; portlet 'Tambah Pinjaman' dan 'Daftar Produk Pinjaman'; tabel #sample_1 tampil",
+      "sumber": "PRD", "status": "Belum dijalankan", "catatan": "AC1: sistem menampilkan list produk pinjaman"
+    },
+    {
+      "id": "TC-PRODUK-LIST-004", "kategori": "Positif",
+      "skenario": "Header kolom tabel produk pinjaman",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product/loan", "Baca header tabel"],
+      "test_data": "-",
+      "expected": "Header berurutan: Status, Tgl Buat, Tgl Update, Nama Produk, Kode Produk, Model Angsuran, Suku Bunga, Perhitungan bunga, Agunan, Simpanan Wajib, Online, Deskripsi, (aksi)",
+      "sumber": "Asumsi", "status": "Belum dijalankan",
+      "catatan": "Header persis dari loan.blade.php. PRD memakai istilah konseptual (Jenis Angsuran, Bunga, Metode Perhitungan Bunga)."
+    },
+    {
+      "id": "TC-PRODUK-LIST-005", "kategori": "Positif",
+      "skenario": "Kolom bunga menampilkan nilai beserta satuan periodenya",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": ["Buka /product/loan", "Baca kolom Suku Bunga semua baris (lintas halaman DataTables)"],
+      "test_data": "-",
+      "expected": "Setiap nilai bunga memuat satuan periode (mis. '1,5 % per bulan')",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: aplikasi hanya menampilkan '<angka> %' tanpa satuan periode (loan.blade.php:303-305); field Satuan Periode Bunga tidak ada. Test diharapkan GAGAL sampai diperbaiki."
+    },
+    {
+      "id": "TC-PRODUK-LIST-006", "kategori": "Positif",
+      "skenario": "Kolom Status hanya Aktif atau Tidak Aktif",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": ["Buka /product/loan", "Baca kolom Status semua baris"],
+      "test_data": "-",
+      "expected": "Setiap status bernilai 'Aktif' atau 'Tidak Aktif'",
+      "sumber": "PRD", "status": "Belum dijalankan", "catatan": "AC2.f"
+    },
+    {
+      "id": "TC-PRODUK-LIST-007", "kategori": "Positif",
+      "skenario": "Kolom Simpanan Wajib ditampilkan Ya atau Tidak",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": ["Buka /product/loan", "Baca kolom Simpanan Wajib semua baris"],
+      "test_data": "-",
+      "expected": "Nilai diawali 'Ya' atau 'Tidak'; untuk produk tanpa simpanan wajib tampil persis 'Tidak' (tanpa sisa '%')",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: loan.blade.php:315-318 selalu mencetak '{{saving_percent}} %' sehingga produk tanpa simpanan wajib tampil 'Tidak %'."
+    },
+    {
+      "id": "TC-PRODUK-LIST-008", "kategori": "Positif",
+      "skenario": "Jenis angsuran produk hanya Mingguan atau Bulanan",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": ["Buka /product/loan", "Baca kolom Model Angsuran semua baris"],
+      "test_data": "-",
+      "expected": "Setiap nilai 'Bulanan' atau 'Mingguan'",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Aplikasi masih mendukung 'Sekaligus Lunas' (ONE_TIME). Gagal bila ada produk ONE_TIME — lihat juga TC-PRODUK-CREATE-003."
+    },
+    {
+      "id": "TC-PRODUK-LIST-009", "kategori": "Positif",
+      "skenario": "Produk Pinjaman Tempo sudah berganti nama menjadi Pinjaman Khusus",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product/loan", "Cari nama produk yang memuat 'Pinjaman Tempo' di semua baris"],
+      "test_data": "Pinjaman Tempo",
+      "expected": "Tidak ada produk bernama 'Pinjaman Tempo'",
+      "sumber": "PRD", "status": "Belum dijalankan", "catatan": "AC 'Penggantian nama produk Pinjaman Tempo' (data staging)."
+    },
+    {
+      "id": "TC-PRODUK-LIST-010", "kategori": "Positif",
+      "skenario": "Setiap baris produk memiliki aksi Ubah",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": ["Buka /product/loan", "Periksa tombol Edit di setiap baris"],
+      "test_data": "-",
+      "expected": "Setiap baris punya tombol Edit (data-id terisi)",
+      "sumber": "PRD", "status": "Belum dijalankan", "catatan": "AC2.g Aksi Ubah"
+    },
+    {
+      "id": "TC-PRODUK-LIST-011", "kategori": "Edge",
+      "skenario": "Pencarian dengan kata kunci yang tidak ada",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product/loan", "Ketik kata kunci acak di kotak pencarian DataTables"],
+      "test_data": "ZZZ-TIDAK-ADA-PRODUK-QA",
+      "expected": "Tabel menampilkan empty-state (td.dataTables_empty), 0 baris data",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "DataTables client-side (table-datatables-managed)"
+    },
+    {
+      "id": "TC-PRODUK-LIST-012", "kategori": "Happy",
+      "skenario": "Halaman produk simpanan tampil dengan header kolom sesuai",
+      "precondition": "Login sebagai super-admin",
+      "langkah": ["Buka /product/saving", "Baca breadcrumb dan header tabel"],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Simpanan'; form tambah simpanan ada; header: Status, Tgl Buat, Tgl Update, Nama Produk, Kode Produk, Suku Bunga Pertahun, Pajak, Biaya Tarik Tunai, Biaya Administrasi, Saldo Min, Min Setoran, Online, Deskripsi, (aksi)",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Tidak ada PRD Produk Simpanan"
+    }
+  ]
+}

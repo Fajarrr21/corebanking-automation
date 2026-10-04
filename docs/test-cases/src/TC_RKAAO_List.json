@@ -1,0 +1,185 @@
+{
+  "modul": "RKA - Account Officer",
+  "kode": "RKAAO",
+  "aksi": "LIST",
+  "halaman": "/rka/accountofficer",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-ao-list.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - AO",
+      "url": "https://app.notion.com/268f80e3bbf180d68dd2e00d1446b3ac"
+    },
+    {
+      "judul": "BKDP RKA - Setting Target AO",
+      "url": "https://app.notion.com/270f80e3bbf180a69548d6a66e4cc789"
+    }
+  ],
+  "catatan": "Read-only (write-guard aktif).",
+  "cases": [
+    {
+      "id": "TC-RKAAO-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Membuka RKA > Account Officer dari sidebar",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /home",
+        "Klik menu RKA",
+        "Klik sub-menu Account Officer"
+      ],
+      "test_data": "-",
+      "expected": "URL /rka/accountofficer, judul dokumen 'RKA Account Officer', pill 'RKA Management' aktif, pill 'Account Officer' tersedia",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD menyebut menu 'Sales'; di aplikasi menu = RKA > Account Officer."
+    },
+    {
+      "id": "TC-RKAAO-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Form menampilkan Pilih Account Officer & Pilih Tahun",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /rka/accountofficer",
+        "Periksa field form"
+      ],
+      "test_data": "Tahun berjalan",
+      "expected": "Label 'Pilih Account Officer' (required, placeholder '-- Pilih Account Officer --'), 'Pilih Tahun' default tahun berjalan, opsi tahun = tahun-2 s/d tahun+2",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: 'Pilih Unit & Sales'. Aplikasi: pilih 1 Account Officer + tahun."
+    },
+    {
+      "id": "TC-RKAAO-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Tab Pinjaman/Simpanan/Lainnya & indikator Lainnya",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman",
+        "Periksa tab & header tabel",
+        "Periksa baris tab Lainnya & opsi jenis target"
+      ],
+      "test_data": "-",
+      "expected": "Tab: Pinjaman, Simpanan, Lainnya; header Produk | Jenis Target | Target Tahun Lalu (IDR) | Persentase (%) | Target Tahun Ini; Lainnya: NPL (DR, MCT), Daftar Hitam, Laba Tahun Berjalan; jenis target Kenaikan/Penurunan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LIST-004",
+      "kategori": "Negatif",
+      "skenario": "Form setting target AO punya field 'Nama RKA' wajib",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman",
+        "Cari label 'Nama RKA' di form"
+      ],
+      "test_data": "-",
+      "expected": "Field 'Nama RKA*' (required, free text) tersedia",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada field Nama RKA di rka-management.blade.php (form hanya AO + tahun). Test diharapkan GAGAL sampai diperbaiki."
+    },
+    {
+      "id": "TC-RKAAO-LIST-005",
+      "kategori": "Edge",
+      "skenario": "Tab Simpanan terkunci sebelum Pinjaman lengkap",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman tanpa mengisi apa pun",
+        "Klik tab Simpanan"
+      ],
+      "test_data": "-",
+      "expected": "Tab Simpanan ber-class disabled, tetap di tab Pinjaman, alert 'Harap lengkapi data Pinjaman terlebih dahulu'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Perilaku dari JS rka-management.blade.php (show.bs.tab)."
+    },
+    {
+      "id": "TC-RKAAO-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Kolom daftar RKA AO",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman",
+        "Periksa header tabel #sample_1"
+      ],
+      "test_data": "-",
+      "expected": "Status RKA | Nama Account Officer | Cabang | Tahun | Produk | Parameter | Tanggal Dibuat | Terakhir Diubah | Aksi",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Status, Nama RKA, Nama Unit & Sales, Tanggal Set, Tanggal Update, Aksi. Label aplikasi berbeda; assert label source."
+    },
+    {
+      "id": "TC-RKAAO-LIST-007",
+      "kategori": "Negatif",
+      "skenario": "Daftar RKA AO punya kolom 'Nama RKA'",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman",
+        "Periksa header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Header memuat 'Nama RKA'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG (sama dengan 004): kolom Nama RKA tidak ada."
+    },
+    {
+      "id": "TC-RKAAO-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Pilihan jumlah data tampil 5/15/20/All",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman",
+        "Periksa dropdown 'Show entries'"
+      ],
+      "test_data": "-",
+      "expected": "Opsi: 5, 15, 20, All",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: DataTable #sample_1 memakai default (10/25/50/100), rka-management.blade.php:1785. PRD juga ambigu ('20 → 10 data')."
+    },
+    {
+      "id": "TC-RKAAO-LIST-009",
+      "kategori": "Negatif",
+      "skenario": "Cari nama yang tidak ada",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Ketik teks acak di kotak pencarian"
+      ],
+      "test_data": "TIDAKADA<timestamp>",
+      "expected": "Tabel kosong (td.dataTables_empty)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Cari nama AO yang ada",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Data RKA AO boleh kosong (ditangani).",
+      "langkah": [
+        "Ambil nama AO dari baris pertama",
+        "Ketik di pencarian"
+      ],
+      "test_data": "Nama AO baris pertama",
+      "expected": "Semua baris hasil memuat nama tsb; bila daftar kosong → empty-state tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LIST-011",
+      "kategori": "Positif",
+      "skenario": "Tombol aksi per baris",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Data boleh kosong (ditangani).",
+      "langkah": [
+        "Periksa baris pertama"
+      ],
+      "test_data": "-",
+      "expected": "Tombol Lihat Detail, Pengaturan Bobot, Edit RKA, toggle status, Hapus RKA tersedia",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Aksi = Lihat Detail & Hapus; aplikasi punya tombol tambahan."
+    }
+  ]
+}

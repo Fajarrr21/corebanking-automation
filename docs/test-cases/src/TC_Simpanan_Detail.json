@@ -1,0 +1,161 @@
+{
+  "modul": "Nasabah - Simpanan",
+  "kode": "SMP",
+  "aksi": "DETAIL",
+  "halaman": "/saving/{refId}",
+  "notion": [
+    {
+      "judul": "List Simpanan Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf1819cbb00d802b517c943"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-detail.cy.js",
+  "catatan": "PRD List Simpanan hanya menyebut aksi Lihat membuka detail; isi detail diturunkan dari source (Asumsi).",
+  "cases": [
+    {
+      "id": "TC-SMP-DETAIL-001",
+      "kategori": "Happy",
+      "skenario": "Klik Lihat membuka detail simpanan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Buka /saving",
+        "Klik Lihat baris pertama (target _blank dihapus)"
+      ],
+      "test_data": "-",
+      "expected": "URL /saving/{refId}, breadcrumb 'Detail Simpanan', tab Data Simpanan aktif",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-002",
+      "kategori": "Positif",
+      "skenario": "Data Simpanan menampilkan informasi rekening",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Buka /saving/{refId}"
+      ],
+      "test_data": "-",
+      "expected": "Nama = nama di list, saldo ber-format IDR, kartu Informasi Rekening/Buku Tabungan/Nasabah/Kantor, key Nomor Rekening/Produk/Status/Tanggal Buat",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-003",
+      "kategori": "Positif",
+      "skenario": "Cetak Cover Buku Tabungan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Ambil href tombol Cetak Cover",
+        "cy.request"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200 text/html (tanpa membuka tab baru)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-004",
+      "kategori": "Positif",
+      "skenario": "Kolom Riwayat Transaksi",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Klik tab Riwayat Transaksi"
+      ],
+      "test_data": "-",
+      "expected": "Header: ID, Ref ID, Tgl Transaksi, Cabang Transaksi, Officer, Tipe Transaksi, Debit, Kredit, Saldo Akhir, Aksi; ada baris",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-005",
+      "kategori": "Positif",
+      "skenario": "Tab mengubah parameter menu",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Klik Riwayat Transaksi",
+        "Klik Data Simpanan"
+      ],
+      "test_data": "-",
+      "expected": "URL ?menu=history lalu ?menu=info",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-006",
+      "kategori": "Positif",
+      "skenario": "Deep link ?menu=history",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Buka /saving/{refId}?menu=history"
+      ],
+      "test_data": "-",
+      "expected": "Tab Riwayat aktif saat load",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-007",
+      "kategori": "Positif",
+      "skenario": "Export riwayat PDF",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "cy.request link PDF"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200, content-type application/pdf",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-008",
+      "kategori": "Positif",
+      "skenario": "Export riwayat Excel",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "cy.request link Excel"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200, content-type spreadsheetml",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-009",
+      "kategori": "Positif",
+      "skenario": "Lihat struk transaksi",
+      "precondition": "Login akun test (cy.session); write-guard aktif; ada rekening simpanan bersaldo > 0",
+      "langkah": [
+        "Stub window.open",
+        "Klik Lihat baris riwayat pertama",
+        "cy.request URL"
+      ],
+      "test_data": "-",
+      "expected": "window.open('/saving/{refId}/{id}/print_history'), HTTP 200",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-DETAIL-010",
+      "kategori": "Negatif",
+      "skenario": "refId tidak ada",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /saving/QA-TIDAK-ADA-000"
+      ],
+      "test_data": "QA-TIDAK-ADA-000",
+      "expected": "Redirect /saving dengan 'Nomor Rekening tidak ditemukan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+TEMPLATE QA - TRANSAKSI SIMPANAN MASSAL,,
+Data uji QA (rekening sengaja TIDAK terdaftar),,
+Nomor Rekening,Nominal,Catatan
+QA9999999999001,1000,QA automation rekening tidak valid

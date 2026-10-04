@@ -1,0 +1,148 @@
+{
+  "modul": "Laporan - Cashflow Simpanan",
+  "kode": "CFS",
+  "aksi": "VIEW",
+  "halaman": "/saving-cashflow",
+  "spec": "cypress/e2e/cbs/09-Laporan/cashflow-simpanan.cy.js",
+  "notion": [
+    {
+      "judul": "Laporan Cashflow Simpanan",
+      "url": "https://app.notion.com/247f80e3bbf180c7a275e3a7a8f2635a"
+    }
+  ],
+  "catatan": "Read-only. Data via GET /saving-cashflow/data?office_id=..&date=yyyy-mm-dd. Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-CFS-VIEW-001",
+      "kategori": "Happy",
+      "skenario": "Membuka Lap Cashflow lewat menu Laporan > Simpanan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Klik Laporan > Simpanan",
+        "Klik Lihat Detail kartu Lap Cashflow"
+      ],
+      "test_data": "-",
+      "expected": "URL /saving-cashflow, breadcrumb 'Laporan Cashflow Simpanan', data termuat",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CFS-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Header kolom sesuai PRD",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-cashflow"
+      ],
+      "test_data": "-",
+      "expected": "Nama Produk | Transaksi Masuk | Jml Orang | Transaksi Keluar | Jml Orang | Saldo Awal | Saldo Akhir",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CFS-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Default menampilkan laporan hari ini",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-cashflow"
+      ],
+      "test_data": "Tanggal hari ini (zona waktu browser)",
+      "expected": "Input tanggal = hari ini (yyyy-mm-dd) & request date=hari ini",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Dekat tengah malam bisa beda zona waktu runner vs server (WIB)."
+    },
+    {
+      "id": "TC-CFS-VIEW-004",
+      "kategori": "Positif",
+      "skenario": "Filter harian",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-cashflow",
+        "Pilih tanggal kemarin"
+      ],
+      "test_data": "Kemarin",
+      "expected": "Request date=kemarin 200, tabel dimuat ulang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CFS-VIEW-005",
+      "kategori": "Positif",
+      "skenario": "Filter kantor (user pusat)",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-cashflow",
+        "Pilih kantor pertama"
+      ],
+      "test_data": "Kantor pertama",
+      "expected": "Request office_id=<id> 200",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "PRD tidak menyebut filter kantor; dari source."
+    },
+    {
+      "id": "TC-CFS-VIEW-006",
+      "kategori": "Edge",
+      "skenario": "Setiap baris produk berisi angka valid",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Ada produk simpanan (type SAVING).",
+      "langkah": [
+        "Buka /saving-cashflow",
+        "Baca JSON"
+      ],
+      "test_data": "-",
+      "expected": "Nominal masuk/keluar >= 0, Jml Orang bilangan bulat >= 0, Saldo Awal/Akhir numerik",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CFS-VIEW-007",
+      "kategori": "Edge",
+      "skenario": "Saldo Awal hari ini = Saldo Akhir kemarin per produk",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-cashflow (hari ini), catat Saldo Awal",
+        "Ganti tanggal ke kemarin, baca Saldo Akhir"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama untuk setiap produk",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: saldo awal = saldo dari 1 transaksi sebelum transaksi terakhir (ambigu); source: saldo awal = saldo akhir hari sebelumnya."
+    },
+    {
+      "id": "TC-CFS-VIEW-008",
+      "kategori": "Positif",
+      "skenario": "Export CSV",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Klik CSV"
+      ],
+      "test_data": "-",
+      "expected": "File CSV dengan header kolom laporan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CFS-VIEW-009",
+      "kategori": "Positif",
+      "skenario": "Export Excel",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Klik Excel"
+      ],
+      "test_data": "-",
+      "expected": "File xlsx (signature PK)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

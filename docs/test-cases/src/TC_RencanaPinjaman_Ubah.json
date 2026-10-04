@@ -1,0 +1,44 @@
+{
+  "modul": "Rencana Pinjaman - Ubah/Batalkan (irreversible)",
+  "kode": "RPJ",
+  "aksi": "UBAH",
+  "halaman": "/loan-plan",
+  "spec": "cypress/e2e/cbs/16-RencanaPinjaman/rencana-pinjaman.irreversible.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Rencana Pinjaman; TC diturunkan dari source (LoanPlanController.php, loanplan/index.blade.php, config/constants.php:314-318). Controller tanpa cek role (semua user login); user cabang hanya melihat kantornya, pusat (office_id 0) semua. Rencana berstatus PENDING tidak ditampilkan. Tombol Batalkan memakai GET (tidak terblok write-guard) -> tidak diklik di spec read-only. Di-gate flag allowLoanPlanChange. Hanya rencana milik nasabah berawalan 'QA' (precondition: dibuat manual via Penyesuaian Pinjaman). Ubah dikembalikan di afterEach; Batalkan tidak bisa dikembalikan.",
+  "cases": [
+    {
+      "id": "TC-RPJ-UBAH-001",
+      "kategori": "Happy",
+      "skenario": "Ubah Jangka Waktu rencana QA",
+      "precondition": "Flag allowLoanPlanChange; ada rencana OPEN nasabah QA",
+      "langkah": [
+        "Cari 'QA'",
+        "Klik Ubah",
+        "Jangka Waktu +1",
+        "Simpan"
+      ],
+      "test_data": "tenor lama + 1",
+      "expected": "'Rencana pinjaman berhasil diubah'; kolom Jangka Waktu baris tsb = nilai baru; afterEach mengembalikan produk/jumlah/tenor asli",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-UBAH-002",
+      "kategori": "Positif",
+      "skenario": "Batalkan rencana QA",
+      "precondition": "Flag allowLoanPlanChange; ada rencana OPEN nasabah QA",
+      "langkah": [
+        "Cari 'QA'",
+        "Klik Batalkan",
+        "Konfirmasi OK"
+      ],
+      "test_data": "-",
+      "expected": "confirm 'Batalkan rencana pinjaman ini?'; 'Rencana pinjaman berhasil dibatalkan'; status 'Dibatalkan'; tombol Ubah hilang",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE."
+    }
+  ]
+}

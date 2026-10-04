@@ -1,0 +1,168 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "TTD",
+  "halaman": "/setting?menu=signature (POST /setting/signature, /update, /delete)",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-tanda-tangan.cy.js",
+  "notion": [
+    {
+      "judul": "Penamaan Cabang dan Penanda Tangan Dokumen",
+      "url": "https://app.notion.com/3b9f80e3bbf181189d28d58db83a2abf"
+    }
+  ],
+  "catatan": "PRD 'Penamaan Cabang dan Penanda Tangan Dokumen' mengatur penanda tangan per cabang (form di pengaturan cabang). Di aplikasi, penanda tangan dikelola di tab 'Tanda Tangan SPH' dengan pilihan kantor (multi). Pengaturan cabang di /office dipegang agent modul Kantor. Data QA<ts>; cleanup afterEach via POST /setting/signature/delete hanya baris yang kolom Nama persis nama QA buatan test.",
+  "cases": [
+    {
+      "id": "TC-SET-TTD-001",
+      "kategori": "Happy",
+      "skenario": "Form & tabel penanda tangan tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=signature"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'Pengaturan Penanda Tangan SPH'; Nama required; Jabatan; Kantor (multiple) dengan bantuan 'Dikosongkan berarti berlaku untuk semua kantor'; header tabel Nama, Jabatan, Kantor, action",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-TTD-002",
+      "kategori": "Negatif",
+      "skenario": "Nama penanda tangan kosong",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan Nama",
+        "Isi Jabatan",
+        "Klik Simpan"
+      ],
+      "test_data": "nama kosong",
+      "expected": "Tombol Simpan tidak bekerja (name valueMissing), tidak ada request",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Ketentuan a"
+    },
+    {
+      "id": "TC-SET-TTD-003",
+      "kategori": "Positif",
+      "skenario": "Jabatan penanda tangan opsional",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Isi Nama",
+        "Kosongkan Jabatan",
+        "Periksa validitas form"
+      ],
+      "test_data": "jabatan kosong",
+      "expected": "Form valid (tidak ada field invalid)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: input occupation ber-atribut required (setting/signature.blade.php:26). Diharapkan GAGAL. Tidak ada submit."
+    },
+    {
+      "id": "TC-SET-TTD-004",
+      "kategori": "Positif",
+      "skenario": "Pilihan Kantor memakai select2 'Semua kantor'",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Tanda Tangan SPH"
+      ],
+      "test_data": "-",
+      "expected": "Select office_ids[] ter-inisialisasi select2 dengan placeholder 'Semua kantor'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: inline script select2 dijalankan sebelum jQuery dimuat → select2 tidak aktif. Diharapkan GAGAL."
+    },
+    {
+      "id": "TC-SET-TTD-005",
+      "kategori": "Happy",
+      "skenario": "Tambah penanda tangan QA tanpa kantor",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Isi Nama QA<ts>, Jabatan",
+        "Kantor dikosongkan",
+        "Klik Simpan"
+      ],
+      "test_data": "QA<ts> TTD",
+      "expected": "Alert 'Data Penanda Tangan Berhasil Disimpan'; baris QA tampil dengan Jabatan sesuai & Kantor 'Semua Kantor'",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Cleanup afterEach"
+    },
+    {
+      "id": "TC-SET-TTD-006",
+      "kategori": "Positif",
+      "skenario": "Tambah penanda tangan QA untuk satu kantor",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Isi Nama, Jabatan",
+        "Pilih 1 kantor",
+        "Klik Simpan"
+      ],
+      "test_data": "kantor pertama",
+      "expected": "Alert sukses; kolom Kantor = nama kantor yang dipilih",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Nama penanda tangan per cabang (AC b). Cleanup afterEach"
+    },
+    {
+      "id": "TC-SET-TTD-007",
+      "kategori": "Positif",
+      "skenario": "Modal Edit memuat nama, jabatan, dan kantor penanda tangan",
+      "precondition": "Penanda tangan QA (1 kantor) dibuat via request",
+      "langkah": [
+        "Klik Edit pada penanda tangan QA"
+      ],
+      "test_data": "-",
+      "expected": "Nama, Jabatan terisi; select kantor terpilih = kantor penanda tangan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: handler pengisi kantor (signature.blade.php:187-190) tidak terpasang karena '$ is not defined'. Diharapkan GAGAL. Read-only."
+    },
+    {
+      "id": "TC-SET-TTD-008",
+      "kategori": "Positif",
+      "skenario": "Ubah nama penanda tangan QA tidak mengubah kantornya",
+      "precondition": "Penanda tangan QA (1 kantor) dibuat via request",
+      "langkah": [
+        "Klik Edit",
+        "Ubah Nama",
+        "Klik Edit"
+      ],
+      "test_data": "QA<ts> TTD Ubah",
+      "expected": "Alert 'Data Penanda Tangan Berhasil Diedit'; Kantor tetap nama kantor semula (bukan 'Semua Kantor')",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: karena select kantor di modal tidak terisi, simpan edit mengosongkan office_ids → penanda tangan berlaku untuk semua kantor. Cleanup afterEach."
+    },
+    {
+      "id": "TC-SET-TTD-009",
+      "kategori": "Positif",
+      "skenario": "Hapus penanda tangan QA",
+      "precondition": "Penanda tangan QA dibuat via request",
+      "langkah": [
+        "Klik Delete",
+        "Klik Hapus"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'Data Penanda Tangan Berhasil Dihapus'; baris hilang",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-TTD-010",
+      "kategori": "Negatif",
+      "skenario": "Batal hapus penanda tangan (Close)",
+      "precondition": "Penanda tangan QA dibuat via request",
+      "langkah": [
+        "Klik Delete",
+        "Klik Close"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup, tidak ada request, baris tetap",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

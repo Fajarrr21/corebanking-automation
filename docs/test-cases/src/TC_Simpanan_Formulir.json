@@ -1,0 +1,110 @@
+{
+  "modul": "Nasabah - Simpanan",
+  "kode": "SMP",
+  "aksi": "FORM",
+  "halaman": "/saving/{refId}?menu=application",
+  "notion": [
+    {
+      "judul": "BKD - Formulir Permohonan Simpanan",
+      "url": "https://app.notion.com/247f80e3bbf180e693e7f7963cfdf0c7"
+    },
+    {
+      "judul": "List Simpanan Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf1819cbb00d802b517c943"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-application.cy.js",
+  "catatan": "",
+  "cases": [
+    {
+      "id": "TC-SMP-FORM-001",
+      "kategori": "Happy",
+      "skenario": "Tab Formulir Permohonan tersedia",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list",
+      "langkah": [
+        "Buka detail simpanan",
+        "Klik tab Formulir Permohonan"
+      ],
+      "test_data": "-",
+      "expected": "Tab ada & pane #tab_application aktif; URL ?menu=application",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG (role): saving/detail.blade.php tidak merender tab ini untuk super-admin & auditor"
+    },
+    {
+      "id": "TC-SMP-FORM-002",
+      "kategori": "Positif",
+      "skenario": "Judul & informasi surat",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list",
+      "langkah": [
+        "Buka ?menu=application"
+      ],
+      "test_data": "-",
+      "expected": "Teks 'FORMULIR PERMOHONAN SIMPANAN', 'Tanggal Permohonan', 'No Berkas'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-FORM-003",
+      "kategori": "Positif",
+      "skenario": "Data Nasabah, Pekerjaan, Fasilitas, Pernyataan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list",
+      "langkah": [
+        "Buka ?menu=application"
+      ],
+      "test_data": "-",
+      "expected": "Label NIK, Nama Lengkap, Alamat, Jenis Nasabah, No Rek Simpanan, Pekerjaan, Penghasilan Per Bulan, Sumber Dana, Nama Produk, Jumlah Setoran Awal, 'PERNYATAAN DAN PERSETUJUAN NASABAH'; nama nasabah tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-FORM-004",
+      "kategori": "Positif",
+      "skenario": "Pilih Kepala Unit & Pengelola II tampil di preview",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list; ada Setting Signature untuk kantor rekening",
+      "langkah": [
+        "Pilih Kepala Unit pertama",
+        "Pilih Pengelola II pertama"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "#head_office dan #account_officer = nama terpilih",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-FORM-005",
+      "kategori": "Positif",
+      "skenario": "Cetak memuat penanda tangan terpilih",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list; ada Setting Signature",
+      "langkah": [
+        "Pilih Kepala Unit & Pengelola II",
+        "Stub window.open",
+        "Klik Print",
+        "cy.request URL cetak"
+      ],
+      "test_data": "Signature pertama",
+      "expected": "URL /saving/print/document/{refId}?...; HTTP 200; dokumen memuat judul & kedua nama terpilih",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-FORM-006",
+      "kategori": "Edge",
+      "skenario": "Cetak tanpa memilih tidak mencetak 'DEFAULT'",
+      "precondition": "Login akun test (cy.session); write-guard aktif; rekening simpanan pertama di list",
+      "langkah": [
+        "Klik Print tanpa memilih",
+        "cy.request URL cetak"
+      ],
+      "test_data": "-",
+      "expected": "Blok penanda tangan tidak berisi kata DEFAULT",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Jatuh ke nama superadmin + jabatan baku (lihat _application-body)"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "modul": "Nasabah - CIF",
+  "kode": "CIF",
+  "aksi": "LIST",
+  "halaman": "/cif",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/CIF/cif-list.cy.js",
+  "catatan": "",
+  "cases": [
+    {
+      "id": "TC-CIF-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Halaman list CIF terbuka dan tabel termuat",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya data CIF",
+      "langkah": [
+        "Buka /cif",
+        "Tunggu ajax GET /cif/data"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'CIF', /cif/data HTTP 200, tabel #data-table terisi / empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Header kolom tabel CIF",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif",
+        "Baca thead"
+      ],
+      "test_data": "-",
+      "expected": "Header: (aksi) | ID | Kantor Cabang | Kode CIF | Nama | No KTP | Alamat Lengkap | No Kartu",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari cif/index.blade.php; PRD tidak merinci kolom list CIF"
+    },
+    {
+      "id": "TC-CIF-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Setiap baris punya aksi Lihat menuju detail CIF",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif",
+        "Periksa kolom aksi tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Label 'Lihat', href = /cif/{Kode CIF baris itu}",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: aksi Lihat pada tiap baris"
+    },
+    {
+      "id": "TC-CIF-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Tombol tambah nasabah (Buat CIF) tampil",
+      "precondition": "Login akun test (cy.session); write-guard aktif; akun = user cabang (office_id != 0)",
+      "langkah": [
+        "Buka /cif",
+        "Cek tombol a[href=/cif/create]"
+      ],
+      "test_data": "-",
+      "expected": "Tombol 'Buat CIF' tampil",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD menyebut 'Tambah Nasabah', source 'Buat CIF'. Source menyembunyikan tombol untuk user pusat (office_id 0) → test gagal jelas bila akun pusat."
+    },
+    {
+      "id": "TC-CIF-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Tombol export CSV & Excel tersedia",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif"
+      ],
+      "test_data": "-",
+      "expected": "Tombol CSV dan Excel (DataTables buttons) tampil di #buttonexportcif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Pencarian berdasarkan nama",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif",
+        "Ambil nama baris pertama",
+        "Ketik di kotak search"
+      ],
+      "test_data": "Nama CIF baris pertama",
+      "expected": "Request /cif/data membawa search[value]; CIF tsb ada di hasil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-LIST-007",
+      "kategori": "Negatif",
+      "skenario": "Pencarian kata kunci tidak ada",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif",
+        "Ketik kata kunci acak"
+      ],
+      "test_data": "ZZQA-TIDAK-ADA-0000000000",
+      "expected": "Tabel menampilkan td.dataTables_empty, 0 baris data",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Filter cabang (user pusat)",
+      "precondition": "Login akun test (cy.session); write-guard aktif; akun = user pusat (office_id 0)",
+      "langkah": [
+        "Buka /cif",
+        "Pilih #filter_office = kantor baris pertama"
+      ],
+      "test_data": "Nama kantor baris pertama",
+      "expected": "Semua baris kolom Kantor Cabang = kantor terpilih",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "#filter_office hanya dirender untuk user pusat → gagal jelas bila akun cabang"
+    },
+    {
+      "id": "TC-CIF-LIST-009",
+      "kategori": "Edge",
+      "skenario": "Paging default 10 baris",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif"
+      ],
+      "test_data": "-",
+      "expected": "Request length=10; baris data <= 10",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

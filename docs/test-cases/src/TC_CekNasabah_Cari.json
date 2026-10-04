@@ -1,0 +1,110 @@
+{
+  "modul": "Cek Nasabah",
+  "kode": "CEK",
+  "aksi": "CARI",
+  "halaman": "/check",
+  "spec": "cypress/e2e/cbs/02-CekNasabah/cek-nasabah.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk Cek Nasabah di database Features (dicek: 'Data CIF Nasabah' & 'List Simpanan Nasabah' tidak membahas halaman ini). Semua TC Sumber=Asumsi dari source develop: CustomerController@check/checkPost/buildSummary, CheckCustomerRequest, resources/views/customer/check.blade.php. POST /check hanya validasi+redirect (tidak menulis data) sehingga di-allow pada write-guard. Data uji dinamis dari GET /cif/data dan /saving/data (25 baris pertama). Pesan validasi berbahasa Inggris karena locale 'id' tidak punya resources/lang/id (fallback en).",
+  "cases": [
+    {
+      "id": "TC-CEK-CARI-001", "kategori": "Happy",
+      "skenario": "Halaman Cek Nasabah tampil dengan petunjuk, input, dan tombol",
+      "precondition": "Akun test login.",
+      "langkah": ["Buka /check"],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Cek Nasabah'; note 'Silahkan Masukan NIK/Nomor Kartu/Kode CIF/Nomor Rekening untuk memulai transaksi'; input placeholder 'NIK/No Kartu/Kode CIF/No Rekening' kosong; help 'Masukan salah satu nomor diatas'; tombol 'Cek Nasabah'; belum ada ringkasan.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-002", "kategori": "Positif",
+      "skenario": "Cari dengan Kode CIF menampilkan ringkasan nasabah",
+      "precondition": "Ada ≥1 CIF di staging yang terlihat oleh akun test.",
+      "langkah": ["Ambil CIF pertama dari GET /cif/data", "Isi Kode CIF", "Klik Cek Nasabah"],
+      "test_data": "Kode CIF dinamis",
+      "expected": "Redirect ke /check?data=<kode>; nama nasabah & Kode CIF sesuai; meta Kode CIF, NIK, No HP, Alamat tampil.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-003", "kategori": "Positif",
+      "skenario": "Cari dengan NIK menampilkan nasabah pemilik NIK",
+      "precondition": "Ada CIF ber-NIK di 25 CIF pertama.",
+      "langkah": ["Ambil CIF ber-NIK dari /cif/data", "Cari dengan NIK-nya"],
+      "test_data": "NIK dinamis",
+      "expected": "Ringkasan nasabah tampil dengan NIK = NIK yang dicari.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Yang diassert NIK (bukan kode) karena NIK di staging bisa duplikat; query memakai first()."
+    },
+    {
+      "id": "TC-CEK-CARI-004", "kategori": "Positif",
+      "skenario": "Cari dengan nomor rekening simpanan menampilkan CIF pemilik & menandai baris rekening",
+      "precondition": "Ada rekening simpanan bersaldo bernomor (GET /saving/data?filter_balance=NON_ZERO).",
+      "langkah": ["Ambil rekening dari /saving/data", "Cari dengan nomor rekeningnya"],
+      "test_data": "Nomor rekening dinamis",
+      "expected": "Kode CIF = CIF pemilik rekening; tepat satu baris .cek-row-match dan baris itu memuat tombol salin dengan nomor rekening tsb.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-005", "kategori": "Positif",
+      "skenario": "Ringkasan menampilkan tautan Detail CIF serta tabel Simpanan & Pinjaman yang konsisten",
+      "precondition": "Ada ≥1 CIF.",
+      "langkah": ["Cari dengan Kode CIF", "Periksa tombol Buka Detail CIF, header & jumlah baris tabel"],
+      "test_data": "Kode CIF dinamis",
+      "expected": "Tombol 'Buka Detail CIF' → /cif/<kode>; header Simpanan: Nomor Rekening, Produk, Cabang, Saldo, Status; header Pinjaman: Nomor Rekening, Produk, Cabang, Jumlah Pinjaman, Status, Kolektibilitas; teks 'N rekening' = jumlah baris data (0 → baris kosong).",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Header kolom memakai 'Cabang' (sesuai PRD Penamaan Cabang)."
+    },
+    {
+      "id": "TC-CEK-CARI-006", "kategori": "Positif",
+      "skenario": "Tautan langsung /check?data=<Kode CIF> menampilkan ringkasan tanpa submit form",
+      "precondition": "Ada ≥1 CIF.",
+      "langkah": ["Buka /check?data=<kode>"],
+      "test_data": "Kode CIF dinamis",
+      "expected": "Input terisi kode; ringkasan nasabah tampil.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-007", "kategori": "Edge",
+      "skenario": "Spasi di awal/akhir kata kunci diabaikan",
+      "precondition": "Ada ≥1 CIF.",
+      "langkah": ["Cari '  <kode>  '"],
+      "test_data": "Kode CIF dengan spasi",
+      "expected": "Nasabah tetap ditemukan (kata kunci di-trim).",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-008", "kategori": "Edge",
+      "skenario": "Akun kantor pusat hanya melihat — tombol Buat Rekening Baru / Ajukan Pinjaman Baru tidak tampil",
+      "precondition": "Akun test = user pusat (office_id 0, header 'Tanpa Office'). Bila bukan, test gagal dengan pesan jelas.",
+      "langkah": ["Cari dengan Kode CIF", "Periksa aksi portlet"],
+      "test_data": "Kode CIF dinamis",
+      "expected": "Tombol 'Buat Rekening Baru', 'Ajukan Pinjaman Baru' dan modal #cek_open_account tidak ada.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Aturan dari komentar source: kantor pusat melihat semua cabang tapi tidak membuka rekening (can_create)."
+    },
+    {
+      "id": "TC-CEK-CARI-009", "kategori": "Negatif",
+      "skenario": "Kata kunci tidak terdaftar menampilkan pesan data tidak ditemukan",
+      "precondition": "-",
+      "langkah": ["Cari 'QA-TIDAK-ADA-<timestamp>'"],
+      "test_data": "QA-TIDAK-ADA-<timestamp>",
+      "expected": "Note merah 'Data tidak ditemukan untuk \"<kata kunci>\"...'; tidak ada ringkasan.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-CEK-CARI-010", "kategori": "Negatif",
+      "skenario": "Submit kata kunci kosong ditolak dengan pesan wajib diisi",
+      "precondition": "-",
+      "langkah": ["Kosongkan input", "Klik Cek Nasabah"],
+      "test_data": "''",
+      "expected": "Tetap di /check; alert error 'The NIK/No Kartu/Kode CIF/Rekening field is required.'",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Input tidak punya atribut required → validasi di server (CheckCustomerRequest)."
+    },
+    {
+      "id": "TC-CEK-CARI-011", "kategori": "Edge",
+      "skenario": "Kata kunci lebih dari 255 karakter ditolak",
+      "precondition": "-",
+      "langkah": ["Isi 256 karakter angka", "Klik Cek Nasabah"],
+      "test_data": "'9' x 256",
+      "expected": "Alert error 'The NIK/No Kartu/Kode CIF/Rekening may not be greater than 255 characters.'",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "modul": "RKA - Laporan RKA AO",
+  "kode": "RKAAO",
+  "aksi": "LAPORAN",
+  "halaman": "/report/rka-officer",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-report-ao.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Laporan RKA AO",
+      "url": "https://app.notion.com/273f80e3bbf1809ca1a9d56278d9b3e6"
+    },
+    {
+      "judul": "BKDP RKA - AO",
+      "url": "https://app.notion.com/268f80e3bbf180d68dd2e00d1446b3ac"
+    }
+  ],
+  "catatan": "001-007 read-only. 008-010 memakai data uji AO QA, dibersihkan di after() (entity → penugasan → officer).",
+  "cases": [
+    {
+      "id": "TC-RKAAO-LAPORAN-001",
+      "kategori": "Happy",
+      "skenario": "Halaman laporan tanpa error server",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "GET /report/rka-officer"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: RkaReportController.php di origin/develop terpotong (795 baris awal hilang, tanpa <?php/class) sejak merge c76df248 → class tidak ada → 500."
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-002",
+      "kategori": "Happy",
+      "skenario": "Navigasi dari Laporan > Umum",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /report/general",
+        "Klik Lihat Detail kartu 'Lap RKA Account Officer'"
+      ],
+      "test_data": "-",
+      "expected": "URL /report/rka-officer, breadcrumb & judul 'Laporan RKA Account Officer'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-003",
+      "kategori": "Positif",
+      "skenario": "Filter default",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman"
+      ],
+      "test_data": "-",
+      "expected": "Filter Account Officer, Tahun default tahun berjalan, tombol Tampilkan; laporan belum tampil",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: filter 'Nama RKA AO'; aplikasi: Account Officer."
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-004",
+      "kategori": "Positif",
+      "skenario": "Filter Bulan (default bulan berjalan)",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa label filter"
+      ],
+      "test_data": "-",
+      "expected": "Ada filter Bulan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: hanya filter Tahun (report/rka-officer/index.blade.php)."
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-005",
+      "kategori": "Positif",
+      "skenario": "Kolom Target per Caturwulan CW1-CW3",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Header memuat CW1, CW2, CW3",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: aplikasi menampilkan 'Target per Bulan (Kumulatif)' Jan-Des."
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-006",
+      "kategori": "Negatif",
+      "skenario": "Tampilkan tanpa AO",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Klik Tampilkan"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'Harap pilih Account Officer terlebih dahulu', laporan tidak tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-007",
+      "kategori": "Positif",
+      "skenario": "Tombol export CSV & Excel",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa tombol di area laporan"
+      ],
+      "test_data": "-",
+      "expected": "Tombol CSV dan Excel tersedia",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD 'BKDP RKA - AO': export CSV & EXCEL. KANDIDAT BUG: hanya 'Export Excel'."
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-008",
+      "kategori": "Negatif",
+      "skenario": "AO tanpa RKA aktif",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). AO QA dibuat di before() suite 'Data laporan'.",
+      "langkah": [
+        "Pilih AO QA",
+        "Tahun berjalan",
+        "Tampilkan"
+      ],
+      "test_data": "AO QA",
+      "expected": "Pesan 'Tidak ada data RKA aktif untuk Account Officer dan tahun yang dipilih'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-009",
+      "kategori": "Happy",
+      "skenario": "Laporan AO lengkap sesuai rumus",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). AO QA dibuat di before() suite 'Data laporan'. Setup via API: penugasan 1 kantor, target, bobot total 100, status Aktif.",
+      "langkah": [
+        "Pilih AO QA",
+        "Tampilkan"
+      ],
+      "test_data": "Bobot bulat total 100",
+      "expected": "Jumlah baris = jumlah indikator; total bobot 100.00%; tiap baris Score ≈ Pencapaian × Bobot / 100; 20 kolom per baris",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-LAPORAN-010",
+      "kategori": "Positif",
+      "skenario": "Export Excel",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). AO QA dibuat di before() suite 'Data laporan'. Data dari TC-009.",
+      "langkah": [
+        "Tampilkan",
+        "Klik Export Excel"
+      ],
+      "test_data": "-",
+      "expected": "window.open ke /report/rka-officer/export?account_officer_id=..; respons 200 content-type spreadsheetml",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

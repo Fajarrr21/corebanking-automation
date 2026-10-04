@@ -1,0 +1,101 @@
+{
+  "modul": "Download - Export Pinjaman Aktif (Laporan Nominatif)",
+  "kode": "DL",
+  "aksi": "EXPORT",
+  "halaman": "/loan -> /downloads",
+  "spec": "cypress/e2e/cbs/14-Download/export-pinjaman-aktif.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP - Laporan Nominatif",
+      "url": "https://app.notion.com/208f80e3bbf18028aeecc261bab40da3"
+    },
+    {
+      "judul": "Download Pinjaman Aktif",
+      "url": "https://app.notion.com/278f80e3bbf180e4aa74e8db14ee3034"
+    },
+    {
+      "judul": "BKDP Download Pinjaman Aktif",
+      "url": "https://app.notion.com/278f80e3bbf180718e55db9c83414f3c"
+    }
+  ],
+  "catatan": "TC berurutan (001 membuat 1 export, 002-005 memakai file yang sama). Efek samping: 1 baris downloads + 1 job DownloadJob + file S3 (bukan data keuangan, terhapus otomatis sesuai deleted_time). Hanya GET; Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-DL-EXPORT-001",
+      "kategori": "Happy",
+      "skenario": "Export Excel di Pinjaman Aktif masuk antrean",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Catat ID download terbesar di /downloads",
+        "Buka /loan",
+        "Klik Export Excel"
+      ],
+      "test_data": "Filter default (Semua)",
+      "expected": "GET /export/loan -> redirect ke /loan dengan alert sukses 'File telah masuk dalam antrian sistem...'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Teks PRD 'silakan unduh', source 'silahkan diunduh': hanya awalan kalimat yang dicek."
+    },
+    {
+      "id": "TC-DL-EXPORT-002",
+      "kategori": "Positif",
+      "skenario": "File export baru tampil di Download",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /downloads",
+        "Cari baris dengan ID > ID sebelum export dan nama diawali Daftar-Pinjaman-"
+      ],
+      "test_data": "-",
+      "expected": "Baris baru ada; nama 'Daftar-Pinjaman-YYYY-MM-DD HH:MM:SS.xlsx'; status Diproses/Processing/Selesai",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-EXPORT-003",
+      "kategori": "Positif",
+      "skenario": "File export selesai diproses dan dapat diunduh",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Queue worker staging berjalan.",
+      "langkah": [
+        "Buka /downloads",
+        "Tunggu status Selesai (halaman auto-reload 10 detik, maks 5 menit)",
+        "GET tautan file"
+      ],
+      "test_data": "-",
+      "expected": "Status Selesai, HTTP 200, file xlsx (PK)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-EXPORT-004",
+      "kategori": "Positif",
+      "skenario": "File memuat seluruh kolom Laporan Nominatif",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Unduh file dari TC-003",
+        "Baca baris header sheet pertama"
+      ],
+      "test_data": "20 kolom PRD Nominatif (dengan alias nama di source)",
+      "expected": "Setiap kolom PRD Nominatif ada",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Nama kolom file berbeda redaksi dengan PRD Nominatif (mis. 'Bunga (%)' vs '(%) Tingkat Suku Bunga'), dicocokkan via alias. Butuh JSZip di halaman CBS untuk membaca xlsx."
+    },
+    {
+      "id": "TC-DL-EXPORT-005",
+      "kategori": "Positif",
+      "skenario": "Header file sama persis dengan 33 kolom PRD Download Pinjaman Aktif",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Unduh file dari TC-003",
+        "Bandingkan header dengan PRD"
+      ],
+      "test_data": "33 kolom PRD (termasuk 'Angsuran yg sudah dibayar (brp kali)' setelah 'Jumlah Tunggakan Angsuran Musiman (kali)')",
+      "expected": "Header identik & berurutan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: LoanExport.php:124-125 memakai 'Jumlah Terbayar (kali)' dan menaruhnya SEBELUM kolom Musiman."
+    }
+  ]
+}

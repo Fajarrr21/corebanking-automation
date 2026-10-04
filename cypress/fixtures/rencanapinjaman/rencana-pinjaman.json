@@ -1,0 +1,29 @@
+{
+  "_sumber": "routes/web.php:352-356, LoanPlanController.php, resources/views/loanplan/index.blade.php, config/constants.php:314-318",
+  "home": "/home",
+  "path": "/loan-plan",
+  "menuTitle": "Rencana Pinjaman",
+  "title": "Rencana Pinjaman",
+  "breadcrumb": "List",
+  "caption": "Rencana Pinjaman",
+  "captionHelper": "Dicatat saat penyesuaian pinjaman lama",
+  "dataUrl": "/loan-plan/data*",
+  "table": "#data-table-loan-plan",
+  "headers": ["ID", "Tanggal", "Nomor CIF", "NIK", "Nasabah", "Produk", "Jumlah", "Jangka Waktu", "Kantor", "Dibuat Oleh", "Status", ""],
+  "col": { "id": 0, "tanggal": 1, "cif": 2, "nik": 3, "nasabah": 4, "produk": 5, "jumlah": 6, "tenor": 7, "kantor": 8, "dibuatOleh": 9, "status": 10, "aksi": 11 },
+  "status": { "open": "Menunggu Pengajuan", "used": "Sudah Diajukan", "cancelled": "Dibatalkan" },
+  "buttons": { "ajukan": "Ajukan", "blocked": "Belum bisa diajukan", "ubah": "Ubah", "batalkan": "Batalkan" },
+  "modal": { "title": "Ubah Rencana Pinjaman", "save": "Simpan", "cancel": "Batal" },
+  "messages": {
+    "notFound": "Rencana pinjaman tidak ditemukan",
+    "inactive": "Rencana pinjaman ini sudah tidak aktif",
+    "updated": "Rencana pinjaman berhasil diubah",
+    "cancelled": "Rencana pinjaman berhasil dibatalkan",
+    "confirmCancel": "Batalkan rencana pinjaman ini?"
+  },
+  "nonExistingId": 999999999,
+  "searchNoMatch": "QA-TIDAK-ADA-ZZZ999",
+  "qaPrefix": "QA",
+  "editDelta": { "tenorAdd": 1 },
+  "timeouts": { "table": 30000 }
+}

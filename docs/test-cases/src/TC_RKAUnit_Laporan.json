@@ -1,0 +1,149 @@
+{
+  "modul": "RKA - Laporan RKA Unit",
+  "kode": "RKAUNIT",
+  "aksi": "LAPORAN",
+  "halaman": "/report/rka-unit",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-report-unit.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Laporan RKA Unit",
+      "url": "https://app.notion.com/272f80e3bbf1804c84f3df88b0b06b2d"
+    },
+    {
+      "judul": "BKDP RKA - Unit",
+      "url": "https://app.notion.com/268f80e3bbf180709473ee3a62efe09e"
+    }
+  ],
+  "catatan": "Read-only (write-guard aktif).",
+  "cases": [
+    {
+      "id": "TC-RKAUNIT-LAPORAN-001",
+      "kategori": "Happy",
+      "skenario": "Halaman laporan tanpa error server",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "GET /report/rka-unit"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: RkaReportController.php terpotong di origin/develop (lihat TC-RKAAO-LAPORAN-001)."
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-002",
+      "kategori": "Happy",
+      "skenario": "Navigasi dari Laporan > Umum",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /report/general",
+        "Klik kartu 'Lap RKA Unit'"
+      ],
+      "test_data": "-",
+      "expected": "URL /report/rka-unit, breadcrumb & judul 'Laporan RKA Unit'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-003",
+      "kategori": "Positif",
+      "skenario": "Filter default",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman"
+      ],
+      "test_data": "-",
+      "expected": "Filter Cabang, Unit (disabled), Tahun default tahun berjalan",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-004",
+      "kategori": "Positif",
+      "skenario": "Default menampilkan laporan pusat",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka halaman tanpa memilih filter"
+      ],
+      "test_data": "-",
+      "expected": "Laporan pusat langsung tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: #reportSection display:none sampai Tampilkan diklik."
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-005",
+      "kategori": "Positif",
+      "skenario": "Filter Bulan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa label filter"
+      ],
+      "test_data": "-",
+      "expected": "Ada filter Bulan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: hanya Tahun."
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-006",
+      "kategori": "Positif",
+      "skenario": "Kolom laporan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa header"
+      ],
+      "test_data": "-",
+      "expected": "Header memuat Realisasi, Target, Pencapaian, Bobot, Score",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Label PRD: Realisasi Tahun Sebelumnya, Target Tahun Sekarang, Pencapaian Target (%), Bobot Penilaian, Score Nilai."
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-007",
+      "kategori": "Negatif",
+      "skenario": "Tampilkan tanpa cabang",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Klik Tampilkan"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'Harap pilih cabang terlebih dahulu'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-008",
+      "kategori": "Positif",
+      "skenario": "Tampilkan laporan cabang",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Data RKA aktif boleh ada/tidak (ditangani).",
+      "langkah": [
+        "Pilih cabang pertama",
+        "Pilih '(Semua Unit)' bila ada",
+        "Tampilkan"
+      ],
+      "test_data": "Cabang pertama",
+      "expected": "Bila success: jumlah baris = data, total bobot sesuai respons; bila tidak: pesan respons tampil",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LAPORAN-009",
+      "kategori": "Positif",
+      "skenario": "Tombol export CSV & Excel",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa tombol"
+      ],
+      "test_data": "-",
+      "expected": "Tombol CSV dan Excel tersedia",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: hanya Export Excel."
+    }
+  ]
+}

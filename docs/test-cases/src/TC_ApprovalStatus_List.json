@@ -1,0 +1,230 @@
+{
+  "modul": "Approval - Perubahan Status Pinjaman",
+  "kode": "APVSTS",
+  "aksi": "LIST",
+  "halaman": "/approval?menu=loan_status_change_approval",
+  "notion": [
+    {
+      "judul": "Approval Perubahan Status Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf1814f9513c2966ad8719e"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-perubahan-status.list.cy.js",
+  "catatan": "Read-only. PRD menyebut menu BARU 'Approval Perubahan Status'; implementasi = tab di halaman Approval (PRD-ambigu, diuji sebagai tab). Endpoint GET /approval/data/loan-status-change?office_id&status.",
+  "cases": [
+    {
+      "id": "TC-APVSTS-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Tab Perubahan Status tampil",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval?menu=loan_status_change_approval"
+      ],
+      "test_data": "-",
+      "expected": "Tabel tampil; filter default Semua Kantor / Semua Status",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: menu baru; source: tab"
+    },
+    {
+      "id": "TC-APVSTS-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kolom list sesuai PRD",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Baca header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Memuat Tanggal Pengajuan, Cabang, Nama Nasabah, Nomor Pinjaman, Status Saat Ini, Status Baru, Diajukan Oleh, Aksi",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL (KANDIDAT BUG): header source = Tanggal, Pengaju, Nama Kantor Asal, Produk, Nama Nasabah, No Rekening, Perubahan, Alasan, Status, Action (loanstatuschangeapproval.blade.php:31-40)"
+    },
+    {
+      "id": "TC-APVSTS-LIST-003",
+      "kategori": "Edge",
+      "skenario": "Hanya transisi ACTIVE -> PAID",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Baca kolom Perubahan tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Semua baris 'ACTIVE → PAID' (atau empty-state)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari tests/Unit/LoanStatusChangeTransitionTest.php & LoanStatusChangeApproval::ALLOWED_TRANSITIONS"
+    },
+    {
+      "id": "TC-APVSTS-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Alasan & pengaju terisi",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan perubahan status (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Baca kolom Alasan & Pengaju"
+      ],
+      "test_data": "-",
+      "expected": "Semua baris punya alasan dan nama pengaju",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Alasan Perubahan wajib; jejak siapa yang mengajukan"
+    },
+    {
+      "id": "TC-APVSTS-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Opsi filter status",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Lihat opsi filter status"
+      ],
+      "test_data": "-",
+      "expected": "Semua Status, Menunggu, Disetujui, Ditolak",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Filter status Menunggu",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih Menunggu"
+      ],
+      "test_data": "status=PENDING",
+      "expected": "Semua baris 'Menunggu Persetujuan' atau empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Filter status Disetujui",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih Disetujui"
+      ],
+      "test_data": "status=APPROVED",
+      "expected": "Semua baris 'Disetujui' atau empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Filter status Ditolak",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Pilih Ditolak"
+      ],
+      "test_data": "status=REJECTED",
+      "expected": "Semua baris 'Ditolak' atau empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-009",
+      "kategori": "Positif",
+      "skenario": "Filter cabang",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan perubahan status (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ambil kantor baris pertama",
+        "Pilih di filter cabang"
+      ],
+      "test_data": "Kantor dari data",
+      "expected": "Hasil tidak kosong, semua baris kantor = pilihan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Filter rentang tanggal pengajuan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Periksa toolbar filter"
+      ],
+      "test_data": "-",
+      "expected": "Ada input filter tanggal",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL (KANDIDAT BUG): toolbar hanya filter kantor & status (loanstatuschangeapproval.blade.php:8-25)"
+    },
+    {
+      "id": "TC-APVSTS-LIST-011",
+      "kategori": "Positif",
+      "skenario": "Penanda jumlah pengajuan belum diputuskan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Periksa pill tab Perubahan Status"
+      ],
+      "test_data": "-",
+      "expected": "Ada badge angka jumlah pengajuan Menunggu",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL (KANDIDAT BUG): tidak ada badge (index.blade.php:60-64). Selector .badge di pill = asumsi; sesuaikan bila nanti diimplementasi."
+    },
+    {
+      "id": "TC-APVSTS-LIST-012",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan No Rekening",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan perubahan status (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ketik No Rekening baris pertama"
+      ],
+      "test_data": "No Rekening dari data",
+      "expected": "Hasil tidak kosong & sesuai",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Search server-side di ApprovalController.php:1501-1516; PRD tidak menyebut pencarian"
+    },
+    {
+      "id": "TC-APVSTS-LIST-013",
+      "kategori": "Negatif",
+      "skenario": "Cari data yang tidak ada",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Ketik kata kunci acak"
+      ],
+      "test_data": "QA-TIDAK-ADA-DATA-ZZZ",
+      "expected": "Empty-state, 0 baris",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVSTS-LIST-014",
+      "kategori": "Positif",
+      "skenario": "Lihat detail",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; staging punya >= 1 pengajuan perubahan status (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Ambil href Lihat baris pertama",
+        "GET href"
+      ],
+      "test_data": "-",
+      "expected": "href /loan/<refId>, respons 200",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: klik baris menampilkan DETAIL PENGAJUAN (isian, lampiran, ringkasan) dengan tombol Setujui/Tolak; source: Lihat -> detail pinjaman, tombol di list"
+    },
+    {
+      "id": "TC-APVSTS-LIST-015",
+      "kategori": "Edge",
+      "skenario": "Badge Ditolak menampilkan alasan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin; ada pengajuan Ditolak",
+      "langkah": [
+        "Filter Ditolak",
+        "Klik badge",
+        "Tutup"
+      ],
+      "test_data": "-",
+      "expected": "Modal Alasan Penolakan berisi data-notes; bisa ditutup",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: alasan penolakan wajib & disampaikan ke cabang"
+    }
+  ]
+}

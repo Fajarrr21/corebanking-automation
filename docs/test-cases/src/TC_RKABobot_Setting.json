@@ -1,0 +1,169 @@
+{
+  "modul": "RKA - Bobot Indikator",
+  "kode": "RKABOBOT",
+  "aksi": "SETTING",
+  "halaman": "/rka/accountofficer (modal Pengaturan Bobot)",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-bobot.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Setting Bobot Indikator",
+      "url": "https://app.notion.com/272f80e3bbf180d780bcf8a1972e1f7d"
+    },
+    {
+      "judul": "BKDP RKA - Edit Setting Bobot Indicator",
+      "url": "https://app.notion.com/272f80e3bbf180588ecad924f01beb48"
+    },
+    {
+      "judul": "BKDP RKA - Unit",
+      "url": "https://app.notion.com/268f80e3bbf180709473ee3a62efe09e"
+    }
+  ],
+  "catatan": "Bobot di source = per rka_entity (bukan global) → diuji pada entity milik AO QA; cleanup afterEach hapus entity (rka_weights cascade), after() hapus officer.",
+  "cases": [
+    {
+      "id": "TC-RKABOBOT-SETTING-001",
+      "kategori": "Happy",
+      "skenario": "Buka form bobot",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Cari AO QA",
+        "Klik Pengaturan Bobot"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Pengaturan Bobot - <nama> (<tahun>)', seksi Bobot Pinjaman/Simpanan/Lainnya, jumlah input = produk + 3",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: bobot di menu Pengaturan (global). Source: per rka_entity."
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-002",
+      "kategori": "Positif",
+      "skenario": "Bobot default 0",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Buka modal bobot"
+      ],
+      "test_data": "-",
+      "expected": "Semua input 0, total '0.00%', tombol Simpan Bobot disabled",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-003",
+      "kategori": "Negatif",
+      "skenario": "Total < 100",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Isi bobot total 90"
+      ],
+      "test_data": "Total 90",
+      "expected": "Total '90.00%', pesan 'Total bobot kurang dari 100%. Harap sesuaikan bobot.', Simpan disabled",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-004",
+      "kategori": "Negatif",
+      "skenario": "Total > 100",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Isi bobot total 110"
+      ],
+      "test_data": "Total 110",
+      "expected": "Total '110.00%', pesan 'Total bobot melebihi 100%. Harap kurangi bobot.', Simpan disabled",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-005",
+      "kategori": "Positif",
+      "skenario": "Total tepat 100",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Isi bobot total 100"
+      ],
+      "test_data": "Total 100",
+      "expected": "Pesan 'Sempurna! Total bobot tepat 100%', Simpan enabled",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-006",
+      "kategori": "Happy",
+      "skenario": "Simpan bobot",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "Isi bobot total 100",
+        "Klik Simpan Bobot"
+      ],
+      "test_data": "Total 100",
+      "expected": "Redirect, alert 'Pengaturan bobot berhasil disimpan'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-007",
+      "kategori": "Happy",
+      "skenario": "Bobot tersimpan tampil kembali",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur. Bobot diisi via API.",
+      "langkah": [
+        "Buka modal bobot"
+      ],
+      "test_data": "Bobot bulat total 100",
+      "expected": "Nilai input = bobot yang disimpan, total '100.00%'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-008",
+      "kategori": "Happy",
+      "skenario": "Edit bobot existing",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur. Bobot diisi via API.",
+      "langkah": [
+        "Buka modal",
+        "Ubah distribusi bobot (total 100)",
+        "Simpan"
+      ],
+      "test_data": "Distribusi dibalik",
+      "expected": "Alert sukses; GET weight mengembalikan nilai baru",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-009",
+      "kategori": "Edge",
+      "skenario": "Server menolak total selain 100",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). rka_entity baru milik AO QA (seed tiap test), bobot belum pernah diatur.",
+      "langkah": [
+        "POST /rka/accountofficer/weight/save total 90 (langsung)"
+      ],
+      "test_data": "Total 90",
+      "expected": "HTTP 422, success=false, pesan 'Total bobot harus tepat 100%. Total saat ini: 90%'; bobot tetap 0",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Request ditolak validasi, tidak ada data tersimpan."
+    },
+    {
+      "id": "TC-RKABOBOT-SETTING-010",
+      "kategori": "Negatif",
+      "skenario": "Menu Pengaturan punya tab Bobot RKA",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /setting",
+        "Cari tab 'Bobot'"
+      ],
+      "test_data": "-",
+      "expected": "Tab Bobot RKA tersedia di Pengaturan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada pengaturan bobot global di Pengaturan; bobot hanya per RKA entity (rka_weights.rka_entity_id)."
+    }
+  ]
+}

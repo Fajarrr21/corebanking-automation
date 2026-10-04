@@ -1,0 +1,144 @@
+{
+  "modul": "Approval - Penyesuaian Pinjaman",
+  "kode": "APVADJ",
+  "aksi": "PROSES",
+  "halaman": "/approval?menu=loan_adjustment_approval",
+  "notion": [
+    {
+      "judul": "Approval Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/23bf80e3bbf1800089eac652d471bccc"
+    },
+    {
+      "judul": "Pengaturan Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/23af80e3bbf1800db641edf4d42a47ed"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-penyesuaian.proses.cy.js",
+  "catatan": "Approve/Reject = modal Bootstrap (PIN [+ alasan]) -> POST /approval/approved|rejected/loan-adjustment, BUKAN window.confirm. Semua TC di file ini aman (cy.guardWrites). Approve/Reject sungguhan: TC_ApprovalPenyesuaian_Irreversible.",
+  "cases": [
+    {
+      "id": "TC-APVADJ-PROSES-001",
+      "kategori": "Positif",
+      "skenario": "Baris Menunggu: tombol Lihat/Disetujui/Ditolak",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan penyesuaian Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Filter status Menunggu",
+        "Periksa kolom Action"
+      ],
+      "test_data": "-",
+      "expected": "Setiap baris Menunggu punya Lihat, Disetujui, Ditolak",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Source: tombol hanya untuk super-admin (ApprovalController.php:1314)"
+    },
+    {
+      "id": "TC-APVADJ-PROSES-002",
+      "kategori": "Positif",
+      "skenario": "Baris Disetujui/Ditolak hanya Lihat",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Filter Disetujui lalu Ditolak",
+        "Periksa kolom Action"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada tombol Disetujui/Ditolak; hanya Lihat (atau empty-state)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-PROSES-003",
+      "kategori": "Positif",
+      "skenario": "Modal Disetujui terbuka & bisa dibatalkan",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan penyesuaian Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Disetujui baris pertama",
+        "Periksa modal",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Disetujui' berisi 'PIN Anda', id pengajuan = id baris, PIN kosong; Batal menutup modal; tidak ada request tulis",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-PROSES-004",
+      "kategori": "Positif",
+      "skenario": "Modal Ditolak terbuka & bisa dibatalkan",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan penyesuaian Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Ditolak baris pertama",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Ditolak' berisi PIN Anda + Alasan Penolakan; Batal menutup; tidak ada request tulis",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-PROSES-005",
+      "kategori": "Negatif",
+      "skenario": "Proses approve tanpa PIN",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan penyesuaian Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Disetujui",
+        "Klik Proses tanpa PIN"
+      ],
+      "test_data": "PIN kosong",
+      "expected": "Validasi HTML5 required (valueMissing), modal tetap terbuka, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-PROSES-006",
+      "kategori": "Negatif",
+      "skenario": "Proses reject tanpa alasan",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); ada >= 1 pengajuan penyesuaian Menunggu Persetujuan (gagal jelas bila tidak ada)",
+      "langkah": [
+        "Klik Ditolak",
+        "Isi PIN",
+        "Klik Proses tanpa alasan"
+      ],
+      "test_data": "Alasan kosong",
+      "expected": "Validasi required pada Alasan Penolakan, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APVADJ-PROSES-007",
+      "kategori": "Negatif",
+      "skenario": "Approve dengan PIN salah",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan')",
+      "langkah": [
+        "Buka modal Disetujui dengan id pengajuan 0",
+        "Isi PIN salah",
+        "Proses"
+      ],
+      "test_data": "id=0, PIN=QA-PIN-SALAH",
+      "expected": "Redirect ke tab Penyesuaian, alert danger memuat 'PIN Supervisor salah'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "POST sungguhan tapi aman: id 0 tidak ada + PIN non-angka; hanya endpoint ini yang di-allow write-guard"
+    },
+    {
+      "id": "TC-APVADJ-PROSES-008",
+      "kategori": "Negatif",
+      "skenario": "Reject dengan PIN salah",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan')",
+      "langkah": [
+        "Buka modal Ditolak dengan id 0",
+        "Isi PIN salah + alasan",
+        "Proses"
+      ],
+      "test_data": "id=0, PIN=QA-PIN-SALAH",
+      "expected": "Alert danger memuat 'PIN Supervisor salah'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Sama seperti 007"
+    }
+  ]
+}

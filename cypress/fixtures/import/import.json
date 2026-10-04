@@ -1,0 +1,74 @@
+{
+  "_sumber": "routes/web.php:343-351, ImportController.php, resources/views/import/{cif,saving,loan,neraca}.blade.php, navigation.blade.php:544-565",
+  "home": "/home",
+  "deniedMessage": "Akses anda terbatas!",
+  "roleHint": "akun test bukan supervisor/customer-service — ImportController::__construct hanya mengizinkan role 'supervisor' & 'customer-service'",
+  "roleHintMenu": "akun test bukan teller — menu Import hanya dirender untuk role 'teller' (navigation.blade.php:544)",
+  "roleHintDenied": "TANPA role 'supervisor' maupun 'customer-service' (mis. super-admin murni / teller murni)",
+  "menu": {
+    "title": "Import",
+    "sub": [
+      { "label": "CIF Nasabah", "path": "/import/cif" },
+      { "label": "Tabungan Nasabah", "path": "/import/saving" },
+      { "label": "Pinjaman Nasabah", "path": "/import/loan" },
+      { "label": "Neraca", "path": "/import/neraca" }
+    ]
+  },
+  "pages": {
+    "cif": {
+      "path": "/import/cif",
+      "title": "Upload CIF",
+      "breadcrumb": "Upload CIF",
+      "caption": "Upload CIF",
+      "action": "/import/importcif",
+      "fileInputId": "CSVCif",
+      "template": "CIF - Core Banking System CAZH.xlsx",
+      "successPath": "/cif",
+      "successMessage": "Data Cif berhasil diimport.",
+      "dataFile": "import/data/qa-import-cif.xlsx"
+    },
+    "saving": {
+      "path": "/import/saving",
+      "title": "Upload Simpanan",
+      "breadcrumb": "Upload Tabungan Nasabah",
+      "caption": "Upload Simpanan",
+      "action": "/import/importsaving",
+      "fileInputId": "CSVTabungan",
+      "template": "Saving - Core Banking System CAZH.xlsx",
+      "successPath": "/approval",
+      "successMessage": "Rekening Simpanan berhasil diimport.",
+      "dataFile": "import/data/qa-import-saving.xlsx"
+    },
+    "loan": {
+      "path": "/import/loan",
+      "title": "Upload Pinjaman",
+      "breadcrumb": "Upload Pinjaman Nasabah",
+      "caption": "Upload Pinjaman",
+      "action": "/import/importloan",
+      "fileInputId": "CSVTabungan",
+      "template": "Loan - Core Banking System CAZH.xlsx",
+      "successPath": "/approval",
+      "successMessage": "Rekening Loan berhasil masuk antrian.",
+      "dataFile": "import/data/qa-import-loan.xlsx"
+    },
+    "neraca": {
+      "path": "/import/neraca",
+      "title": "Upload Neraca",
+      "breadcrumb": "Upload Neraca",
+      "caption": "Upload Neraca",
+      "action": "/import/importneraca",
+      "fileInputId": "CSVTabungan",
+      "template": "Saldo general Ledger - Core Banking System CAZH.xlsx",
+      "successPath": "/general-ledger",
+      "successMessage": "Neraca berhasil diimport.",
+      "dataFile": "import/data/qa-import-neraca.xlsx"
+    }
+  },
+  "uploadLabel": "Upload Excel",
+  "submitLabel": "Proses",
+  "wrongFile": { "name": "qa-bukan-excel.txt", "content": "QA file bukan excel - harus ditolak", "mime": "text/plain" },
+  "errors": {
+    "wrongType": "Import gagal! Silahkan gunakan template yang disediakan.",
+    "empty": "Import gagal! File kosong."
+  }
+}

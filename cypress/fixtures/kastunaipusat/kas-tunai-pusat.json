@@ -1,0 +1,39 @@
+{
+  "_sumber": "routes/web.php:243-251, AccountCenterController.php, resources/views/account_center/**, navigation.blade.php:567-576",
+  "home": "/home",
+  "path": "/account/center",
+  "title": "Kas Tunai Pusat",
+  "breadcrumb": "Kas Tunai Pusat",
+  "menuTitle": "Kas Tunai Pusat",
+  "deniedMessage": "Akses anda terbatas!",
+  "roleHint": "akun test bukan super-admin (AccountCenterController hanya mengizinkan 'super-admin')",
+  "roleHintMenu": "menu hanya tampil untuk super-admin DAN env APP_NAME = 'PT. LKM BKD KABUPATEN PEKALONGAN' (navigation.blade.php:567-568) — cek role akun & APP_NAME staging",
+  "roleHintDenied": "TANPA role 'super-admin'",
+  "dataUrl": "/account/center/data*",
+  "cards": { "setoran": "Jumlah Setoran bulan ini", "penarikan": "Jumlah penarikan bulan ini" },
+  "headers": ["", "Kantor", "Saldo"],
+  "viewButton": "Lihat",
+  "searchNoMatch": "QA-TIDAK-ADA-ZZZ999",
+  "detail": {
+    "title": "Detail Kas Tunai Pusat",
+    "breadcrumb": "Detail Kas Tunai Pusat",
+    "tabs": [
+      { "hash": "#tab_data", "label": "Data Kantor", "menu": "info" },
+      { "hash": "#tab_cashin", "label": "Setoran", "menu": "deposit" },
+      { "hash": "#tab_cashout", "label": "Penarikan", "menu": "withdraw" },
+      { "hash": "#tab_printout", "label": "Cetak Buku", "menu": "printout" },
+      { "hash": "#tab_history", "label": "Riwayat Transaksi", "menu": "history" }
+    ],
+    "dataRows": ["Nama Kantor", "Nomor HP", "Alamat", "Saldo", "Saldo terakhir di cetak"],
+    "historyHeaders": ["ID", "Tanggal", "Jenis Transaksi", "Nominal", "Catatan", "Status", "Aksi"],
+    "historyUrlSuffix": "/history"
+  },
+  "trx": {
+    "_note": "Hanya *.irreversible.cy.js (flag allowTransaction).",
+    "depositAmount": "1",
+    "depositSuccess": "Transaksi setoran berhasil diproses",
+    "voidSuccess": "Transaksi berhasil divoid",
+    "withdrawExcess": "Saldo tidak mencukupi"
+  },
+  "timeouts": { "table": 30000 }
+}

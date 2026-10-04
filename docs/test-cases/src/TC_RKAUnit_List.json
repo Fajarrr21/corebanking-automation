@@ -1,0 +1,150 @@
+{
+  "modul": "RKA - Cabang (Unit)",
+  "kode": "RKAUNIT",
+  "aksi": "LIST",
+  "halaman": "/rka/unit",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-unit-list.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Unit",
+      "url": "https://app.notion.com/268f80e3bbf180709473ee3a62efe09e"
+    },
+    {
+      "judul": "BKDP RKA - Setting Target Unit",
+      "url": "https://app.notion.com/271f80e3bbf1803eb671f4970479beb4"
+    }
+  ],
+  "catatan": "Read-only (write-guard aktif).",
+  "cases": [
+    {
+      "id": "TC-RKAUNIT-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Buka RKA > Cabang dari sidebar",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /home",
+        "Klik RKA",
+        "Klik Cabang"
+      ],
+      "test_data": "-",
+      "expected": "URL /rka/unit, breadcrumb 'RKA Cabang', judul 'KPI Planning Form'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Elemen form target unit",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka /rka/unit"
+      ],
+      "test_data": "-",
+      "expected": "Pilih Wilayah, Pilih Cabang (disabled, '-- Pilih Wilayah Terlebih Dahulu --'), Pilih Tahun default tahun berjalan, tab & indikator Lainnya sesuai",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: 'Pilih Unit'. Aplikasi: Wilayah → Cabang."
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Pilih wilayah memuat cabang",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Pilih wilayah pertama"
+      ],
+      "test_data": "Wilayah pertama",
+      "expected": "Dropdown Cabang aktif berisi '(Semua Unit)' + unit, ATAU (wilayah tanpa unit) disembunyikan dengan value = wilayah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Relasi via offices.branch = nama kantor induk (RkaUnitController@getUnitsByBranch)."
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-004",
+      "kategori": "Negatif",
+      "skenario": "Simpan tanpa memilih wilayah",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Isi semua target",
+        "Tab Lainnya",
+        "Simpan"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'Harap pilih cabang terlebih dahulu', tidak ada POST",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-005",
+      "kategori": "Edge",
+      "skenario": "Tab Simpanan terkunci",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Klik tab Simpanan tanpa isi Pinjaman"
+      ],
+      "test_data": "-",
+      "expected": "Alert 'Harap lengkapi data Pinjaman terlebih dahulu', tab tidak berpindah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Kolom daftar RKA Cabang",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa header #sample_1"
+      ],
+      "test_data": "-",
+      "expected": "Status RKA | Nama Cabang | Tahun | Produk | Parameter | Tanggal Dibuat | Terakhir Diubah | Aksi",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: Status, Nama Unit, Tanggal Set, Tanggal Update, Aksi."
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Pilihan jumlah data 5/15/20/All",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Periksa dropdown Show entries"
+      ],
+      "test_data": "-",
+      "expected": "Opsi 5, 15, 20, All",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: default DataTables 10/25/50/100."
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-008",
+      "kategori": "Negatif",
+      "skenario": "Cari unit yang tidak ada",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Ketik teks acak di pencarian"
+      ],
+      "test_data": "TIDAKADA<ts>",
+      "expected": "Tabel kosong",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAUNIT-LIST-009",
+      "kategori": "Positif",
+      "skenario": "Cari unit yang ada",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Data boleh kosong (ditangani).",
+      "langkah": [
+        "Ketik nama unit baris pertama"
+      ],
+      "test_data": "-",
+      "expected": "Semua baris hasil memuat nama unit; bila kosong → empty-state",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

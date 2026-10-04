@@ -1,0 +1,117 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "JURNAL",
+  "halaman": "/setting?menu=journal (POST /setting/journal, /update, /delete)",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-jurnal.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. Template jurnal reversible (ada hapus). Data QA<ts>; cleanup afterEach via POST /setting/journal/delete hanya untuk baris yang kolom Nama Jurnal persis nama QA buatan test.",
+  "cases": [
+    {
+      "id": "TC-SET-JURNAL-001",
+      "kategori": "Happy",
+      "skenario": "Form & tabel Pengaturan Jurnal tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=journal"
+      ],
+      "test_data": "-",
+      "expected": "Nama Jurnal required (placeholder 'cth : Pembukuan ATK'); select Akun Debit/Kredit berisi opsi; tombol 'Tambahkan'; header tabel: Tgl Buat, Nama Jurnal, Akun Debit, Akun Kredit, (aksi)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JURNAL-002",
+      "kategori": "Positif",
+      "skenario": "Kolom Akun Debit/Kredit berformat '<nama akun> (DEBET|KREDIT)'",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Jurnal",
+        "Baca kolom Akun Debit & Akun Kredit"
+      ],
+      "test_data": "-",
+      "expected": "Setiap sel diakhiri '(DEBET)' atau '(KREDIT)'; bila belum ada data, empty-state tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JURNAL-003",
+      "kategori": "Negatif",
+      "skenario": "Nama Jurnal kosong",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan Nama Jurnal",
+        "Klik Tambahkan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit, tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JURNAL-004",
+      "kategori": "Happy",
+      "skenario": "Tambah template jurnal QA",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Isi Nama Jurnal QA<ts>",
+        "Klik Tambahkan"
+      ],
+      "test_data": "QA<ts> Jurnal",
+      "expected": "Alert 'Pengaturan jurnal berhasil disimpan', URL menu=journal, jurnal QA tampil di tabel",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Cleanup afterEach"
+    },
+    {
+      "id": "TC-SET-JURNAL-005",
+      "kategori": "Positif",
+      "skenario": "Ubah nama template jurnal QA",
+      "precondition": "Jurnal QA dibuat via request",
+      "langkah": [
+        "Klik Edit pada jurnal QA",
+        "Ubah nama",
+        "Klik Edit"
+      ],
+      "test_data": "QA<ts> Jurnal Ubah",
+      "expected": "Modal Edit terisi nama lama; alert 'Pengaturan jurnal berhasil diupdate'; nama baru tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Cleanup afterEach (nama lama & baru)"
+    },
+    {
+      "id": "TC-SET-JURNAL-006",
+      "kategori": "Positif",
+      "skenario": "Hapus template jurnal QA",
+      "precondition": "Jurnal QA dibuat via request",
+      "langkah": [
+        "Klik Delete pada jurnal QA",
+        "Periksa nama di konfirmasi",
+        "Klik Hapus"
+      ],
+      "test_data": "-",
+      "expected": "Konfirmasi menampilkan nama jurnal; alert 'Pengaturan jurnal berhasil dihapus'; jurnal hilang dari tabel",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JURNAL-007",
+      "kategori": "Negatif",
+      "skenario": "Batal hapus jurnal (Close)",
+      "precondition": "Jurnal QA dibuat via request",
+      "langkah": [
+        "Klik Delete pada jurnal QA",
+        "Klik Close"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup, tidak ada request, jurnal tetap ada",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

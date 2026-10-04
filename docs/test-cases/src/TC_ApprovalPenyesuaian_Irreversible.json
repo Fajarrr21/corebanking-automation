@@ -1,0 +1,51 @@
+{
+  "modul": "Approval - Penyesuaian Pinjaman",
+  "kode": "APVADJ",
+  "aksi": "IRR",
+  "halaman": "/approval?menu=loan_adjustment_approval",
+  "notion": [
+    {
+      "judul": "Approval Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/23bf80e3bbf1800089eac652d471bccc"
+    },
+    {
+      "judul": "Pengaturan Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/23af80e3bbf1800db641edf4d42a47ed"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-penyesuaian.irreversible.cy.js",
+  "catatan": "IRREVERSIBLE - spec dibungkus describeIfFlag('allowApproval'); butuh --env allowApproval=true --env approvalPin=<PIN>. Hanya memproses pengajuan dengan Nama Nasabah diawali 'QA' (column-scoped, dicek ulang sebelum klik); jika tidak ada, test GAGAL dengan pesan jelas.",
+  "cases": [
+    {
+      "id": "TC-APVADJ-IRR-001",
+      "kategori": "Happy",
+      "skenario": "Approve pengajuan milik test",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan penyesuaian Menunggu Persetujuan dengan Nama Nasabah diawali 'QA'",
+      "langkah": [
+        "Filter Menunggu + cari 'QA'",
+        "Pilih baris Nama Nasabah diawali QA",
+        "Disetujui -> isi PIN -> Proses"
+      ],
+      "test_data": "PIN dari --env approvalPin",
+      "expected": "Alert 'Permintaan Approval berhasil disetujui'; jumlah Menunggu rekening tsb berkurang 1; baris Disetujui muncul tanpa tombol keputusan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (allowApproval). Efek ke pinjaman (penyesuaian tercatat, pelunasan) tidak diverifikasi di sini - milik modul Pinjaman."
+    },
+    {
+      "id": "TC-APVADJ-IRR-002",
+      "kategori": "Happy",
+      "skenario": "Reject pengajuan milik test",
+      "precondition": "Login akun test ber-role super-admin (dibuktikan menu sidebar 'Karyawan'); --env allowApproval=true --env approvalPin=<PIN>; ada pengajuan penyesuaian Menunggu Persetujuan dengan Nama Nasabah diawali 'QA'",
+      "langkah": [
+        "Pilih baris QA",
+        "Ditolak -> PIN + alasan -> Proses"
+      ],
+      "test_data": "Alasan 'QA otomatis tolak <ts>'",
+      "expected": "Alert 'Permintaan Approval berhasil ditolak'; baris Ditolak dengan data-notes = alasan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (allowApproval). Rencana pinjaman PENDING ikut CANCELLED (tidak diverifikasi)."
+    }
+  ]
+}

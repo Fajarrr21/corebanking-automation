@@ -1,0 +1,111 @@
+{
+  "_sumber": "resources/views/product/{index,loan,saving}.blade.php, ProductController.php, CreateProductLoanRequest.php (origin/develop). PRD: Pengaturan Produk Pinjaman.",
+  "paths": {
+    "index": "/product",
+    "loan": "/product/loan",
+    "saving": "/product/saving",
+    "loanCreatePost": "^/product/loan$",
+    "loanEditPost": "^/product/loan/edit$"
+  },
+  "menu": {
+    "sidebarTitle": "Produk",
+    "sidebarHref": "/product"
+  },
+  "index": {
+    "breadcrumb": "Daftar Produk",
+    "note": "Silahkan tambahkan produk sesuai layanan yang ada di instansi anda",
+    "cardSaving": "SIMPANAN",
+    "cardLoan": "PINJAMAN",
+    "btnSaving": "Tambah Produk Simpanan",
+    "btnLoan": "Tambah Produk Pinjaman"
+  },
+  "loan": {
+    "breadcrumb": "Pinjaman",
+    "formCaption": "Tambah Pinjaman",
+    "listCaption": "Daftar Produk Pinjaman",
+    "table": "#sample_1",
+    "headers": [
+      "Status",
+      "Tgl Buat",
+      "Tgl Update",
+      "Nama Produk",
+      "Kode Produk",
+      "Model Angsuran",
+      "Suku Bunga",
+      "Perhitungan bunga",
+      "Agunan",
+      "Simpanan Wajib",
+      "Online",
+      "Deskripsi",
+      ""
+    ],
+    "col": {
+      "status": 0,
+      "nama": 3,
+      "kode": 4,
+      "angsuran": 5,
+      "bunga": 6,
+      "metode": 7,
+      "agunan": 8,
+      "simpananWajib": 9,
+      "online": 10,
+      "aksi": 12
+    },
+    "statusLabels": ["Aktif", "Tidak Aktif"],
+    "yaTidak": ["Ya", "Tidak"],
+    "angsuranPrd": ["Bulanan", "Mingguan"],
+    "angsuranOptionsPrd": ["MONTHLY", "WEEKLY"],
+    "satuanPeriodeRegex": "%\\s*(per|/)\\s*\\S+",
+    "satuanPeriodeFieldSelectors": "[name=\"interest_period\"], [name=\"interest_unit\"], [name=\"interest_period_unit\"], [name*=\"period\"]",
+    "namaLama": "Pinjaman Tempo",
+    "namaBaru": "Pinjaman Khusus",
+    "createFields": ["name", "code", "installment_type", "interest_rates", "interest_type", "collateral", "need_saving", "online", "descriptions"],
+    "savingPercentGroup": "#depositRate",
+    "editModal": "#edit",
+    "editModalTitle": "Edit Produk Pinjaman",
+    "editInfoNote": "Perubahan data tidak berpengaruh pada existing nasabah",
+    "interestTypesPrd": ["FLAT", "ANNUITY"],
+    "msg": {
+      "createSuccess": "Produk pinjaman berhasil ditambahkan",
+      "editSuccess": "Produk pinjaman berhasil diubah",
+      "nameTaken": "The name has already been taken",
+      "codeTaken": "The code has already been taken",
+      "rateMin": "The interest rates must be at least 0",
+      "warningActiveLoan": "pinjaman aktif"
+    }
+  },
+  "saving": {
+    "breadcrumb": "Simpanan",
+    "formCaption": "Tambah Simpanan",
+    "listCaption": "Daftar Produk Simpanan",
+    "table": "#sample_1",
+    "headers": [
+      "Status",
+      "Tgl Buat",
+      "Tgl Update",
+      "Nama Produk",
+      "Kode Produk",
+      "Suku Bunga Pertahun",
+      "Pajak",
+      "Biaya Tarik Tunai",
+      "Biaya Administrasi",
+      "Saldo Min",
+      "Min Setoran",
+      "Online",
+      "Deskripsi",
+      ""
+    ]
+  },
+  "testData": {
+    "searchNoResult": "ZZZ-TIDAK-ADA-PRODUK-QA",
+    "notANumber": "abc",
+    "negativeRate": "-1",
+    "validRate": "1.5",
+    "editedRate": "2.25",
+    "descriptions": "Produk uji otomatis QA - aman dinonaktifkan",
+    "savingPercent": "5"
+  },
+  "timeouts": {
+    "page": 30000
+  }
+}

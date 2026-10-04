@@ -1,0 +1,240 @@
+{
+  "modul": "Laporan - Laba Rugi",
+  "kode": "LR",
+  "aksi": "VIEW",
+  "halaman": "/profit-loss",
+  "spec": "cypress/e2e/cbs/09-Laporan/laba-rugi.cy.js",
+  "notion": [
+    {
+      "judul": "Laporan Laba Rugi BKD Pekalongan",
+      "url": "https://app.notion.com/1e0f80e3bbf180869840e9f14e900333"
+    }
+  ],
+  "catatan": "Read-only. Data via GET /profit-loss/data/?date=..&office=..&pusat=... Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-LR-VIEW-001",
+      "kategori": "Happy",
+      "skenario": "Membuka Laba Rugi lewat menu Laporan > Umum > Lap Laba/Rugi",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Klik Laporan > Umum",
+        "Klik Lihat Detail kartu Lap Laba/Rugi"
+      ],
+      "test_data": "-",
+      "expected": "URL /profit-loss, breadcrumb 'Laporan Laba (rugi)', caption 'Laporan Laba (Rugi) Perusahaan', data termuat",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Elemen halaman Laba Rugi lengkap",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Periksa filter kantor, bulan, tombol export, search, header"
+      ],
+      "test_data": "-",
+      "expected": "Filter kantor default Akumulasi; bulan default bulan berjalan; tombol CSV & Excel; search; header Jenis Data | Akun | Jumlah (IDR)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Template A s.d. I tampil berurutan dengan nomor akun PRD",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Baca JSON data"
+      ],
+      "test_data": "fixture labaRugi.rowsWajib (410,420,510..550,610,700,801,620)",
+      "expected": "Semua baris ada, urut sesuai PRD, nomor akun sesuai",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-004",
+      "kategori": "Positif",
+      "skenario": "Jumlah Pendapatan Operasional = Pendapatan Bunga + Pendapatan Operasional Lainnya",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Hitung dari JSON"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Rumus tersirat dari template PRD."
+    },
+    {
+      "id": "TC-LR-VIEW-005",
+      "kategori": "Positif",
+      "skenario": "Jumlah Beban Operasional = jumlah komponen beban operasional (510-550)",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Hitung dari JSON"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-006",
+      "kategori": "Positif",
+      "skenario": "C. Laba (Rugi) Operasional = Pendapatan - Beban Operasional",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Hitung dari JSON"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Laba rugi = pendapatan - biaya."
+    },
+    {
+      "id": "TC-LR-VIEW-007",
+      "kategori": "Positif",
+      "skenario": "F. Laba (Rugi) Sebelum Pajak = C + D - E",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Hitung dari JSON"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-008",
+      "kategori": "Positif",
+      "skenario": "I. Laba (Rugi) Tahun Berjalan = F - G + H",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Hitung dari JSON"
+      ],
+      "test_data": "Toleransi 1",
+      "expected": "Nilai sama",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Posisi H (Fee Based Income) setelah pajak mengikuti urutan PRD & source."
+    },
+    {
+      "id": "TC-LR-VIEW-009",
+      "kategori": "Positif",
+      "skenario": "Default memuat Akumulasi semua kantor bulan berjalan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Tangkap request pertama"
+      ],
+      "test_data": "-",
+      "expected": "office=999, date=bulan berjalan, response 200",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-010",
+      "kategori": "Positif",
+      "skenario": "Filter kantor memuat Laba Rugi kantor terpilih",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 kantor cabang.",
+      "langkah": [
+        "Buka /profit-loss",
+        "Pilih kantor cabang pertama"
+      ],
+      "test_data": "Kantor cabang pertama",
+      "expected": "Request office=<id> (pusat=1) 200, tabel dimuat ulang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-011",
+      "kategori": "Positif",
+      "skenario": "Filter bulan memuat Laba Rugi periode terpilih",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Pilih bulan lalu"
+      ],
+      "test_data": "Bulan lalu",
+      "expected": "Request date=bulan lalu 200; template tetap lengkap",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-012",
+      "kategori": "Positif",
+      "skenario": "Search jenis data",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Ketik kata kunci"
+      ],
+      "test_data": "Kata kunci: Beban",
+      "expected": "Semua baris induk yang tampil memuat 'Beban'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-013",
+      "kategori": "Negatif",
+      "skenario": "Search jenis data tidak ada",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /profit-loss",
+        "Ketik kata kunci tak ada"
+      ],
+      "test_data": "'zzqqxx tidak ada'",
+      "expected": "Empty-state, tanpa baris data",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-014",
+      "kategori": "Positif",
+      "skenario": "Export CSV",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Klik CSV"
+      ],
+      "test_data": "-",
+      "expected": "File CSV dengan header Jenis Data, Akun, Jumlah (IDR)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LR-VIEW-015",
+      "kategori": "Positif",
+      "skenario": "Export Excel",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Klik Excel"
+      ],
+      "test_data": "-",
+      "expected": "File xlsx (signature PK)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

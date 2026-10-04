@@ -1,0 +1,71 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "SALDO",
+  "halaman": "/setting?menu=teller_balance, /setting?menu=employee_balance",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-saldo.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. READ-ONLY MUTLAK: form edit menimpa saldo kas teller / saldo user langsung tanpa jurnal → tidak pernah di-submit. Klik Edit saldo teller memicu 'employeeID is not defined' (setting/index.blade.php:413) — diabaikan via ignoreKnownJsErrors, dilaporkan.",
+  "cases": [
+    {
+      "id": "TC-SET-SALDO-001",
+      "kategori": "Happy",
+      "skenario": "Tabel saldo kas teller tampil",
+      "precondition": "Minimal 1 kas teller",
+      "langkah": [
+        "Buka /setting?menu=teller_balance"
+      ],
+      "test_data": "-",
+      "expected": "Header Nama, Saldo, Action; saldo berformat 'Rp. x'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SALDO-002",
+      "kategori": "Positif",
+      "skenario": "Modal Edit Saldo Teller terisi lalu ditutup",
+      "precondition": "Minimal 1 kas teller",
+      "langkah": [
+        "Klik Edit baris pertama",
+        "Periksa field",
+        "Klik Close"
+      ],
+      "test_data": "-",
+      "expected": "account_id = data-id-teller; saldo = data-balance-teller; modal tertutup tanpa request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SALDO-003",
+      "kategori": "Happy",
+      "skenario": "Tabel saldo karyawan tampil",
+      "precondition": "Minimal 1 user",
+      "langkah": [
+        "Buka /setting?menu=employee_balance"
+      ],
+      "test_data": "-",
+      "expected": "Header Nama, Kantor, Saldo, Action; saldo berformat 'Rp. x'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-SALDO-004",
+      "kategori": "Positif",
+      "skenario": "Modal Edit Saldo User terisi lalu ditutup",
+      "precondition": "Minimal 1 user",
+      "langkah": [
+        "Klik Edit baris pertama",
+        "Periksa field",
+        "Klik Close"
+      ],
+      "test_data": "-",
+      "expected": "user_id = data-id; saldo terisi angka; modal tertutup tanpa request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

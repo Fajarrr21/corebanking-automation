@@ -1,0 +1,68 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "LA",
+  "halaman": "/setting?menu=level_approval",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-level-approval.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. READ-ONLY. Tombol Reset = GET /setting/level_approval/reset yang menghapus pengaturan (tidak terblokir guardWrites) → hanya href yang diperiksa, tidak pernah diklik.",
+  "cases": [
+    {
+      "id": "TC-SET-LA-001",
+      "kategori": "Happy",
+      "skenario": "Form level approval tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=level_approval"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'PENGATURAN LEVEL APPROVAL'; 6 field min/max (Unit, Cabang, Pusat) required; tombol Simpan; link Reset ke /setting/level_approval/reset",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-LA-002",
+      "kategori": "Positif",
+      "skenario": "Nilai tersimpan tampil berformat IDR",
+      "precondition": "Level approval sudah pernah diisi",
+      "langkah": [
+        "Baca 6 field"
+      ],
+      "test_data": "-",
+      "expected": "Setiap field terisi dan diawali 'IDR' (inputmask currency)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-LA-003",
+      "kategori": "Edge",
+      "skenario": "Nilai maksimal tiap level ≥ minimal",
+      "precondition": "Level approval sudah pernah diisi",
+      "langkah": [
+        "Bandingkan min vs max tiap level"
+      ],
+      "test_data": "-",
+      "expected": "max ≥ min untuk Unit, Cabang, Pusat",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-LA-004",
+      "kategori": "Negatif",
+      "skenario": "Field Kantor Pusat minimal dikosongkan",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan center_minimum_balance (lepas mask)",
+        "Klik Simpan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit (center_minimum_balance invalid), tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "_sumber": "routes/web.php:76-87, FinancialReportController.php, LandingController.php, resources/views/financial_report/index.blade.php, resources/views/public/landing.blade.php:599-622",
+  "home": "/home",
+  "path": "/financial-report",
+  "landingPath": "/",
+  "menuTitle": "Website LKM",
+  "title": "Publikasi Laporan Keuangan",
+  "breadcrumb": "Publikasi Laporan Keuangan",
+  "deniedMessage": "Akses anda terbatas!",
+  "roleHint": "akun test bukan super-admin/supervisor (FinancialReportController hanya mengizinkan 'super-admin' & 'supervisor')",
+  "roleHintDenied": "TANPA role 'super-admin' maupun 'supervisor'",
+  "noteText": "POJK 41/2024",
+  "headers": ["Tahun", "Judul", "Periode", "Status", "Aksi"],
+  "emptyText": "Belum ada laporan.",
+  "statusLabels": ["Publik", "Draf"],
+  "form": {
+    "titlePlaceholder": "Laporan Keuangan Tahunan 2025",
+    "periodPlaceholder": "Tahunan / Triwulan I",
+    "accept": "application/pdf",
+    "publishLabel": "Langsung publikasikan",
+    "submitLabel": "Unggah",
+    "yearOutOfRange": "1800"
+  },
+  "pdfFixture": "websitelkm/qa-laporan-keuangan.pdf",
+  "wrongFile": { "name": "qa-bukan-pdf.txt", "content": "QA bukan PDF - harus ditolak", "mime": "text/plain" },
+  "messages": {
+    "uploaded": "Laporan keuangan berhasil diunggah.",
+    "toggled": "Status publikasi laporan diperbarui.",
+    "deleted": "Laporan keuangan berhasil dihapus.",
+    "notPdf": "Berkas harus berformat PDF."
+  },
+  "qaYear": "2025",
+  "qaPeriod": "QA Triwulan Uji",
+  "landing": {
+    "rowSelector": ".report-wrap .report-row",
+    "titleSelector": ".ttl",
+    "downloadSelector": "a.btn-dl"
+  }
+}

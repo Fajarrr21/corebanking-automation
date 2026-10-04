@@ -1,0 +1,101 @@
+{
+  "modul": "Dashboard - Rasio Keuangan",
+  "kode": "DSB",
+  "aksi": "RASIO",
+  "halaman": "/home",
+  "spec": "cypress/e2e/cbs/01-Dashboard/rasio-keuangan.cy.js",
+  "notion": [{ "judul": "Dashboard - Rasio Keuangan", "url": "https://app.notion.com/3b9f80e3bbf181b28276da4c3959b317" }],
+  "catatan": "Halaman PRD berisi sisa template lama (Google register Cazhpos) di bagian atas — diabaikan; yang dipakai bagian 'Menampilkan rasio keuangan LDR, BOPO, ROA, dan CAR'. Implementasi develop: HomeController@camelData (baca cache saja) + calculateCamelData, kartu di resources/views/dashboard/index.blade.php. Beberapa TC diharapkan GAGAL sampai implementasi sesuai PRD (lihat Catatan per TC). AC yang belum diotomasi: pembagi nol → strip (butuh data terkontrol), periode belum lengkap, hak akses 'Dashboard - Rasio Keuangan' (butuh akun tanpa hak), batas diatur dari Pengaturan Rasio Keuangan (menu belum ada di source), rumus ROA rata-rata aset (verifikasi angka butuh laporan keuangan).",
+  "cases": [
+    {
+      "id": "TC-DSB-RASIO-001", "kategori": "Happy",
+      "skenario": "Bagian Rasio Keuangan menampilkan empat kartu LDR, BOPO, ROA, CAR saat dashboard dibuka",
+      "precondition": "Akun test punya hak akses Dashboard - Rasio Keuangan (diasumsikan super-admin).",
+      "langkah": ["Login", "Buka /home", "Tunggu GET /dashboard/camel-data"],
+      "test_data": "-",
+      "expected": "Empat kartu (LDR, BOPO, ROA, CAR) tampil, skeleton hilang — tanpa harus klik 'Sinkronkan Data'.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug bila cache kantor belum pernah di-sync: camelData() mengembalikan {synced:false} dan kartu tertahan 'Klik \"Sinkronkan Data\"' (HomeController.php:89-101, dashboard/index.blade.php:1007)."
+    },
+    {
+      "id": "TC-DSB-RASIO-002", "kategori": "Positif",
+      "skenario": "Tiap kartu menampilkan nama rasio beserta kepanjangannya",
+      "precondition": "Kartu rasio tampil (TC-DSB-RASIO-001).",
+      "langkah": ["Buka /home", "Baca teks tiap kartu"],
+      "test_data": "LDR=Loan to Deposit Ratio; BOPO=Beban Op(erasional)/Pendapatan Op(erasional); ROA=Return on Assets; CAR=Capital Adequacy Ratio",
+      "expected": "Setiap kartu memuat singkatan dan kepanjangannya.",
+      "sumber": "PRD-ambigu", "status": "Belum dijalankan",
+      "catatan": "Kartu BOPO menulis singkat 'Beban Op. / Pendapatan Op.'; diterima sebagai kepanjangan (PRD tidak menetapkan teks persis)."
+    },
+    {
+      "id": "TC-DSB-RASIO-003", "kategori": "Positif",
+      "skenario": "Nilai rasio dalam persen, maksimal dua angka desimal, sama dengan hasil hitung server",
+      "precondition": "Kartu rasio tampil.",
+      "langkah": ["Buka /home", "Tangkap respon camel-data", "Bandingkan #valLdr/#valBopo/#valRoa/#valCar dengan respon"],
+      "test_data": "-",
+      "expected": "Teks nilai berformat angka + '%' dengan ≤2 desimal dan sama dengan value dari server.",
+      "sumber": "PRD-ambigu", "status": "Belum dijalankan",
+      "catatan": "PRD: 'dibulatkan dua angka di belakang koma'. Ambigu apakah wajib tepat 2 desimal (12,50%) dan pemisah koma; implementasi menampilkan round(x,2) apa adanya dengan titik (12.5%). Test hanya menuntut ≤2 desimal."
+    },
+    {
+      "id": "TC-DSB-RASIO-004", "kategori": "Positif",
+      "skenario": "Tiap kartu menampilkan periode yang sedang ditampilkan (default bulan berjalan)",
+      "precondition": "Kartu rasio tampil.",
+      "langkah": ["Buka /home", "Baca teks tiap kartu"],
+      "test_data": "Periode = bulan & tahun berjalan (mis. 'Oktober 2026' atau '10/2026')",
+      "expected": "Setiap kartu memuat periode bulan berjalan.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: kartu tidak menampilkan periode sama sekali (dashboard/index.blade.php:492-563)."
+    },
+    {
+      "id": "TC-DSB-RASIO-005", "kategori": "Positif",
+      "skenario": "Penanda kondisi memakai label Sehat / Perlu Perhatian / Tidak Sehat (atau kosong bila batas belum diatur)",
+      "precondition": "Kartu rasio tampil.",
+      "langkah": ["Buka /home", "Baca badge #badgeLdr/#badgeBopo/#badgeRoa/#badgeCar"],
+      "test_data": "-",
+      "expected": "Label penanda salah satu dari 'Sehat', 'Perlu Perhatian', 'Tidak Sehat' (tidak peka huruf besar), atau kosong bila batas belum diatur.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: server mengirim SEHAT/CUKUP/KURANG/LEBIH dengan batas di-hardcode (HomeController.php:306-309), bukan dari Pengaturan Rasio Keuangan."
+    },
+    {
+      "id": "TC-DSB-RASIO-006", "kategori": "Positif",
+      "skenario": "Ikon informasi menampilkan penjelasan singkat dan rumus rasio",
+      "precondition": "Kartu rasio tampil.",
+      "langkah": ["Buka /home", "Fokus/sentuh ikon (i) tiap kartu", "Baca popover", "Blur"],
+      "test_data": "Kata kunci rumus: LDR→Simpanan, BOPO→Pendapatan Operasional, ROA→Total Aset, CAR→ATMR",
+      "expected": "Popover tampil dengan judul '<SINGKATAN> - <kepanjangan>' dan rumus (memuat operand & operator ÷); popover hilang saat blur.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Rumus ROA di popover = Laba Sebelum Pajak ÷ Total Aset, sedangkan PRD = ÷ RATA-RATA total aset (lihat kandidat bug ROA)."
+    },
+    {
+      "id": "TC-DSB-RASIO-007", "kategori": "Positif",
+      "skenario": "Di bawah nilai tampil selisih terhadap periode sebelumnya beserta arah naik/turun",
+      "precondition": "Kartu rasio tampil.",
+      "langkah": ["Buka /home", "Periksa tiap kartu"],
+      "test_data": "-",
+      "expected": "Tiap kartu menampilkan selisih vs periode sebelumnya dengan penanda arah (ikon panah / teks naik-turun).",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: fitur pembanding periode sebelumnya tidak ada di source. Selector penanda arah = asumsi (fitur belum ada) — sesuaikan saat fitur dibuat."
+    },
+    {
+      "id": "TC-DSB-RASIO-008", "kategori": "Positif",
+      "skenario": "Dashboard menyediakan filter Cabang dan Periode yang berlaku untuk Rasio Keuangan",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Cari kontrol filter Cabang dan Periode"],
+      "test_data": "-",
+      "expected": "Ada filter Cabang dan filter Periode di dashboard.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: dashboard hanya punya toggle Mingguan/Bulanan/Tahunan untuk grafik (index.blade.php:590); camelData() tidak menerima parameter cabang/periode. Selector filter = asumsi (fitur belum ada)."
+    },
+    {
+      "id": "TC-DSB-RASIO-009", "kategori": "Edge",
+      "skenario": "Rasio dihitung ulang setiap dashboard dibuka tanpa perlu klik 'Sinkronkan Data'",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Tangkap respon GET /dashboard/camel-data"],
+      "test_data": "-",
+      "expected": "Respon berisi data rasio (bukan {synced:false}); tidak ada pesan 'Klik \"Sinkronkan Data\"' pada slot rasio.",
+      "sumber": "PRD", "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: camelData() hanya membaca Cache (TTL 86400 dtk) yang diisi POST /dashboard/sync, jadi angka bisa basi s.d. 24 jam dan jurnal mundur tidak langsung tercermin (HomeController.php:89-101,119-139)."
+    }
+  ]
+}

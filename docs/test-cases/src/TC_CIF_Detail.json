@@ -1,0 +1,162 @@
+{
+  "modul": "Nasabah - CIF",
+  "kode": "CIF",
+  "aksi": "DETAIL",
+  "halaman": "/cif/{code}",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/CIF/cif-detail.cy.js",
+  "catatan": "",
+  "cases": [
+    {
+      "id": "TC-CIF-DETAIL-001",
+      "kategori": "Happy",
+      "skenario": "Klik Lihat di list membuka detail CIF yang benar",
+      "precondition": "Login akun test (cy.session); write-guard aktif; staging punya data CIF",
+      "langkah": [
+        "Buka /cif",
+        "Klik 'Lihat' baris pertama"
+      ],
+      "test_data": "-",
+      "expected": "URL /cif/{code}, breadcrumb 'Detail CIF', 'Kode CIF : {code}'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-DETAIL-002",
+      "kategori": "Positif",
+      "skenario": "Tab Data CIF, Simpanan, Pinjaman",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}"
+      ],
+      "test_data": "-",
+      "expected": "Tab berurutan: Data CIF, Simpanan, Pinjaman; Data CIF aktif",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: detail menampilkan tab Pinjaman dan tab Simpanan"
+    },
+    {
+      "id": "TC-CIF-DETAIL-003",
+      "kategori": "Positif",
+      "skenario": "Data CIF menampilkan field identitas",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}",
+        "Baca label & nilai field"
+      ],
+      "test_data": "-",
+      "expected": "Label NIK, Nama Lengkap, Tempat Lahir, Tanggal Lahir, Jenis Kelamin, Alamat Lengkap, Pekerjaan, Email Address, Nomor Handphone ada; NIK & Nama = data list",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-DETAIL-004",
+      "kategori": "Positif",
+      "skenario": "Detail menampilkan Jenis Nasabah dan Cabang",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}"
+      ],
+      "test_data": "-",
+      "expected": "Label 'Jenis Nasabah' dan 'Cabang' ada di tab Data CIF",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: cif/cif.blade.php tidak punya field Jenis Nasabah maupun Cabang (PRD: detail menampilkan seluruh field form CIF)"
+    },
+    {
+      "id": "TC-CIF-DETAIL-005",
+      "kategori": "Positif",
+      "skenario": "Field detail read-only",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}"
+      ],
+      "test_data": "-",
+      "expected": "Semua input di tab Data CIF readonly/disabled",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-DETAIL-006",
+      "kategori": "Positif",
+      "skenario": "Download Cif menghasilkan dokumen",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}",
+        "Ambil href 'Download Cif'",
+        "cy.request href"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200, body memuat Kode CIF dan NIK",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD: data CIF dipakai pada berkas unduhan. Link target=_blank → diverifikasi via cy.request"
+    },
+    {
+      "id": "TC-CIF-DETAIL-007",
+      "kategori": "Positif",
+      "skenario": "Tombol Edit Cif tampil untuk role berhak",
+      "precondition": "Login akun test (cy.session); write-guard aktif; role customer-service/supervisor (bukan super-admin/auditor)",
+      "langkah": [
+        "Buka /cif/{code}"
+      ],
+      "test_data": "-",
+      "expected": "Tombol 'Edit Cif' href /cif/edit/{code}",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "Source menyembunyikan Edit untuk super-admin & auditor; PRD: aksi Ubah mengikuti hak akses menu Nasabah. Gagal jelas bila akun super-admin."
+    },
+    {
+      "id": "TC-CIF-DETAIL-008",
+      "kategori": "Positif",
+      "skenario": "Tab Simpanan menampilkan daftar rekening / pesan kosong",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}",
+        "Klik tab Simpanan"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'DAFTAR REKENING SIMPANAN'; ada item rekening ATAU 'Tidak ada Rekening Simpanan'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-DETAIL-009",
+      "kategori": "Positif",
+      "skenario": "Tab Pinjaman dapat dibuka",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/{code}",
+        "Klik tab Pinjaman"
+      ],
+      "test_data": "-",
+      "expected": "Pane #tab_loan aktif & terlihat",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-DETAIL-010",
+      "kategori": "Negatif",
+      "skenario": "Kode CIF tidak terdaftar",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/QA-TIDAK-ADA-000"
+      ],
+      "test_data": "QA-TIDAK-ADA-000",
+      "expected": "Redirect ke /cif dengan alert-danger 'Data CIF tidak ditemukan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

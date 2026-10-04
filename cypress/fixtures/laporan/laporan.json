@@ -1,0 +1,329 @@
+{
+  "_sumber": "resources/views/report/**, routes/web.php, ReportController, layouts/navigation.blade.php (origin/develop)",
+  "timeout": 60000,
+  "loginPath": "/login",
+  "menu": {
+    "parent": "Laporan",
+    "children": [
+      { "label": "Umum", "href": "/report/general" },
+      { "label": "Pinjaman", "href": "/report/loan" },
+      { "label": "Simpanan", "href": "/report/saving" },
+      { "label": "Laporan AI", "href": "/report/ai" }
+    ],
+    "penyesuaianLabel": "Laporan Penyesuaian Pinjaman"
+  },
+  "indexPages": {
+    "general": {
+      "path": "/report/general",
+      "breadcrumb": "Laporan",
+      "heading": "Laporan Umum",
+      "cards": [
+        { "label": "Lap Produktivitas Sales", "href": "/report/salesproductivity" },
+        { "label": "Chart Of Accounts (COA)", "href": "/general-ledger" },
+        { "label": "Neraca", "href": "/sheet-balance" },
+        { "label": "Lap Laba/Rugi", "href": "/profit-loss" },
+        { "label": "Lap NPL dan PPAP Harian", "href": "/risk-indicator" },
+        { "label": "Lap RKA Unit", "href": "/report/rka-unit" },
+        { "label": "Lap RKA Account Officer", "href": "/report/rka-officer" }
+      ]
+    },
+    "loan": {
+      "path": "/report/loan",
+      "breadcrumb": "Laporan",
+      "heading": "Laporan Pinjaman",
+      "cards": [
+        { "label": "Daftar Tagih Angsuran", "href": "/due-date" },
+        { "label": "Daftar Pinjaman Akan Lunas", "href": "/paid-off" },
+        { "label": "Daftar Nasabah Jatuh Tempo", "href": "/customer-due" },
+        { "label": "Lap Angsuran Pokok Pinjaman", "href": "/principal-installment" },
+        { "label": "Lap Rekap Pinjaman", "href": "/loan-recap" },
+        { "label": "Lap Pembayaran Bunga", "href": "/interest-installment" },
+        { "label": "Lap Realisasi Pinjaman", "href": "/loan-realization" },
+        { "label": "Lap Statistik Pinjaman", "href": "/loan-statistic" }
+      ]
+    },
+    "saving": {
+      "path": "/report/saving",
+      "breadcrumb": "Laporan",
+      "heading": "Laporan Simpanan",
+      "cards": [
+        { "label": "Lap Transaksi Simpanan", "href": "/saving-transaction" },
+        { "label": "Lap Statistik Simpanan", "href": "/saving-statistic" },
+        { "label": "Lap Pembukuan Simpanan", "href": "/saving-bookkeeping" },
+        { "label": "Lap Cashflow", "href": "/saving-cashflow" }
+      ]
+    }
+  },
+  "neraca": {
+    "path": "/sheet-balance",
+    "dataPath": "/sheet-balance/data",
+    "table": "#neraca-perusahaan",
+    "breadcrumb": "Laporan Neraca",
+    "caption": "Neraca Perusahaan",
+    "headers": ["Jenis Data", "Akun", "Jumlah (IDR)"],
+    "akumulasiValue": "999",
+    "akumulasiLabel": "Akumulasi",
+    "searchKeyword": "Kas",
+    "searchNotFound": "zzqqxx tidak ada",
+    "csvHeaderCells": ["Jenis Data", "Akun", "Jumlah (IDR)"],
+    "rowsWajib": [
+      "ASET", "Kas", "Penempatan Dana", "Tabungan Pada Bank", "Deposito Pada Bank",
+      "Sertifikat Deposito Pada Bank", "Saldo Cazhbox", "Pinjaman Yang Diberikan",
+      "Pinjaman Kepada Masyarakat (Outstanding)", "Pinjaman Kepada Bank Lain",
+      "(Penyisihan Penghapusan Pinjaman)", "Cadangan Penjaminan Kredit (CPK)",
+      "Aset Tetap dan Inventaris (ATI)", "(Akumulasi Penyusutan ATI)", "Aset Lain-lain",
+      "JUMLAH ASET", "LIABILITAS", "Utang Pajak Penghasilan Badan",
+      "Utang Pajak Penghasilan Karyawan", "Utang Pajak Lainnya", "Simpanan",
+      "Pinjaman Yang diterima", "Liabilitas Lainnya", "JUMLAH LIABILITAS", "EKUITAS",
+      "Modal", "Modal Disetor", "Tambahan Modal Disetor", "Hibah", "Cadangan",
+      "Cadangan Umum", "Cadangan Tujuan", "Saldo Laba (Rugi)",
+      "Saldo Laba (Rugi) Awal Tahun", "Saldo Laba (Rugi) Tahun Berjalan",
+      "JUMLAH EKUITAS", "JUMLAH LIABILITAS DAN EKUITAS", "LAIN-LAIN",
+      "Rekening Penampungan Aktiva", "Rekening Penampungan Pasiva", "NPL",
+      "Jumlah Nasabah Simpanan Aktif", "Jumlah Nasabah Pinjaman Aktif"
+    ],
+    "giroLabel": "Giro Pada Bank",
+    "giroParent": "Penempatan Dana",
+    "norekPrd": {
+      "Kas": "110",
+      "Deposito Pada Bank": "122",
+      "Sertifikat Deposito Pada Bank": "123",
+      "Pinjaman Kepada Masyarakat (Outstanding)": "131",
+      "Pinjaman Kepada Bank Lain": "132",
+      "(Penyisihan Penghapusan Pinjaman)": "133",
+      "Cadangan Penjaminan Kredit (CPK)": "134",
+      "Aset Tetap dan Inventaris (ATI)": "140",
+      "(Akumulasi Penyusutan ATI)": "141",
+      "Utang Pajak Penghasilan Badan": "211",
+      "Utang Pajak Penghasilan Karyawan": "212",
+      "Utang Pajak Lainnya": "213",
+      "Modal Disetor": "311",
+      "Tambahan Modal Disetor": "312",
+      "Hibah": "320",
+      "Cadangan Umum": "331",
+      "Cadangan Tujuan": "332",
+      "Saldo Laba (Rugi) Awal Tahun": "341",
+      "Rekening Penampungan Aktiva": "900",
+      "Rekening Penampungan Pasiva": "800"
+    },
+    "giroNorekPrd": "124",
+    "komponenAset": [
+      "Kas", "Tabungan Pada Bank", "Deposito Pada Bank", "Sertifikat Deposito Pada Bank",
+      "Saldo Cazhbox", "Pinjaman Kepada Masyarakat (Outstanding)", "Pinjaman Kepada Bank Lain",
+      "(Penyisihan Penghapusan Pinjaman)", "Cadangan Penjaminan Kredit (CPK)",
+      "Aset Tetap dan Inventaris (ATI)", "(Akumulasi Penyusutan ATI)", "Aset Lain-lain"
+    ],
+    "komponenLiabilitas": [
+      "Utang Pajak Penghasilan Badan", "Utang Pajak Penghasilan Karyawan", "Utang Pajak Lainnya",
+      "Simpanan", "Pinjaman Yang diterima", "Liabilitas Lainnya"
+    ],
+    "komponenEkuitas": [
+      "Modal Disetor", "Tambahan Modal Disetor", "Hibah", "Cadangan Umum", "Cadangan Tujuan",
+      "Saldo Laba (Rugi) Awal Tahun", "Saldo Laba (Rugi) Tahun Berjalan"
+    ],
+    "totalAset": "JUMLAH ASET",
+    "totalLiabilitas": "JUMLAH LIABILITAS",
+    "totalEkuitas": "JUMLAH EKUITAS",
+    "totalLiabilitasEkuitas": "JUMLAH LIABILITAS DAN EKUITAS",
+    "labaBerjalan": "Saldo Laba (Rugi) Tahun Berjalan",
+    "toleransi": 1
+  },
+  "labaRugi": {
+    "path": "/profit-loss",
+    "dataPath": "/profit-loss/data",
+    "table": "#profit-loss",
+    "breadcrumb": "Laporan Laba (rugi)",
+    "caption": "Laporan Laba (Rugi) Perusahaan",
+    "headers": ["Jenis Data", "Akun", "Jumlah (IDR)"],
+    "akumulasiValue": "999",
+    "searchKeyword": "Beban",
+    "searchNotFound": "zzqqxx tidak ada",
+    "csvHeaderCells": ["Jenis Data", "Akun", "Jumlah (IDR)"],
+    "rowsWajib": [
+      { "nama": "A. PENDAPATAN OPERASIONAL", "norek": "" },
+      { "nama": "Pendapatan Bunga", "norek": "410" },
+      { "nama": "Pendapatan Operasional Lainnya", "norek": "420" },
+      { "nama": "JUMLAH PENDAPATAN OPERASIONAL", "norek": "" },
+      { "nama": "B. BEBAN OPERASIONAL", "norek": "" },
+      { "nama": "Beban Bunga", "norek": "510" },
+      { "nama": "Beban Penyisihan Penghapusan Pinjaman", "norek": "520" },
+      { "nama": "Beban Penyusutan ATI", "norek": "530" },
+      { "nama": "Beban Tenaga Kerja", "norek": "540" },
+      { "nama": "Beban Operasional Lainnya", "norek": "550" },
+      { "nama": "JUMLAH BEBAN OPERASIONAL", "norek": "" },
+      { "nama": "C. LABA (RUGI) OPERASIONAL", "norek": "" },
+      { "nama": "D. PENDAPATAN NON OPERASIONAL", "norek": "610" },
+      { "nama": "E. BEBAN NON OPERASIONAL", "norek": "700" },
+      { "nama": "F. LABA (RUGI) SEBELUM PAJAK", "norek": "" },
+      { "nama": "G. TAKSIRAN PAJAK PENGHASILAN", "norek": "801" },
+      { "nama": "H. FEE BASED INCOME", "norek": "620" },
+      { "nama": "I. LABA (RUGI) TAHUN BERJALAN", "norek": "" }
+    ],
+    "rumus": {
+      "pendapatanBunga": "Pendapatan Bunga",
+      "pendapatanLain": "Pendapatan Operasional Lainnya",
+      "jumlahPendapatan": "JUMLAH PENDAPATAN OPERASIONAL",
+      "bebanKomponen": [
+        "Beban Bunga", "Beban Penyisihan Penghapusan Pinjaman", "Beban Penyusutan ATI",
+        "Beban Tenaga Kerja", "Beban Operasional Lainnya"
+      ],
+      "jumlahBeban": "JUMLAH BEBAN OPERASIONAL",
+      "labaOperasional": "C. LABA (RUGI) OPERASIONAL",
+      "pendapatanNonOps": "D. PENDAPATAN NON OPERASIONAL",
+      "bebanNonOps": "E. BEBAN NON OPERASIONAL",
+      "labaSebelumPajak": "F. LABA (RUGI) SEBELUM PAJAK",
+      "pajak": "G. TAKSIRAN PAJAK PENGHASILAN",
+      "feeBased": "H. FEE BASED INCOME",
+      "labaBerjalan": "I. LABA (RUGI) TAHUN BERJALAN"
+    },
+    "toleransi": 1
+  },
+  "cashflow": {
+    "path": "/saving-cashflow",
+    "dataPath": "/saving-cashflow/data",
+    "table": "#data-table",
+    "breadcrumb": "Laporan Cashflow Simpanan",
+    "headers": ["Nama Produk", "Transaksi Masuk", "Jml Orang", "Transaksi Keluar", "Jml Orang", "Saldo Awal", "Saldo Akhir"],
+    "csvHeaderCells": ["Nama Produk", "Transaksi Masuk", "Jml Orang", "Transaksi Keluar", "Saldo Awal", "Saldo Akhir"],
+    "semuaCabangValue": "0",
+    "selisihHari": 1
+  },
+  "reports": {
+    "coa": {
+      "judul": "Chart Of Accounts (COA)",
+      "path": "/general-ledger",
+      "breadcrumb": "Chart Of Accounts",
+      "table": "#main-ledger-table",
+      "dataPath": "/general-ledger/coa",
+      "headers": ["NAMA AKUN", "NO. AKUN", "BUKU BESAR", "POS", "POSISI NORMAL", "SALDO"]
+    },
+    "riskIndicator": {
+      "judul": "Lap NPL dan PPAP Harian",
+      "path": "/risk-indicator",
+      "breadcrumb": "Laporan PPAP dan NPL",
+      "table": "#data-tables",
+      "dataPath": "/risk-indicator/data",
+      "headers": ["ID", "Nama Kantor", "NPL %", "Amount", "Selisih", "Tanggal"]
+    },
+    "kasTeller": {
+      "judul": "Saldo Kas Teller Kantor Cabang",
+      "path": "/kas-teller",
+      "breadcrumb": "Saldo Kas Teller Kantor Cabang",
+      "table": "#data-table",
+      "dataPath": "/kas-teller/data",
+      "headers": ["Nama Kantor Cabang", "Saldo Tersedia"]
+    },
+    "dueDate": {
+      "judul": "Daftar Tagih Angsuran",
+      "path": "/due-date",
+      "breadcrumb": "Daftar Tagih Angsuran",
+      "table": "#data-table",
+      "dataPath": "/due-date/data",
+      "headers": ["Action", "Tanggal Jatuh Tempo", "Nama Kantor", "Nama Peminjam", "Produk", "Nomor Rekening", "Jumlah Pinjaman / Realisasi", "Jumlah Tagihan Pokok", "Jumlah Tagihan Bunga", "Jumlah Tagihan Simpanan", "Status"]
+    },
+    "paidOff": {
+      "judul": "Daftar Pinjaman Akan Lunas",
+      "path": "/paid-off",
+      "breadcrumb": "Daftar Pinjaman Akan Lunas",
+      "table": "#data-table",
+      "dataPath": "/paid-off/data",
+      "headers": ["Action", "Tanggal Jatuh Tempo", "Nama Kantor", "Nama Peminjam", "Produk", "Nomor Rekening", "Jumlah Pinjaman / Realisasi", "Jumlah Tagihan Pokok", "Jumlah Tagihan Bunga", "Jumlah Tagihan Simpanan", "Sisa Pokok", "Status"]
+    },
+    "customerDue": {
+      "judul": "Daftar Nasabah Jatuh Tempo",
+      "path": "/customer-due",
+      "breadcrumb": "Daftar Nasabah Jatuh Tempo",
+      "table": "#data-table",
+      "dataPath": "/customer-due/data",
+      "headers": ["Action", "Tanggal Jatuh Tempo", "Nama Kantor", "Nama Peminjam", "Produk", "Nomor Rekening", "Jumlah Pinjaman / Realisasi", "Jumlah Tagihan Pokok", "Jumlah Tagihan Bunga", "Jumlah Tagihan Simpanan", "Sisa Pokok", "Status"]
+    },
+    "principalInstallment": {
+      "judul": "Lap Angsuran Pokok Pinjaman",
+      "path": "/principal-installment",
+      "breadcrumb": "Laporan Angsuran Pokok Pinjaman",
+      "table": "#data-table",
+      "dataPath": "/principal-installment/active/data",
+      "headers": ["Tanggal", "Nama Kantor", "Nama Kasir Penerima", "Nama Nasabah", "Nomor Rekening", "Tipe Pinjaman", "Pembayaran Pokok", "Sisa Pokok", "Notes"]
+    },
+    "loanRecap": {
+      "judul": "Lap Rekap Pinjaman",
+      "path": "/loan-recap",
+      "breadcrumb": "Laporan Rekap Pinjaman",
+      "table": "#data-table",
+      "dataPath": "/loan-recap/data",
+      "headers": ["Tanggal Realisasi", "ID", "Nama", "Nomor Rekening", "Jumlah Realisasi", "Produk", "Jangka Waktu", "Pokok yang Terbayar", "Bunga yang Terbayar", "Simpanan yang Terbayar"]
+    },
+    "interestInstallment": {
+      "judul": "Lap Pembayaran Bunga",
+      "path": "/interest-installment",
+      "breadcrumb": "Pembayaran Bunga",
+      "table": "#data-table",
+      "dataPath": "/interest-installment/data",
+      "headers": ["Tanggal", "Nama Kantor", "Nama Kasir Penerima", "Nama Nasabah", "Nomor Rekening", "Tipe Pinjaman", "Pembayaran Bunga", "Sisa Bunga", "Notes"]
+    },
+    "loanRealization": {
+      "judul": "Lap Realisasi Pinjaman",
+      "path": "/loan-realization",
+      "breadcrumb": "Laporan Realisasi pinjaman",
+      "table": "#data-table",
+      "dataPath": "/loan-realization/data",
+      "headers": ["Action", "Tanggal Pencairan", "Nama Kantor", "Nama Nasabah", "Jenis Kelamin", "Produk", "Jenis Pinjaman", "Jumlah Pinjaman"]
+    },
+    "loanStatistic": {
+      "judul": "Lap Statistik Pinjaman",
+      "path": "/loan-statistic",
+      "breadcrumb": "Laporan Statistik Pinjaman",
+      "table": "#data-table",
+      "dataPath": "/loan-statistic/data",
+      "headers": ["Nama Produk", "OS Lancar", "Jml Orang Lancar", "OS Perhatian Khusus", "Jml Orang Perhatian Khusus", "OS Kurang Lancar", "Jml Orang Kurang Lancar", "OS Diragukan", "Jml Orang Diragukan", "OS Macet", "Jml Orang Macet"]
+    },
+    "savingTransaction": {
+      "judul": "Lap Transaksi Simpanan",
+      "path": "/saving-transaction",
+      "breadcrumb": "Laporan Transaksi Simpanan",
+      "table": "#data-table",
+      "dataPath": "/saving-transaction/data",
+      "headers": ["Tanggal", "Nama Kasir Penerima", "Jenis Transaksi", "Cabang", "Nama Nasabah", "Nomor Rekening", "Nominal", "Notes"]
+    },
+    "savingStatistic": {
+      "judul": "Lap Statistik Simpanan",
+      "path": "/saving-statistic",
+      "breadcrumb": "Laporan Statistik Simpanan",
+      "table": "#data-table",
+      "dataPath": "/saving-statistic/data",
+      "headers": ["Nama Produk", "Transaksi Masuk", "Jml Orang", "Transaksi Keluar", "Jml Orang"]
+    },
+    "savingBookkeeping": {
+      "judul": "Lap Pembukuan Simpanan",
+      "path": "/saving-bookkeeping",
+      "breadcrumb": "Laporan Pembukuan Bunga Simpanan",
+      "table": "#data-table",
+      "dataPath": "/saving-bookkeeping/data",
+      "headers": ["Tanggal Pembukuan", "Nama Nasabah", "Produk", "Nomor Rekening", "Bunga yang diberikan"]
+    }
+  },
+  "ai": {
+    "path": "/report/ai",
+    "generatePath": "/report/ai/generate",
+    "breadcrumb": "Laporan AI",
+    "noteTitle": "Laporan AI",
+    "portletData": "Data yang Dapat Diakses",
+    "portletBuat": "Buat Laporan",
+    "labelModel": "Pilih Model AI",
+    "noModelWarning": "Tidak ada model AI yang tersedia",
+    "promptPlaceholder": "Contoh: Tampilkan semua pinjaman dengan kolektibilitas BAD bulan ini",
+    "promptMaxLength": 500,
+    "charCountAwal": "0 / 500 karakter",
+    "submitLabel": "Buat Laporan",
+    "linkDownloadLabel": "Lihat Download",
+    "limitNote": "Maksimal 20 laporan per hari",
+    "contohPertama": "Laporan semua pinjaman aktif yang sudah jatuh tempo",
+    "jumlahContoh": 8,
+    "promptTerlaluPendek": "abc",
+    "pesanMinPrompt": "prompt",
+    "promptValid": "Laporan semua rekening simpanan yang masih aktif",
+    "suksesGenerate": "Laporan sedang diproses",
+    "downloadsPath": "/downloads",
+    "prefixFile": "AI-Report-"
+  }
+}

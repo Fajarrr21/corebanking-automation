@@ -1,0 +1,25 @@
+{
+  "modul": "Nasabah - Pinjaman",
+  "kode": "LOAN",
+  "aksi": "BAYAR",
+  "halaman": "/loan/{refId}?menu=installment",
+  "spec": [
+    "cypress/e2e/cbs/06-Nasabah/Pinjaman/loan-payment.cy.js",
+    "cypress/e2e/cbs/06-Nasabah/Pinjaman/loan-payment.irreversible.cy.js"
+  ],
+  "notion": [
+    {"judul": "Angsuran Pinjaman Aktif - BKD Pekalongan", "url": "https://app.notion.com/1e3f80e3bbf180d48107fbb64a8cd075"},
+    {"judul": "Angsuran Pinjaman DH - BKD Pekalongan", "url": "https://app.notion.com/268f80e3bbf180d5ab17de333327e32e"}
+  ],
+  "catatan": "Precondition role: tab Angsuran hanya untuk role selain super-admin/auditor pada cabang rekening (detail.blade.php) — akun test diduga super-admin sehingga TC 001–005 akan GAGAL dengan pesan precondition sampai tersedia akun teller/CS. TC 006–008 = transaksi keuangan (flag --env allowLoanPayment=true, pinjaman QA dari fixture data.refIdQaAngsuran / data.refIdQaDh, PIN dari Cypress.env('loanPin')). Tidak ada cleanup (pembatalan hanya void ber-PIN supervisor).",
+  "cases": [
+    {"id": "TC-LOAN-BAYAR-001", "kategori": "Happy", "skenario": "Form angsuran pinjaman aktif", "precondition": "Akun role teller/CS cabang yang sama; pinjaman aktif", "langkah": ["Buka /loan/{refId}?menu=installment"], "test_data": "-", "expected": "Tab Angsuran; sub-tab Angsuran Pinjaman & Pelunasan Pinjaman; Angsuran Pokok* & Bunga* required, Jumlah readonly, checkbox Debit Tabungan, Keterangan", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-BAYAR-002", "kategori": "Positif", "skenario": "Jumlah terhitung otomatis", "precondition": "Form angsuran terbuka", "langkah": ["Isi pokok 1000 dan bunga 1000"], "test_data": "1000 / 1000", "expected": "Jumlah = pokok + bunga (+ setoran simpanan)", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-BAYAR-003", "kategori": "Negatif", "skenario": "Field wajib kosong", "precondition": "Form angsuran terbuka", "langkah": ["Kosongkan pokok & bunga", "Klik Proses"], "test_data": "-", "expected": "Pesan error validasi; modal PIN tidak muncul; tidak ada request tulis", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Validasi jQuery Validate (class error perlu dicek ke DOM asli)."},
+    {"id": "TC-LOAN-BAYAR-004", "kategori": "Positif", "skenario": "Konfirmasi PIN lalu batal", "precondition": "Form angsuran terbuka", "langkah": ["Isi pokok & bunga", "Klik Proses", "Klik Batal di modal"], "test_data": "1000 / 1000", "expected": "Modal 'Konfirmasi Setoran Angsuran' dengan input PIN wajib; Batal menutup modal tanpa request tulis", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-BAYAR-005", "kategori": "Happy", "skenario": "Form angsuran pinjaman DH", "precondition": "Akun role teller/CS; ada pinjaman daftar hitam aktif", "langkah": ["Ambil pinjaman DH dari GET /loan/datablacklist/active", "Buka ?menu=installment"], "test_data": "-", "expected": "Sub-tab Angsuran DH & Pelunasan DH; pokok & bunga required; ada Jumlah", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-BAYAR-006", "kategori": "Negatif", "skenario": "PIN salah", "precondition": "Flag allowLoanPayment; pinjaman QA (data.refIdQaAngsuran)", "langkah": ["Isi angsuran", "Proses", "Masukkan PIN salah"], "test_data": "PIN 000000", "expected": "Pesan error 'PIN salah!'; tidak ada transaksi", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "POST transaksi sungguhan yang ditolak CheckPinRule — tetap di-gate."},
+    {"id": "TC-LOAN-BAYAR-007", "kategori": "Happy", "skenario": "Bayar angsuran sukses", "precondition": "Flag allowLoanPayment; pinjaman QA; Cypress.env('loanPin')", "langkah": ["Isi angsuran", "Proses", "Masukkan PIN benar"], "test_data": "pokok 1000, bunga 1000", "expected": "Pesan 'Pembayaran angsuran berhasil diproses'; jumlah riwayat transaksi bertambah", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "IRREVERSIBLE (transaksi keuangan)."},
+    {"id": "TC-LOAN-BAYAR-008", "kategori": "Happy", "skenario": "Bayar angsuran DH sukses", "precondition": "Flag allowLoanPayment; pinjaman DH QA (data.refIdQaDh); PIN", "langkah": ["Isi Angsuran DH", "Proses", "PIN benar"], "test_data": "pokok 1000, bunga 1000", "expected": "Pesan sukses", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "IRREVERSIBLE."}
+  ]
+}

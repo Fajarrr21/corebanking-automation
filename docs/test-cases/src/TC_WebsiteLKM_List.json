@@ -1,0 +1,146 @@
+{
+  "modul": "Website LKM - Publikasi Laporan",
+  "kode": "WEB",
+  "aksi": "LIST",
+  "halaman": "/financial-report",
+  "spec": "cypress/e2e/cbs/15-WebsiteLKM/website-lkm.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Website LKM / Publikasi Laporan Keuangan (view menyebut ND-02 / WEB-01, POJK 41/2024 Pasal 140 ayat 8). TC diturunkan dari source: FinancialReportController (role super-admin/supervisor), LandingController (publik, hanya is_published).",
+  "cases": [
+    {
+      "id": "TC-WEB-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Menu Website LKM membuka halaman publikasi",
+      "precondition": "Akun super-admin/supervisor",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Website LKM"
+      ],
+      "test_data": "-",
+      "expected": "URL /financial-report; breadcrumb & judul 'Publikasi Laporan Keuangan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Form unggah & nilai default",
+      "precondition": "Akun super-admin/supervisor",
+      "langkah": [
+        "Buka /financial-report"
+      ],
+      "test_data": "-",
+      "expected": "Catatan POJK + link halaman publik (target _blank); Judul wajib (placeholder 'Laporan Keuangan Tahunan 2025'); Tahun Buku default tahun berjalan, min 1900 max 2999; Periode opsional; Berkas PDF wajib accept=application/pdf; 'Langsung publikasikan' tercentang; tombol Unggah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Kolom & status daftar laporan",
+      "precondition": "Akun super-admin/supervisor",
+      "langkah": [
+        "Periksa tabel daftar"
+      ],
+      "test_data": "-",
+      "expected": "Header Tahun, Judul, Periode, Status, Aksi; status tiap baris 'Publik'/'Draf' dengan tombol Unduh, publikasi, hapus; bila kosong tampil 'Belum ada laporan.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Data bisa kosong — kedua kemungkinan ditangani eksplisit."
+    },
+    {
+      "id": "TC-WEB-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Hanya laporan Publik tampil di situs publik",
+      "precondition": "Akun super-admin/supervisor",
+      "langkah": [
+        "Catat judul Publik & Draf di admin",
+        "Buka '/'",
+        "Bandingkan daftar laporan publik"
+      ],
+      "test_data": "-",
+      "expected": "Jumlah & judul laporan di '/' = laporan berstatus Publik; judul Draf tidak tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-005",
+      "kategori": "Negatif",
+      "skenario": "Unggah tanpa Judul",
+      "precondition": "Akun super-admin/supervisor; write-guard aktif",
+      "langkah": [
+        "Pilih PDF",
+        "Klik Unggah tanpa Judul"
+      ],
+      "test_data": "-",
+      "expected": "Browser memblok submit (Judul invalid); tetap di /financial-report; tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-006",
+      "kategori": "Negatif",
+      "skenario": "Tahun Buku di luar rentang",
+      "precondition": "Akun super-admin/supervisor; write-guard aktif",
+      "langkah": [
+        "Isi Judul QA, Tahun 1800, PDF",
+        "Klik Unggah"
+      ],
+      "test_data": "1800",
+      "expected": "Browser memblok submit (rangeUnderflow); tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-007",
+      "kategori": "Negatif",
+      "skenario": "Berkas bukan PDF",
+      "precondition": "Akun super-admin/supervisor; write-guard aktif (POST /financial-report diizinkan)",
+      "langkah": [
+        "Isi Judul QA",
+        "Pilih file .txt",
+        "Hapus centang publikasi",
+        "Klik Unggah"
+      ],
+      "test_data": "qa-bukan-pdf.txt",
+      "expected": "Kembali ke /financial-report; alert-danger berisi 'Berkas harus berformat PDF.'; tidak ada baris QA baru",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi server ($request->validate mimes:pdf) sebelum upload S3 & create -> tidak ada data tercipta."
+    },
+    {
+      "id": "TC-WEB-LIST-008",
+      "kategori": "Edge",
+      "skenario": "Batal konfirmasi Hapus",
+      "precondition": "Akun super-admin/supervisor; write-guard aktif",
+      "langkah": [
+        "Klik Hapus pada baris pertama",
+        "Pilih Batal di confirm"
+      ],
+      "test_data": "-",
+      "expected": "confirm() dipanggil sekali; tidak ada request tulis; jumlah baris tetap; bila tidak ada laporan, tampil 'Belum ada laporan.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-LIST-009",
+      "kategori": "Negatif",
+      "skenario": "Akun tanpa role membuka /financial-report",
+      "precondition": "Akun TANPA role super-admin & supervisor",
+      "langkah": [
+        "Buka /financial-report langsung"
+      ],
+      "test_data": "-",
+      "expected": "Dialihkan ke /home; alert-danger 'Akses anda terbatas!'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Gagal dgn pesan precondition bila akun test punya akses."
+    }
+  ]
+}

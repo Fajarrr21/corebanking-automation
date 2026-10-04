@@ -1,0 +1,167 @@
+{
+  "modul": "Nasabah - CIF",
+  "kode": "CIF",
+  "aksi": "EDIT",
+  "halaman": "/cif/edit/{code}",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    }
+  ],
+  "spec": [
+    "cypress/e2e/cbs/06-Nasabah/CIF/cif-edit.cy.js",
+    "cypress/e2e/cbs/06-Nasabah/CIF/cif-edit.irreversible.cy.js"
+  ],
+  "catatan": "TC 009-010 di spec .irreversible (flag allowCreateCif).",
+  "cases": [
+    {
+      "id": "TC-CIF-EDIT-001",
+      "kategori": "Happy",
+      "skenario": "Form Edit CIF terbuka dan terisi",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Buka /cif/edit/{code}"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Edit CIF', NIK & Nama = data CIF, tombol 'Simpan'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-EDIT-002",
+      "kategori": "Positif",
+      "skenario": "Field form Edit = form Buat",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Baca label form Buat",
+        "Baca label form Edit",
+        "Bandingkan"
+      ],
+      "test_data": "-",
+      "expected": "Daftar field sama (foto dibandingkan jumlahnya)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: edit tidak punya 'Foto NPWP' (PRD: form yang sama untuk Tambah & Ubah)"
+    },
+    {
+      "id": "TC-CIF-EDIT-003",
+      "kategori": "Positif",
+      "skenario": "Field wajib form Edit = form Buat",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Bandingkan label ber-* Buat vs Edit"
+      ],
+      "test_data": "-",
+      "expected": "Himpunan field wajib sama",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: HP wajib di Edit tapi opsional di Buat (UpdateCifRequest vs CreateCifRequest)"
+    },
+    {
+      "id": "TC-CIF-EDIT-004",
+      "kategori": "Positif",
+      "skenario": "Nomor HP bertanda wajib di Edit",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Buka form Edit"
+      ],
+      "test_data": "-",
+      "expected": "Label 'Nomor Handphone' bertanda *",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-EDIT-005",
+      "kategori": "Positif",
+      "skenario": "Email dapat diubah",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Buka form Edit"
+      ],
+      "test_data": "-",
+      "expected": "Input email tidak readonly",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: edit.blade.php email readonly"
+    },
+    {
+      "id": "TC-CIF-EDIT-006",
+      "kategori": "Negatif",
+      "skenario": "Nama dikosongkan",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Kosongkan Nama",
+        "Klik Simpan"
+      ],
+      "test_data": "Nama kosong",
+      "expected": "Tetap di halaman edit, Nama :invalid, tidak ada request tulis",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-EDIT-007",
+      "kategori": "Positif",
+      "skenario": "Tombol Batal/Cancel kembali ke list",
+      "precondition": "Login akun test (cy.session); write-guard aktif; CIF pertama di list (GET saja)",
+      "langkah": [
+        "Klik Cancel"
+      ],
+      "test_data": "-",
+      "expected": "Pindah ke /cif tanpa menyimpan",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: <button type=button>Cancel</button> tanpa handler"
+    },
+    {
+      "id": "TC-CIF-EDIT-008",
+      "kategori": "Negatif",
+      "skenario": "Kode CIF tidak terdaftar",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /cif/edit/QA-TIDAK-ADA-000"
+      ],
+      "test_data": "QA-TIDAK-ADA-000",
+      "expected": "Redirect /cif dengan 'Data CIF tidak ditemukan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-CIF-EDIT-009",
+      "kategori": "Happy",
+      "skenario": "Ubah Nama & HP CIF milik test",
+      "precondition": "allowCreateCif=true; akun user cabang; CIF QA dibuat di test",
+      "langkah": [
+        "Buat CIF QA",
+        "Buka Edit",
+        "Ubah Nama & HP",
+        "Simpan"
+      ],
+      "test_data": "Nama QA<ts> EDIT; HP 081298765432",
+      "expected": "Redirect /cif/{code}, 'Data CIF Berhasil dirubah', detail menampilkan nilai baru, NIK tetap",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE, hanya pada CIF milik test"
+    },
+    {
+      "id": "TC-CIF-EDIT-010",
+      "kategori": "Negatif",
+      "skenario": "Ubah NIK ke NIK nasabah lain",
+      "precondition": "allowCreateCif=true; akun user cabang; CIF QA dibuat di test",
+      "langkah": [
+        "Buat CIF QA",
+        "Edit NIK = NIK CIF lain",
+        "Simpan"
+      ],
+      "test_data": "NIK CIF baris pertama list",
+      "expected": "Error 'NIK sudah dipakai oleh nasabah lainnya', NIK CIF QA tidak berubah",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Hanya CIF QA yang di-submit; CIF lain hanya dibaca NIK-nya"
+    }
+  ]
+}

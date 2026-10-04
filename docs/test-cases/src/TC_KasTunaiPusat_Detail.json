@@ -1,0 +1,127 @@
+{
+  "modul": "Kas Tunai Pusat - Detail",
+  "kode": "KTP",
+  "aksi": "DETAIL",
+  "halaman": "/account/center/{officeId}",
+  "spec": "cypress/e2e/cbs/12-KasTunaiPusat/kas-tunai-pusat-detail.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Kas Tunai Pusat; TC diturunkan dari source (AccountCenterController.php, resources/views/account_center/**). Menu hanya tampil untuk super-admin bila APP_NAME = 'PT. LKM BKD KABUPATEN PEKALONGAN' (navigation.blade.php:567-568), tetapi controller tidak memeriksa APP_NAME (URL tetap bisa dibuka super-admin di instalasi lain). GET /account/center/data membuat baris account_centers untuk kantor yang belum punya (efek samping di GET).",
+  "cases": [
+    {
+      "id": "TC-KTP-DETAIL-001",
+      "kategori": "Happy",
+      "skenario": "Detail kantor dengan 5 tab",
+      "precondition": "Akun super-admin; minimal 1 kantor",
+      "langkah": [
+        "Buka daftar",
+        "Buka detail kantor pertama"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Detail Kas Tunai Pusat'; tab Data Kantor, Setoran, Penarikan, Cetak Buku, Riwayat Transaksi; Data Kantor aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-002",
+      "kategori": "Positif",
+      "skenario": "Tab Data Kantor",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka detail"
+      ],
+      "test_data": "-",
+      "expected": "Baris Nama Kantor, Nomor HP, Alamat, Saldo, Saldo terakhir di cetak; Nama Kantor = nama di daftar",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-003",
+      "kategori": "Positif",
+      "skenario": "Form Setoran",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka ?menu=deposit"
+      ],
+      "test_data": "-",
+      "expected": "Nominal (wajib) & Keterangan (wajib) & tombol Proses",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-004",
+      "kategori": "Negatif",
+      "skenario": "Setoran tanpa Nominal",
+      "precondition": "Akun super-admin; write-guard aktif",
+      "langkah": [
+        "Buka ?menu=deposit",
+        "Klik Proses"
+      ],
+      "test_data": "-",
+      "expected": "Browser memblok submit (Nominal invalid); tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Textarea Keterangan berisi spasi default sehingga 'required' terpenuhi walau user tidak mengisi (detail/cashin.blade.php)."
+    },
+    {
+      "id": "TC-KTP-DETAIL-005",
+      "kategori": "Positif",
+      "skenario": "Form Penarikan",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka ?menu=withdraw"
+      ],
+      "test_data": "-",
+      "expected": "Saldo tampil read-only (disabled); Nominal & Keterangan wajib",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-006",
+      "kategori": "Negatif",
+      "skenario": "Penarikan tanpa Keterangan",
+      "precondition": "Akun super-admin; write-guard aktif",
+      "langkah": [
+        "Isi Nominal 1",
+        "Kosongkan Keterangan",
+        "Klik Proses"
+      ],
+      "test_data": "1",
+      "expected": "Browser memblok submit (Keterangan invalid); tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-007",
+      "kategori": "Positif",
+      "skenario": "Tab Riwayat Transaksi",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka ?menu=history"
+      ],
+      "test_data": "-",
+      "expected": "GET /account/center/{id}/history 200; kolom ID, Tanggal, Jenis Transaksi, Nominal, Catatan, Status, Aksi",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTP-DETAIL-008",
+      "kategori": "Positif",
+      "skenario": "Tab Cetak Buku",
+      "precondition": "Akun super-admin",
+      "langkah": [
+        "Buka ?menu=printout"
+      ],
+      "test_data": "-",
+      "expected": "Saldo terakhir dicetak (wajib), Baris (wajib), tombol Cetak",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

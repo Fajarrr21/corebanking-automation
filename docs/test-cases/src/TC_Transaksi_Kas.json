@@ -1,0 +1,19 @@
+{
+  "modul": "Transaksi - Kas",
+  "kode": "TRX",
+  "aksi": "KAS",
+  "halaman": "/transaction/cash",
+  "spec": "cypress/e2e/cbs/10-Transaksi/kas.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk menu Kas; TC diturunkan dari source (transaction/cash/*.blade.php, TransactionController@cash). Posting Bon/Setor Kas tidak diuji (butuh PIN supervisor, irreversible).",
+  "cases": [
+    {"id": "TC-TRX-KAS-001", "kategori": "Happy", "skenario": "Halaman Kas tampil dengan 7 tab transaksi kas", "precondition": "Akun teller/super-admin", "langkah": ["Buka /transaction/cash"], "test_data": "-", "expected": "Breadcrumb 'Kas'; tab: Bon Kas Teller, Setor Kas Teller, Setor Kas Induk Tunai, Tarik Kas Induk tunai, Bon Kas Cabang Lain, Setor Kas Cabang Lain, Riwayat", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-002", "kategori": "Positif", "skenario": "Tab Bon Kas Teller aktif default", "precondition": "Akun teller/super-admin", "langkah": ["Buka /transaction/cash tanpa parameter menu"], "test_data": "-", "expected": "Pane #in aktif; 10 input pecahan (100.000 s/d 100) tersedia; Total readonly", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-003", "kategori": "Positif", "skenario": "?menu=history membuka tab Riwayat", "precondition": "Akun teller/super-admin", "langkah": ["Buka /transaction/cash?menu=history", "Tunggu tabel selesai dimuat"], "test_data": "-", "expected": "Pane Riwayat aktif; GET /transaction/cash/data 200; kolom: Status, Jenis transaksi, ID Transaksi, Tgl Transaksi, Officer, Supervisor, Nominal", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Source: URL ajax awal 'office_id=0date=' tanpa '&' (cash/index.blade.php:918) sehingga parameter date tidak terkirim di load pertama — temuan non-PRD."},
+    {"id": "TC-TRX-KAS-004", "kategori": "Positif", "skenario": "Subtotal & total Bon Kas terhitung otomatis", "precondition": "Akun teller/super-admin", "langkah": ["Isi 100.000 x2, 50.000 x1, 1.000 x3"], "test_data": "2x100000, 1x50000, 3x1000", "expected": "Subtotal per pecahan = lembar x nominal; Total = 253000", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-005", "kategori": "Negatif", "skenario": "Proses Bon Kas dengan total 0", "precondition": "Akun teller/super-admin; write-guard aktif", "langkah": ["Klik Proses tanpa mengisi pecahan"], "test_data": "-", "expected": "Alert 'Silahkan masukan jumlah Bon Kas Anda'; modal PIN tidak tampil; tidak ada request tulis", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-006", "kategori": "Positif", "skenario": "Proses Bon Kas dengan total > 0 membuka modal PIN", "precondition": "Akun teller/super-admin; write-guard aktif", "langkah": ["Isi pecahan", "Klik Proses", "Periksa modal", "Klik Batal"], "test_data": "Total 253000", "expected": "Modal 'Masukan PIN Supervisor Anda' tampil memuat total 253.000, pilihan Supervisor & PIN wajib; Batal menutup modal; tidak ada request tulis", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-007", "kategori": "Positif", "skenario": "Selisih Setor Kas = saldo kas sistem - total setor", "precondition": "Akun teller/super-admin", "langkah": ["Buka ?menu=cash_out", "Isi pecahan"], "test_data": "Total 253000", "expected": "Total = 253000; Selisih = Saldo Kas Sistem - 253000", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-KAS-008", "kategori": "Negatif", "skenario": "Proses Setor Kas dengan total 0", "precondition": "Akun teller/super-admin; write-guard aktif", "langkah": ["Buka ?menu=cash_out", "Klik Proses"], "test_data": "-", "expected": "Alert 'Silahkan masukan jumlah Setor Kas Anda'; modal PIN tidak tampil", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""}
+  ]
+}

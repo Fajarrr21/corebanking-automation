@@ -1,0 +1,83 @@
+{
+  "paths": {
+    "list": "/cif",
+    "data": "/cif/data",
+    "create": "/cif/create",
+    "detail": "/cif/",
+    "edit": "/cif/edit/",
+    "download": "/printCif/",
+    "checkNik": "/cif/check-nik",
+    "cities": "/data/cities/"
+  },
+  "breadcrumb": {
+    "list": "CIF",
+    "create": "Buat CIF",
+    "edit": "Edit CIF",
+    "detail": "Detail CIF"
+  },
+  "list": {
+    "headers": ["", "ID", "Kantor Cabang", "Kode CIF", "Nama", "No KTP", "Alamat Lengkap", "No Kartu"],
+    "col": { "office": 2, "code": 3, "name": 4, "nik": 5 },
+    "viewLabel": "Lihat",
+    "createLabel": "Buat CIF",
+    "pageLength": 10,
+    "notFoundKeyword": "ZZQA-TIDAK-ADA-0000000000"
+  },
+  "detail": {
+    "tabs": ["Data CIF", "Simpanan", "Pinjaman"],
+    "codeLabel": "Kode CIF",
+    "formLabels": ["NIK", "Nama Lengkap", "Tempat Lahir", "Tanggal Lahir", "Jenis Kelamin", "Alamat Lengkap", "Pekerjaan", "Email Address", "Nomor Handphone"],
+    "prdExtraLabels": ["Jenis Nasabah", "Cabang"],
+    "savingHeading": "DAFTAR REKENING SIMPANAN",
+    "savingEmpty": "Tidak ada Rekening Simpanan",
+    "editLabel": "Edit Cif",
+    "downloadLabel": "Download Cif",
+    "notFoundCode": "QA-TIDAK-ADA-000",
+    "notFoundMsg": "Data CIF tidak ditemukan"
+  },
+  "form": {
+    "submitCreate": "Proses",
+    "submitEdit": "Simpan",
+    "cancelLabels": ["Batal", "Cancel"],
+    "requiredLabels": ["NIK", "Nama Lengkap", "Tempat Lahir", "Tanggal Lahir", "Jenis Kelamin", "Alamat Lengkap", "Provinsi", "Kabupaten/Kota", "Kecamatan", "Desa/Kelurahan", "Pekerjaan", "Penghasilan Pertahun", "Nama Ibu Kandung"],
+    "phoneLabel": "Nomor Handphone",
+    "emailLabel": "Email Address",
+    "prdExtraFields": ["Jenis Nasabah", "Cabang"],
+    "spouseGroups": ["#husband_or_wife_name", "#husband_or_wife_nik", "#husband_or_wife_birth_place", "#husband_or_wife_birth_date", "#husband_or_wife_address", "#husband_or_wife_occupation"],
+    "nikFeedback": {
+      "format": "NIK harus terdiri dari 16 digit angka.",
+      "exists": "NIK sudah terdaftar atas nama",
+      "available": "NIK tersedia."
+    },
+    "messages": {
+      "createSuccess": "Data CIF Berhasil ditambahkan",
+      "editSuccess": "Data CIF Berhasil dirubah",
+      "nikUsedOnEdit": "NIK sudah dipakai oleh nasabah lainnya",
+      "nikUniqueServer": "NIK sudah terdaftar",
+      "phoneInvalidServer": "tidak valid. Nomor handphone harus dimulai dengan angka 08 atau 62"
+    }
+  },
+  "testData": {
+    "nikPrefix": "99",
+    "nikShort": "12345",
+    "nikWithLetters": "12ab34cd",
+    "nikWithLettersDigitsOnly": "1234",
+    "invalidEmail": "qa-bukan-email",
+    "invalidPhone": "12345",
+    "validPhone": "081234567890",
+    "editedPhone": "081298765432",
+    "placeOfBirth": "Pekalongan",
+    "dateOfBirth": "01-01-1990",
+    "futureDateOfBirth": "01-01-2099",
+    "gender": "MALE",
+    "address": "Jl. QA Automation No. 1",
+    "provinceText": "JAWA TENGAH",
+    "occupation": "Lainnya",
+    "annualIncome": "0_MILLION_UNTIL_50_MILLION",
+    "maritalSingle": "SINGLE",
+    "maritalMarried": "MARRIED",
+    "motherName": "QA Ibu Kandung",
+    "editSuffix": " EDIT"
+  },
+  "timeout": 30000
+}

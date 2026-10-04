@@ -1,0 +1,78 @@
+{
+  "modul": "Website LKM - Publikasi (outward-facing)",
+  "kode": "WEB",
+  "aksi": "PUB",
+  "halaman": "/financial-report",
+  "spec": "cypress/e2e/cbs/15-WebsiteLKM/website-lkm.irreversible.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Website LKM / Publikasi Laporan Keuangan (view menyebut ND-02 / WEB-01, POJK 41/2024 Pasal 140 ayat 8). TC diturunkan dari source: FinancialReportController (role super-admin/supervisor), LandingController (publik, hanya is_published). Di-gate flag allowPublishReport (laporan QA bisa sesaat tampil di situs publik). Cleanup afterEach menghapus semua baris dengan Judul diawali 'QA'.",
+  "cases": [
+    {
+      "id": "TC-WEB-PUB-001",
+      "kategori": "Happy",
+      "skenario": "Unggah laporan QA sebagai Draf",
+      "precondition": "Akun super-admin/supervisor; flag allowPublishReport",
+      "langkah": [
+        "Isi Judul QA, Tahun 2025, Periode QA, PDF",
+        "Hapus centang publikasi",
+        "Unggah",
+        "Buka '/'"
+      ],
+      "test_data": "QA<ts> Laporan Keuangan, qa-laporan-keuangan.pdf",
+      "expected": "'Laporan keuangan berhasil diunggah.'; baris status Draf; judul tidak tampil di '/'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-PUB-002",
+      "kategori": "Positif",
+      "skenario": "Publikasikan laporan Draf",
+      "precondition": "Akun super-admin/supervisor; flag allowPublishReport",
+      "langkah": [
+        "Unggah Draf QA",
+        "Klik tombol publikasi",
+        "Buka '/'",
+        "Unduh PDF dari '/'"
+      ],
+      "test_data": "-",
+      "expected": "'Status publikasi laporan diperbarui.'; status Publik; judul tampil di '/'; unduhan publik 200 berisi PDF",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-PUB-003",
+      "kategori": "Positif",
+      "skenario": "Tarik dari publikasi",
+      "precondition": "Akun super-admin/supervisor; flag allowPublishReport",
+      "langkah": [
+        "Unggah QA terpublikasi",
+        "Klik tarik publikasi",
+        "Buka '/'",
+        "Request URL unduh"
+      ],
+      "test_data": "-",
+      "expected": "Status Draf; judul hilang dari '/'; URL unduh publik 404",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-WEB-PUB-004",
+      "kategori": "Positif",
+      "skenario": "Hapus laporan QA",
+      "precondition": "Akun super-admin/supervisor; flag allowPublishReport",
+      "langkah": [
+        "Unggah Draf QA",
+        "Klik Hapus",
+        "Konfirmasi OK"
+      ],
+      "test_data": "-",
+      "expected": "'Laporan keuangan berhasil dihapus.'; baris QA hilang",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

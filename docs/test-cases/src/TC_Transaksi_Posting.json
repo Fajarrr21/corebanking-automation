@@ -1,0 +1,22 @@
+{
+  "modul": "Transaksi - Posting (irreversible)",
+  "kode": "TRX",
+  "aksi": "POST",
+  "halaman": "/transaction/general_ledger",
+  "spec": "cypress/e2e/cbs/10-Transaksi/transaksi.irreversible.cy.js",
+  "notion": [
+    {"judul": "Over Booking - Pilih Kas Teller", "url": "https://app.notion.com/3b9f80e3bbf1816ba658df3a976ec687"},
+    {"judul": "Transaksi Overbooking Masal", "url": "https://app.notion.com/26af80e3bbf180fb9b10fc0cb331a09c"},
+    {"judul": "Transaksi Tabungan to GL (duplikat)", "url": "https://app.notion.com/26ff80e3bbf18066beb0f686a71849a3"}
+  ],
+  "catatan": "Spec di-gate flag allowTransaction (default skip). Butuh Cypress.env trxSpvUserId, trxSpvPin, trxUserPin. Transaksi sukses (001, 005) TIDAK di-void otomatis — tandai QA<ts> di Nama/Catatan; void manual hari yang sama via Riwayat Kasir/Riwayat Massal. TC negatif (002-004, 006-007) ditolak server sebelum data tercipta.",
+  "cases": [
+    {"id": "TC-TRX-POST-001", "kategori": "Happy", "skenario": "Overbooking GL valid tersimpan", "precondition": "Flag allowTransaction; akun teller/super-admin; supervisor & PIN di env", "langkah": ["Isi Nama Transaksi QA, Posisi Debit/Kredit berbeda, Jumlah 1000, Catatan QA", "Submit, pilih Supervisor, isi PIN, Proses", "Buka tab Riwayat"], "test_data": "QA<ts> OB, 1000", "expected": "Flash 'Overbooking General Ledger Berhasil'; transaksi QA muncul di Riwayat", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "IRREVERSIBLE (jurnal). PRD Setelah disimpan a-c."},
+    {"id": "TC-TRX-POST-002", "kategori": "Negatif", "skenario": "Posisi Debit = Posisi Kredit", "precondition": "Flag allowTransaction", "langkah": ["Pilih akun sama untuk Debit & Kredit", "Submit + PIN benar"], "test_data": "akun index 1 untuk keduanya", "expected": "Flash error 'Rekening posisi debit dan rekening posisi credit tidak boleh sama'; tidak tersimpan", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD Validasi b (asal ≠ tujuan)."},
+    {"id": "TC-TRX-POST-003", "kategori": "Negatif", "skenario": "PIN Supervisor salah", "precondition": "Flag allowTransaction", "langkah": ["Isi form valid", "Isi PIN salah"], "test_data": "PIN QA000000", "expected": "Flash error 'PIN Supervisor salah'; tidak tersimpan", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-POST-004", "kategori": "Negatif", "skenario": "Nominal melebihi saldo Kas Teller", "precondition": "Flag allowTransaction; akun Kas Teller (kode kantor+111) ada di opsi", "langkah": ["Posisi Kredit = Kas Teller", "Jumlah 999.999.999.999", "Submit + PIN benar"], "test_data": "999999999999", "expected": "Flash error 'Saldo kas teller <nama> tidak mencukupi'; tidak tersimpan", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD Validasi d. PRD juga minta sistem menampilkan saldo tersedia — source hanya menyebut nama (TransactionController.php:1114)."},
+    {"id": "TC-TRX-POST-005", "kategori": "Happy", "skenario": "Overbooking Massal berhasil", "precondition": "Flag allowTransaction; PIN pengguna di env", "langkah": ["Pilih Debit, akun sumber, 1 tujuan, nominal 1000, keterangan QA", "Proses, isi PIN, Proses"], "test_data": "1000, QA<ts> OBM", "expected": "POST mass-transaction 200; alert sukses 'Berhasil memproses ... transaksi'", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "IRREVERSIBLE. PRD l-m."},
+    {"id": "TC-TRX-POST-006", "kategori": "Negatif", "skenario": "File massal berisi rekening tidak terdaftar", "precondition": "Flag allowTransaction; PIN pengguna di env", "langkah": ["Setoran, Debit, upload qa-mass-saving-invalid.csv, pilih Account GL", "Proses + PIN benar"], "test_data": "QA9999999999001", "expected": "Respons error (>=400); alert memuat nomor baris & 'tidak ditemukan'; tidak ada transaksi", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD validasi g & i."},
+    {"id": "TC-TRX-POST-007", "kategori": "Negatif", "skenario": "PIN salah pada transaksi massal simpanan", "precondition": "Flag allowTransaction", "langkah": ["Isi form valid", "PIN salah"], "test_data": "PIN QA000000", "expected": "Respons 422; alert 'PIN yang Anda masukkan salah!'", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD validasi l."}
+  ]
+}

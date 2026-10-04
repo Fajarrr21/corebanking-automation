@@ -1,0 +1,42 @@
+{
+  "modul": "Kantor",
+  "kode": "KTR",
+  "aksi": "STATUS",
+  "halaman": "/office",
+  "spec": "cypress/e2e/cbs/03-Kantor/kantor-status.cy.js",
+  "notion": [],
+  "catatan": "Hanya skenario negatif (tanpa memilih kantor). Membuka/menutup operasional kantor ASLI tidak diuji: status INACTIVE memblokir login user kantor tsb (middleware check.office.status) di staging bersama, dan tidak ada kantor milik test. Pengaman: intercept POST /office/status membalas 418 bila office_id terisi. Tidak ada PRD untuk status kantor.",
+  "cases": [
+    {
+      "id": "TC-KTR-STATUS-001",
+      "kategori": "Negatif",
+      "skenario": "Klik Closed operation tanpa memilih kantor ditolak dan status kantor tidak berubah",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas. Tidak ada checkbox kantor yang dicentang.",
+      "langkah": [
+        "Catat status semua kantor (All)",
+        "Pastikan tidak ada checkbox tercentang",
+        "Klik Closed operation"
+      ],
+      "test_data": "office_id kosong",
+      "expected": "Kembali ke /office dengan alert error 'Silahkan pilih kantor dulu'; status semua kantor sama seperti sebelumnya.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Request sungguhan ke server (office_id kosong pasti ditolak sebelum query, OfficeController@officeStatus)."
+    },
+    {
+      "id": "TC-KTR-STATUS-002",
+      "kategori": "Negatif",
+      "skenario": "Klik Open operation tanpa memilih kantor ditolak dan status kantor tidak berubah",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas. Tidak ada checkbox kantor yang dicentang.",
+      "langkah": [
+        "Catat status semua kantor (All)",
+        "Klik Open operation"
+      ],
+      "test_data": "office_id kosong",
+      "expected": "Alert error 'Silahkan pilih kantor dulu'; status semua kantor tidak berubah.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

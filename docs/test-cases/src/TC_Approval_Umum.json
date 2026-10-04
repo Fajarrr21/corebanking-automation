@@ -1,0 +1,170 @@
+{
+  "modul": "Approval - Halaman & Tab",
+  "kode": "APV",
+  "aksi": "UMUM",
+  "halaman": "/approval",
+  "notion": [],
+  "spec": "cypress/e2e/cbs/08-Approval/approval-umum.cy.js",
+  "catatan": "Tab Pembukuan/Transaksi/Pengajuan Online TIDAK punya PRD di Notion (Status Done) - TC diturunkan dari source (Sumber=Asumsi). Semua TC read-only (cy.guardWrites).",
+  "cases": [
+    {
+      "id": "TC-APV-UMUM-001",
+      "kategori": "Happy",
+      "skenario": "Membuka halaman Approval dari menu sidebar",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /home",
+        "Klik menu sidebar 'Approval'"
+      ],
+      "test_data": "-",
+      "expected": "URL /approval, breadcrumb aktif 'List', title memuat 'Daftar Persetujuan', tab Pembukuan aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-002",
+      "kategori": "Positif",
+      "skenario": "Kelima tab tampil berurutan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval"
+      ],
+      "test_data": "-",
+      "expected": "Pill: Pembukuan, Transaksi, Pengajuan Online, Penyesuaian Pinjaman, Perubahan Status Pinjaman",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-003",
+      "kategori": "Positif",
+      "skenario": "Tab default tanpa parameter menu",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval tanpa query"
+      ],
+      "test_data": "-",
+      "expected": "Tab & pane Pembukuan aktif, pane lain tidak aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-004",
+      "kategori": "Positif",
+      "skenario": "Deep-link ke tab Penyesuaian Pinjaman",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval?menu=loan_adjustment_approval"
+      ],
+      "test_data": "menu=loan_adjustment_approval",
+      "expected": "Pill & pane Penyesuaian Pinjaman aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Juga tujuan redirect setelah approve/reject penyesuaian"
+    },
+    {
+      "id": "TC-APV-UMUM-005",
+      "kategori": "Positif",
+      "skenario": "Deep-link ke tab Perubahan Status Pinjaman",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval?menu=loan_status_change_approval"
+      ],
+      "test_data": "menu=loan_status_change_approval",
+      "expected": "Pill & pane Perubahan Status Pinjaman aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-006",
+      "kategori": "Edge",
+      "skenario": "Deep-link ke tab Pengajuan Online menandai pill yang benar",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval?menu=online_approval",
+        "Periksa pill aktif"
+      ],
+      "test_data": "menu=online_approval",
+      "expected": "Hanya pill 'Pengajuan Online' yang aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Diperkirakan GAGAL: index.blade.php:51 kondisi active pill Pengajuan Online memakai 'office_approval' (copy-paste). Observasi UI, bukan dari PRD."
+    },
+    {
+      "id": "TC-APV-UMUM-007",
+      "kategori": "Positif",
+      "skenario": "Klik tab mengganti pane & parameter URL",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval",
+        "Klik tab Perubahan Status Pinjaman",
+        "Klik tab Penyesuaian Pinjaman"
+      ],
+      "test_data": "-",
+      "expected": "Pane terkait aktif dan URL berisi ?menu=<tab> (insertUrlParam)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-008",
+      "kategori": "Positif",
+      "skenario": "Kelima endpoint data tabel merespons 200",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka /approval",
+        "Tunggu 5 request GET data"
+      ],
+      "test_data": "/approval/data, /data/office, /data/online, /data/loan-adjustment, /data/loan-status-change",
+      "expected": "Semua status 200",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-009",
+      "kategori": "Positif",
+      "skenario": "Kolom tabel tab Pembukuan",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab Pembukuan"
+      ],
+      "test_data": "-",
+      "expected": "Header: ID, Tanggal, Account Officer, Nama Kantor Asal, Produk, Nama Nasabah, No Rekening, Jumlah Pinjaman, Lama Pinjaman, Status, (aksi)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-010",
+      "kategori": "Positif",
+      "skenario": "Kolom tabel tab Transaksi",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab Transaksi"
+      ],
+      "test_data": "-",
+      "expected": "Header: ID, Tanggal, Account Officer, Kantor Pemohon, Tipe Transaksi, Nominal, Status, (aksi)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-APV-UMUM-011",
+      "kategori": "Positif",
+      "skenario": "Kolom tabel tab Pengajuan Online",
+      "precondition": "Login akun test (rizal@cazh.dev) dengan role supervisor/super-admin",
+      "langkah": [
+        "Buka tab Pengajuan Online"
+      ],
+      "test_data": "-",
+      "expected": "Header: ID, Tanggal, Nama Kantor Asal, Produk, Nama Nasabah, Status, Action",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "modul": "Rencana Pinjaman - Daftar",
+  "kode": "RPJ",
+  "aksi": "LIST",
+  "halaman": "/loan-plan",
+  "spec": "cypress/e2e/cbs/16-RencanaPinjaman/rencana-pinjaman.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD di Notion untuk Rencana Pinjaman; TC diturunkan dari source (LoanPlanController.php, loanplan/index.blade.php, config/constants.php:314-318). Controller tanpa cek role (semua user login); user cabang hanya melihat kantornya, pusat (office_id 0) semua. Rencana berstatus PENDING tidak ditampilkan. Tombol Batalkan memakai GET (tidak terblok write-guard) -> tidak diklik di spec read-only.",
+  "cases": [
+    {
+      "id": "TC-RPJ-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Menu Rencana Pinjaman membuka daftar",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Rencana Pinjaman"
+      ],
+      "test_data": "-",
+      "expected": "URL /loan-plan; breadcrumb aktif 'List'; caption 'Rencana Pinjaman' + 'Dicatat saat penyesuaian pinjaman lama'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Kolom tabel",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Buka /loan-plan",
+        "Tunggu tabel"
+      ],
+      "test_data": "-",
+      "expected": "GET /loan-plan/data 200; kolom ID, Tanggal, Nomor CIF, NIK, Nasabah, Produk, Jumlah, Jangka Waktu, Kantor, Dibuat Oleh, Status, (aksi)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Nilai status",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Periksa kolom Status"
+      ],
+      "test_data": "-",
+      "expected": "Hanya 'Menunggu Pengajuan', 'Sudah Diajukan', 'Dibatalkan' (PENDING tidak tampil)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Masking NIK",
+      "precondition": "Akun login (role apa pun); minimal 1 rencana",
+      "langkah": [
+        "Periksa kolom NIK",
+        "Klik ikon mata"
+      ],
+      "test_data": "-",
+      "expected": "NIK tampil 4 digit depan + * + 6 digit belakang; setelah klik mata NIK lengkap tampil dan versi tersamar disembunyikan",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Bila data kosong, empty-state diverifikasi (eksplisit)."
+    },
+    {
+      "id": "TC-RPJ-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Aksi sesuai status",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Periksa kolom aksi tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "OPEN: Ubah + Batalkan; selain OPEN: tanpa Ubah/Batalkan; setiap baris punya 'Ajukan' (href /loan/create/{Nomor CIF}) ATAU 'Belum bisa diajukan' (disabled)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Cari berdasarkan nama nasabah",
+      "precondition": "Akun login (role apa pun); minimal 1 rencana",
+      "langkah": [
+        "Ketik nama nasabah baris pertama di search"
+      ],
+      "test_data": "Nama nasabah baris pertama",
+      "expected": "Kata kunci terkirim ke server; semua baris hasil memuat kata kunci; nasabah tsb ada di hasil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-007",
+      "kategori": "Edge",
+      "skenario": "Cari tanpa kecocokan",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Ketik teks acak"
+      ],
+      "test_data": "QA-TIDAK-ADA-ZZZ999",
+      "expected": "Empty-state tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Modal Ubah terisi data",
+      "precondition": "Akun login (role apa pun); write-guard aktif; ada rencana OPEN",
+      "langkah": [
+        "Klik Ubah",
+        "Periksa isi modal",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'Ubah Rencana Pinjaman'; Nasabah, Kode CIF, Produk, Jumlah, Jangka Waktu sesuai baris; NIK tersamar; Batal menutup modal",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Bila tidak ada rencana OPEN, dipastikan tidak ada tombol Ubah (eksplisit)."
+    },
+    {
+      "id": "TC-RPJ-LIST-009",
+      "kategori": "Negatif",
+      "skenario": "Simpan Ubah dengan Jangka Waktu kosong",
+      "precondition": "Akun login (role apa pun); write-guard aktif; ada rencana OPEN",
+      "langkah": [
+        "Klik Ubah",
+        "Kosongkan Jangka Waktu",
+        "Klik Simpan"
+      ],
+      "test_data": "-",
+      "expected": "Browser memblok submit (field wajib); tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RPJ-LIST-010",
+      "kategori": "Negatif",
+      "skenario": "Batalkan rencana dengan ID tidak ada",
+      "precondition": "Akun login (role apa pun)",
+      "langkah": [
+        "Buka /loan-plan/999999999/cancel"
+      ],
+      "test_data": "999999999",
+      "expected": "Dialihkan ke /loan-plan; alert-danger 'Rencana pinjaman tidak ditemukan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Aman: ID tidak ada sehingga tidak ada data yang berubah."
+    },
+    {
+      "id": "TC-RPJ-LIST-011",
+      "kategori": "Negatif",
+      "skenario": "Batalkan rencana yang sudah tidak aktif",
+      "precondition": "Akun login (role apa pun); ada rencana Sudah Diajukan/Dibatalkan di halaman pertama",
+      "langkah": [
+        "Ambil ID rencana non-OPEN",
+        "Buka /loan-plan/{id}/cancel"
+      ],
+      "test_data": "ID rencana non-OPEN",
+      "expected": "Dialihkan ke /loan-plan; alert-danger 'Rencana pinjaman ini sudah tidak aktif'; status baris tidak berubah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Aman: findEditablePlan menolak status != OPEN sebelum update."
+    }
+  ]
+}

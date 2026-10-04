@@ -1,0 +1,62 @@
+{
+  "_note": "Dashboard /home (HomeController@index, resources/views/dashboard/index.blade.php). Teks persis dari blade.",
+  "urls": {
+    "home": "/home",
+    "profile": "/profile",
+    "camelData": "**/dashboard/camel-data*",
+    "chartData": "**/dashboard/chart-data*",
+    "recentTrx": "**/dashboard/recent-transactions*",
+    "tellerDetail": "/setting?menu=teller_balance",
+    "cifCreate": "/cif/create",
+    "cif": "/cif"
+  },
+  "labels": {
+    "heading": "Dashboard",
+    "breadcrumb": "Dashboard",
+    "documentTitle": "Dashboard",
+    "sectionRingkasan": "Ringkasan",
+    "syncButton": "Sinkronkan Data",
+    "syncInfoPattern": "^(Terakhir diperbarui: .+|Belum pernah disinkronkan)$",
+    "notSyncedMessage": "Klik \"Sinkronkan Data\"",
+    "tiles": {
+      "realisasi": "Realisasi Pinjaman Hari Ini",
+      "kasTeller": "Saldo Kas Teller",
+      "npl": "NPL - ",
+      "totalCif": "Total Nasabah (CIF)",
+      "saldoTellerAnda": "Saldo Teller Anda"
+    },
+    "lihatDetail": "Lihat detail",
+    "quickActions": [
+      { "title": "Buat CIF Baru", "href": "/cif/create", "helperPattern": "nasabah terdaftar$" },
+      { "title": "Buat Simpanan", "href": "/cif", "helperPattern": "rekening aktif$" },
+      { "title": "Buat Pinjaman", "href": "/cif", "helperPattern": "pinjaman tercatat$" }
+    ],
+    "periods": { "weekly": "Mingguan", "monthly": "Bulanan", "yearly": "Tahunan" },
+    "trxHeaders": ["Waktu", "Ref ID", "Rekening", "Jenis", "Jumlah", "Catatan"],
+    "trxEmpty": "Belum ada transaksi",
+    "trxMaxRows": 10
+  },
+  "patterns": {
+    "currency": "^-?\\d{1,3}(\\.\\d{3})*$",
+    "npl": "^\\d+\\.\\d{2}%$",
+    "count": "^\\d{1,3}(\\.\\d{3})*$"
+  },
+  "rasio": {
+    "_note": "Urutan & isi kartu menurut PRD 'Dashboard - Rasio Keuangan'. key = suffix id elemen (#cardLdr, #valLdr, #badgeLdr).",
+    "cards": [
+      { "key": "Ldr", "jsonKey": "ldr", "abbr": "LDR", "fullNamePattern": "Loan to Deposit Ratio", "popoverTitle": "LDR - Loan to Deposit Ratio", "formulaHint": "Simpanan" },
+      { "key": "Bopo", "jsonKey": "bopo", "abbr": "BOPO", "fullNamePattern": "Beban Op(\\.|erasional).*Pendapatan Op(\\.|erasional)", "popoverTitle": "BOPO - Beban Operasional", "formulaHint": "Pendapatan Operasional" },
+      { "key": "Roa", "jsonKey": "roa", "abbr": "ROA", "fullNamePattern": "Return on Assets", "popoverTitle": "ROA - Return on Assets", "formulaHint": "Total Aset" },
+      { "key": "Car", "jsonKey": "car", "abbr": "CAR", "fullNamePattern": "Capital Adequacy Ratio", "popoverTitle": "CAR - Capital Adequacy Ratio", "formulaHint": "ATMR" }
+    ],
+    "valuePattern": "^-?\\d+(\\.\\d{1,2})?%$",
+    "prdStatusLabels": ["sehat", "perlu perhatian", "tidak sehat"],
+    "formulaOperatorPattern": "÷|dibagi|/",
+    "bulan": ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+    "branchFilterSelector": "select[name*='office'], select[name*='branch'], select[name*='cabang'], select[id*='office'], select[id*='branch'], select[id*='cabang']",
+    "periodFilterSelector": "select[name*='period'], select[name*='periode'], input[name*='period'], input[name*='periode'], select[id*='period'], input[id*='period']",
+    "deltaSelector": ".fa-arrow-up, .fa-arrow-down, .fa-caret-up, .fa-caret-down, .fa-long-arrow-up, .fa-long-arrow-down, [class*='delta'], [class*='trend']",
+    "deltaTextPattern": "naik|turun|▲|▼"
+  },
+  "timeouts": { "ajax": 30000 }
+}

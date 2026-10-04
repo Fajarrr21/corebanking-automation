@@ -1,0 +1,17 @@
+{
+  "modul": "Nasabah - Pinjaman",
+  "kode": "LOAN",
+  "aksi": "EXPORT",
+  "halaman": "/loan (Export Excel) → /export/loan → /downloads",
+  "spec": "cypress/e2e/cbs/06-Nasabah/Pinjaman/loan-export.irreversible.cy.js",
+  "notion": [
+    {"judul": "Download Pinjaman Aktif", "url": "https://app.notion.com/278f80e3bbf180e4aa74e8db14ee3034"},
+    {"judul": "BKDP Download Pinjaman Aktif", "url": "https://app.notion.com/278f80e3bbf180718e55db9c83414f3c"}
+  ],
+  "catatan": "Export = GET yang menulis (baris downloads + job antrian). Spec di-gate flag --env allowLoanExport=true. Isi kolom berkas Excel (33 kolom + 'Angsuran yang sudah dibayar (kali)') tidak diverifikasi otomatis karena berkas dibuat asinkron oleh queue; dicek statis di source (app/Exports/LoanExport.php) — lihat kandidat bug.",
+  "cases": [
+    {"id": "TC-LOAN-EXPORT-001", "kategori": "Happy", "skenario": "Export pinjaman aktif masuk antrian", "precondition": "Flag allowLoanExport; halaman /loan terbuka", "langkah": ["Klik Export Excel"], "test_data": "Filter default", "expected": "GET /export/loan?office=..&product=..&status=..; kembali ke /loan dengan pesan 'File telah masuk dalam antrian sistem, silakan unduh pada halaman Download jika file telah tersedia'", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Source DownloadController@exportloan: '... silahkan diunduh pada halaman Download ...' → GAGAL pada teks (kandidat bug minor)."},
+    {"id": "TC-LOAN-EXPORT-002", "kategori": "Positif", "skenario": "Entri berkas di halaman Download", "precondition": "Setelah export", "langkah": ["Buka /downloads", "Baca baris teratas"], "test_data": "-", "expected": "Nama berkas pola Daftar-Pinjaman-YYYY-MM-DD HH:MM:SS.xlsx; status ∈ {Diproses, Selesai, Gagal}", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Source menampilkan 'Processing' saat diproses → GAGAL bila job belum selesai (kandidat bug minor)."},
+    {"id": "TC-LOAN-EXPORT-003", "kategori": "Negatif", "skenario": "Jadwal hapus 7 hari", "precondition": "Setelah export", "langkah": ["Buka /downloads", "Baca kolom Jadwal Hapus baris teratas"], "test_data": "-", "expected": "Tanggal export + 7 hari (dd-mm-yyyy)", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "DownloadController.php: deleted_time = now()->addDays(1) → GAGAL (kandidat bug)."}
+  ]
+}

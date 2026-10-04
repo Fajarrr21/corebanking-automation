@@ -1,0 +1,112 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "JT",
+  "halaman": "/setting?menu=due_date",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-jatuh-tempo.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. READ-ONLY: simpan perubahan jatuh tempo menggeser due date pinjaman nasabah nyata (DueDateChangerJob) → TIDAK diotomasi; Retry/Rollback tidak pernah dikirim.",
+  "cases": [
+    {
+      "id": "TC-SET-JT-001",
+      "kategori": "Happy",
+      "skenario": "Form perubahan jatuh tempo & tabel history tampil",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=due_date"
+      ],
+      "test_data": "-",
+      "expected": "Tipe: Penambahan/Pengurangan Hari; Jumlah Hari & Produk required; Tenor opsional; Tanggal Realisasi multiple; header history: ID, Tanggal, Tipe Perubahan, Jumlah Hari, Produk, Tgl Realisasi, Jumlah Rekening, Dibuat Oleh, Diubah Oleh, Status, Aksi",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-002",
+      "kategori": "Positif",
+      "skenario": "Pilih produk memuat Tanggal Realisasi",
+      "precondition": "Minimal 1 produk pinjaman aktif",
+      "langkah": [
+        "Pilih produk pertama"
+      ],
+      "test_data": "-",
+      "expected": "GET /setting/checkduedate?product_id=<id> 200 (array); jumlah opsi Tanggal Realisasi = panjang array; label format 'd NamaBulan YYYY'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-003",
+      "kategori": "Negatif",
+      "skenario": "Simpan tanpa Jumlah Hari",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Kosongkan Jumlah Hari",
+        "Klik Simpan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit (day invalid), tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-004",
+      "kategori": "Positif",
+      "skenario": "Filter Tipe Perubahan pada history",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Pilih filter Tipe = Penambahan"
+      ],
+      "test_data": "Penambahan Hari",
+      "expected": "Semua baris history yang tampil bertipe 'Penambahan Hari' (atau kosong)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-005",
+      "kategori": "Positif",
+      "skenario": "Detail history perubahan jatuh tempo",
+      "precondition": "Minimal 1 history",
+      "langkah": [
+        "Klik Detail pada baris pertama"
+      ],
+      "test_data": "-",
+      "expected": "GET /setting/duedate/{id}/details 200; modal tampil dengan header No, No. Rekening, Jatuh Tempo Lama, Jatuh Tempo Baru; isi sudah dimuat",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-006",
+      "kategori": "Negatif",
+      "skenario": "Rollback dibatalkan di dialog konfirmasi",
+      "precondition": "Minimal 1 history berstatus Sukses",
+      "langkah": [
+        "Klik Rollback",
+        "Jawab Batal pada confirm()"
+      ],
+      "test_data": "-",
+      "expected": "Confirm menanyakan Rollback; tidak ada request; tetap di /setting",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-JT-007",
+      "kategori": "Positif",
+      "skenario": "Export history ke Excel",
+      "precondition": "Minimal 1 history",
+      "langkah": [
+        "Ambil href tombol Export baris pertama",
+        "Request href"
+      ],
+      "test_data": "-",
+      "expected": "Status 200, content-type spreadsheetml (xlsx)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

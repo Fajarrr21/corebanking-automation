@@ -1,0 +1,255 @@
+{
+  "modul": "RKA - Account Officer",
+  "kode": "RKAAO",
+  "aksi": "TARGET",
+  "halaman": "/rka/accountofficer",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-ao-target.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Setting Target AO",
+      "url": "https://app.notion.com/270f80e3bbf180a69548d6a66e4cc789"
+    },
+    {
+      "judul": "BKDP RKA - Edit Setting Target AO",
+      "url": "https://app.notion.com/270f80e3bbf18064b0abd6491e4156ba"
+    },
+    {
+      "judul": "BKDP RKA - Delete Setting Target AO",
+      "url": "https://app.notion.com/271f80e3bbf1805fae63d3b687e8418a"
+    },
+    {
+      "judul": "BKDP RKA - AO",
+      "url": "https://app.notion.com/268f80e3bbf180d68dd2e00d1446b3ac"
+    }
+  ],
+  "catatan": "Membuat data: officer QA + target milik officer QA. Cleanup afterEach column-scoped (kolom Nama Account Officer = nama QA), after() hapus officer.",
+  "cases": [
+    {
+      "id": "TC-RKAAO-TARGET-001",
+      "kategori": "Happy",
+      "skenario": "Simpan target AO baru",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Account Officer QA dibuat di before() (tanpa RKA).",
+      "langkah": [
+        "Pilih AO QA & tahun berjalan",
+        "Isi semua baris (Kenaikan, 1.000.000, 10%)",
+        "Buka tab Lainnya",
+        "Klik Simpan Perubahan"
+      ],
+      "test_data": "Kenaikan / 1000000 / 10%",
+      "expected": "Redirect ke /rka/accountofficer, alert sukses 'Target KPI berhasil disimpan', baris AO QA tampil: tahun berjalan, status 'Tidak Aktif', '<n> Produk', '3 Parameter'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Status default 'Tidak Aktif' = perilaku source (Asumsi)."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-002",
+      "kategori": "Positif",
+      "skenario": "Kalkulasi otomatis jenis Kenaikan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Isi Kenaikan, 1.000.000, 10% pada form"
+      ],
+      "test_data": "1000000 / 10%",
+      "expected": "Target Tahun Ini baris pinjaman pertama = 1100000, tampilan 'IDR 1.100.000'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Read-only."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-003",
+      "kategori": "Positif",
+      "skenario": "Kalkulasi otomatis jenis Penurunan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Isi Penurunan, 1.000.000, 10%"
+      ],
+      "test_data": "1000000 / 10%",
+      "expected": "Target Tahun Ini = 900000, tampilan 'IDR 900.000'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Read-only."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-004",
+      "kategori": "Negatif",
+      "skenario": "Simpan tanpa memilih Account Officer",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Isi semua target tanpa memilih AO",
+        "Klik Simpan"
+      ],
+      "test_data": "-",
+      "expected": "Form tidak terkirim (tidak ada POST), select AO invalid dengan pesan validasi",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Write-guard aktif."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-005",
+      "kategori": "Negatif",
+      "skenario": "Indikator Lainnya kosong",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Account Officer QA dibuat di before() (tanpa RKA).",
+      "langkah": [
+        "Isi Pinjaman & Simpanan saja",
+        "Buka tab Lainnya tanpa mengisi",
+        "Klik Simpan"
+      ],
+      "test_data": "NPL/Daftar Hitam/Laba kosong",
+      "expected": "Pesan error tampil, data tidak tersimpan (tidak ada baris AO QA)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: RkaAccountOfficerController@setTarget memakai rule 'nullable' (baris 154-184) dan field Lainnya tanpa 'required' → tersimpan. Data yang terlanjur tersimpan dibersihkan afterEach."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-006",
+      "kategori": "Negatif",
+      "skenario": "Setting target kedua untuk AO yang sama",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Pilih AO QA & tahun yang sama",
+        "Isi Penurunan",
+        "Simpan"
+      ],
+      "test_data": "Penurunan / 1000000 / 10%",
+      "expected": "Pesan error (satu sales hanya boleh satu pengaturan target), target lama tetap 'increase'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: controller masuk mode update ('Target KPI berhasil diperbarui') — RkaAccountOfficerController.php:131-141,318."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-007",
+      "kategori": "Edge",
+      "skenario": "Persentase negatif",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Account Officer QA dibuat di before() (tanpa RKA).",
+      "langkah": [
+        "Isi persentase baris pertama -5, sisanya valid",
+        "Simpan"
+      ],
+      "test_data": "-5",
+      "expected": "Validasi server menolak (alert-danger berisi daftar error), data tidak tersimpan",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Rule 'numeric|min:0' di controller. Submit sungguhan; input pasti gagal validasi."
+    },
+    {
+      "id": "TC-RKAAO-TARGET-008",
+      "kategori": "Happy",
+      "skenario": "Form edit menampilkan nilai tersimpan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Cari AO QA di daftar",
+        "Klik Edit RKA"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Edit RKA - <nama> (<tahun>)', baris pinjaman pertama: jenis 'kenaikan', target lalu 1000000, persentase 10",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-009",
+      "kategori": "Happy",
+      "skenario": "Ubah persentase target & simpan",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik Edit RKA",
+        "Ubah semua persentase jadi 15%",
+        "Klik Simpan Perubahan"
+      ],
+      "test_data": "15%",
+      "expected": "Alert 'Target KPI berhasil diperbarui'; detail RKA: persentase 15, target 1150000",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-010",
+      "kategori": "Positif",
+      "skenario": "AO read-only di form edit",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik Edit RKA",
+        "Periksa field AO"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada dropdown AO; account_officer_id hanya hidden = id AO QA",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-011",
+      "kategori": "Happy",
+      "skenario": "Aktifkan status RKA AO",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik toggle status",
+        "Konfirmasi 'Ya, Ubah Status'"
+      ],
+      "test_data": "-",
+      "expected": "Modal konfirmasi berisi 'mengaktifkan', alert 'RKA berhasil diaktifkan', status baris 'Aktif'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-012",
+      "kategori": "Positif",
+      "skenario": "Batal ubah status",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik toggle status",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup, tidak ada request, status tetap 'Tidak Aktif'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-013",
+      "kategori": "Happy",
+      "skenario": "Lihat detail RKA AO",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik Lihat Detail"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Detail RKA - <nama> (<tahun>)' terisi tanpa error",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-014",
+      "kategori": "Happy",
+      "skenario": "Hapus target AO (Yes)",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik Hapus RKA",
+        "Klik 'Ya, Hapus RKA'"
+      ],
+      "test_data": "-",
+      "expected": "Popup 'Konfirmasi Hapus RKA'; alert 'RKA berhasil dihapus'; baris AO QA hilang",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAAO-TARGET-015",
+      "kategori": "Positif",
+      "skenario": "Batal hapus (No)",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA tahun berjalan (seed via POST target).",
+      "langkah": [
+        "Klik Hapus RKA",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Popup tertutup, tidak ada request DELETE, baris tetap ada",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

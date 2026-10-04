@@ -1,0 +1,75 @@
+{
+  "modul": "Import - Proses (irreversible)",
+  "kode": "IMP",
+  "aksi": "PROSES",
+  "halaman": "/import/*",
+  "spec": "cypress/e2e/cbs/11-Import/import.irreversible.cy.js",
+  "notion": [],
+  "catatan": "Di-gate flag allowImport. Precondition file data QA di cypress/fixtures/import/data/ (disiapkan manual). Data hasil import TIDAK bisa dihapus otomatis (CIF/rekening/saldo GL). Import Neraca menimpa saldo GL.",
+  "cases": [
+    {
+      "id": "TC-IMP-PROSES-001",
+      "kategori": "Happy",
+      "skenario": "Import CIF valid",
+      "precondition": "Flag allowImport; akun supervisor/CS; file qa-import-cif.xlsx (nama diawali QA)",
+      "langkah": [
+        "Buka /import/cif",
+        "Pilih file",
+        "Proses"
+      ],
+      "test_data": "qa-import-cif.xlsx",
+      "expected": "Diarahkan ke /cif; alert-success 'Data Cif berhasil diimport.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE."
+    },
+    {
+      "id": "TC-IMP-PROSES-002",
+      "kategori": "Happy",
+      "skenario": "Import Tabungan valid",
+      "precondition": "Flag allowImport; file qa-import-saving.xlsx",
+      "langkah": [
+        "Buka /import/saving",
+        "Pilih file",
+        "Proses"
+      ],
+      "test_data": "qa-import-saving.xlsx",
+      "expected": "Diarahkan ke /approval; 'Rekening Simpanan berhasil diimport.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE."
+    },
+    {
+      "id": "TC-IMP-PROSES-003",
+      "kategori": "Happy",
+      "skenario": "Import Pinjaman valid",
+      "precondition": "Flag allowImport; file qa-import-loan.xlsx",
+      "langkah": [
+        "Buka /import/loan",
+        "Pilih file",
+        "Proses"
+      ],
+      "test_data": "qa-import-loan.xlsx",
+      "expected": "Diarahkan ke /approval; 'Rekening Loan berhasil masuk antrian.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE."
+    },
+    {
+      "id": "TC-IMP-PROSES-004",
+      "kategori": "Happy",
+      "skenario": "Import Neraca valid",
+      "precondition": "Flag allowImport; file qa-import-neraca.xlsx",
+      "langkah": [
+        "Buka /import/neraca",
+        "Pilih file",
+        "Proses"
+      ],
+      "test_data": "qa-import-neraca.xlsx",
+      "expected": "Diarahkan ke /general-ledger; 'Neraca berhasil diimport.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE & menimpa saldo GL."
+    }
+  ]
+}

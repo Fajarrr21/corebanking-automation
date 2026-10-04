@@ -1,0 +1,35 @@
+{
+  "name": "cbs-automation",
+  "version": "1.0.0",
+  "description": "Cypress E2E suite untuk CBS (Core Banking System) — staging-cbs.cazh.id",
+  "license": "ISC",
+  "author": "Fajar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:debug": "cypress run --headed --no-exit --browser chrome",
+    "report:clean": "node -e \"require('fs').rmSync('cypress/reports', {recursive: true, force: true})\"",
+    "report:merge": "mochawesome-merge cypress/reports/mochawesome*.json > cypress/reports/merged.json",
+    "report:generate": "marge cypress/reports/merged.json -o cypress/reports --inline",
+    "report:build": "npm run report:merge && npm run report:generate",
+    "test": "run-s report:clean cy:run --continue-on-error report:build",
+    "_comment:env": "Default = staging (pure staging). `npx cypress open`/`run` polos langsung jalan. Override opsional: '-- --env environment=<nama>'. Sumber URL: cypress/config/environments.js. Kredensial: cypress.env.json (git-ignored).",
+    "cy:staging": "cypress run --env environment=staging",
+    "open:staging": "cypress open --env environment=staging",
+    "cy:login": "cypress run --spec \"cypress/e2e/cbs/Auth/*.cy.js\"",
+    "test:login": "run-s report:clean cy:login report:build --continue-on-error",
+    "check:syntax": "node scripts/check-syntax.js",
+    "tc:build": "python scripts/build-tc.py",
+    "tc:check": "node scripts/check-tc-sync.js",
+    "bugs:build": "python scripts/build-bugs.py"
+  },
+  "devDependencies": {
+    "cypress": "^14.0.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2",
+    "npm-run-all": "^4.1.5"
+  }
+}

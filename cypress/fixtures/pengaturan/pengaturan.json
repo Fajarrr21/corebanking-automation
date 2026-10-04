@@ -1,0 +1,126 @@
+{
+  "_sumber": "resources/views/setting/*.blade.php, SettingController.php, Setting*Request.php (origin/develop).",
+  "paths": {
+    "setting": "/setting",
+    "fee": "/setting/fee",
+    "tax": "/setting/tax_interest",
+    "journal": "/setting/journal",
+    "journalDelete": "/setting/journal/delete",
+    "signature": "/setting/signature",
+    "signatureDelete": "/setting/signature/delete",
+    "subAccount": "/setting/subaccount",
+    "subAccountDelete": "/setting/subaccount/delete",
+    "levelApprovalReset": "/setting/level_approval/reset",
+    "checkDueDate": "/setting/checkduedate",
+    "dueDateDetails": "/setting/duedate/*/details"
+  },
+  "menu": {
+    "sidebarTitle": "Pengaturan",
+    "breadcrumb": "Pengaturan"
+  },
+  "tabs": [
+    {"key": "fee", "label": "Biaya", "pane": "#tab_fee"},
+    {"key": "collectibility", "label": "Kolektibilitas", "pane": "#tab_collectibilities"},
+    {"key": "tax", "label": "Pajak & Bunga", "pane": "#tab_tax"},
+    {"key": "journal", "label": "Jurnal", "pane": "#tab_journal"},
+    {"key": "level_approval", "label": "Level Approval", "pane": "#tab_level_approval"},
+    {"key": "due_date", "label": "Jatuh Tempo", "pane": "#tab_level_due_date"},
+    {"key": "sub_account", "label": "Sub Account", "pane": "#tab_level_sub_account"},
+    {"key": "teller_balance", "label": "Saldo Teller", "pane": "#tab_level_teller_balance"},
+    {"key": "employee_balance", "label": "Saldo Karyawan", "pane": "#tab_level_employee_balance"},
+    {"key": "signature", "label": "Tanda Tangan SPH", "pane": "#tab_signature"}
+  ],
+  "unknownMenu": "qa_tidak_ada",
+  "knownJsErrors": ["\\$ is not defined", "employeeID is not defined"],
+  "staticLabelSelectors": ".page-content label, .page-content th, .page-content .caption-subject, .page-content ul.nav-pills a, .page-content .modal-title",
+  "forbiddenTerm": "\\bUnit\\b",
+  "fee": {
+    "caption": "Pengaturan Biaya Biaya",
+    "fields": ["withdrawal_fee_between_branch", "deposit_fee_between_branch", "transfer_fee_between_branch"],
+    "msgSuccess": "Pengaturan biaya antar cabang berhasil disimpan",
+    "msgMin": "The withdrawal fee between branch must be at least 0",
+    "negative": "-1"
+  },
+  "tax": {
+    "caption": "Pengaturan Bunga dan Pajak",
+    "select": "saving_deposit_interest_system",
+    "options": {
+      "AVERAGE_BALANCE_IN_MONTH": "Saldo Rata-Rata dalam bulan",
+      "LOWEST_BALANCE_IN_MONTH": "Saldo Terendah dalam bulan",
+      "LAST_BALANCE_IN_MONTH": "Saldo Terakhir dalam bulan"
+    },
+    "fields": ["bookkeeping_date_of_interest", "bookkeeping_date_of_tax"],
+    "msgSuccess": "Pengaturan bunga dan pajak berhasil disimpan",
+    "msgInterestMax": "Tanggal pembukuan bunga maksimal 31.",
+    "msgTaxMin": "Tanggal pembukuan pajak minimal 1.",
+    "overMax": "32",
+    "underMin": "0"
+  },
+  "journal": {
+    "table": "#sample_2",
+    "headers": ["Tgl Buat", "Nama Jurnal", "Akun Debit", "Akun Kredit", ""],
+    "namePlaceholder": "cth : Pembukuan ATK",
+    "submitLabel": "Tambahkan",
+    "accountCellRegex": "\\((DEBET|KREDIT)\\)\\s*$",
+    "msgCreate": "Pengaturan jurnal berhasil disimpan",
+    "msgUpdate": "Pengaturan jurnal berhasil diupdate",
+    "msgDelete": "Pengaturan jurnal berhasil dihapus",
+    "deleteModal": "#deletejurnal",
+    "editModal": "#editjurnal"
+  },
+  "signature": {
+    "table": "#data-table-signature",
+    "headers": ["Nama", "Jabatan", "Kantor", "action"],
+    "caption": "Pengaturan Penanda Tangan SPH",
+    "allOffices": "Semua Kantor",
+    "officeHelp": "Dikosongkan berarti berlaku untuk semua kantor",
+    "msgCreate": "Data Penanda Tangan Berhasil Disimpan",
+    "msgUpdate": "Data Penanda Tangan Berhasil Diedit",
+    "msgDelete": "Data Penanda Tangan Berhasil Dihapus",
+    "editModal": "#editSignature",
+    "deleteModal": "#deleteSignature",
+    "occupation": "QA Penguji Otomatis"
+  },
+  "collectibility": {
+    "table": "#sample_1",
+    "headers": ["Tgl Buat", "Kolektibilitas", "Tipe Kolektibilitas", "Produk Pinjaman", "Min Jml Tunggakan", "MaxJml Tunggakan", "Min Hari Tunggakan", "Max Hari Tunggakan", "PPAP", ""],
+    "dueDateOptions": {"BAD": "Otomatis Macet", "DOUBTFUL": "Otomatis Diragukan", "MANUAL": "Mengikuti Kolektibilitas"},
+    "names": ["Lancar", "Perhatian Khusus", "Kredit Kurang Lancar", "Diragukan", "Macet"],
+    "typeLocked": "PrincipalInterestSaving",
+    "deleteModal": "#delete",
+    "requiredInputs": ["total_principal_arrear_min", "total_principal_arrear_max", "total_arrear_day_min", "total_arrear_day_max", "allowance_for_loan"]
+  },
+  "levelApproval": {
+    "caption": "PENGATURAN LEVEL APPROVAL",
+    "fields": ["unit_minimum_balance", "unit_maximum_balance", "branch_minimum_balance", "branch_maximum_balance", "center_minimum_balance", "center_maximum_balance"],
+    "maskPrefix": "IDR"
+  },
+  "dueDate": {
+    "historyTable": "#duedate-history-table",
+    "historyHeaders": ["ID", "Tanggal", "Tipe Perubahan", "Jumlah Hari", "Produk", "Tgl Realisasi", "Jumlah Rekening", "Dibuat Oleh", "Diubah Oleh", "Status", "Aksi"],
+    "typeOptions": {"increase": "Penambahan Hari", "decrease": "Pengurangan Hari"},
+    "filterTipe": "Penambahan Hari",
+    "dateLabelRegex": "^\\d{1,2} (Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember) \\d{4}$",
+    "detailModal": "#detailModal",
+    "detailHeaders": ["No", "No. Rekening", "Jatuh Tempo Lama", "Jatuh Tempo Baru"],
+    "xlsxContentType": "spreadsheetml"
+  },
+  "subAccount": {
+    "table": "#sample_3",
+    "headers": ["Tanggal Pembuatan", "Nama Sub Account", "Akun GL"],
+    "optionRegex": "\\((AKTIVA|PASSIVA)\\)\\s*$",
+    "msgCreate": "Sub Account Berhasil Disimpan"
+  },
+  "saldo": {
+    "tellerTable": "#data-table-teller",
+    "tellerHeaders": ["Nama", "Saldo", "Action"],
+    "employeeTable": "#data-table-employee",
+    "employeeHeaders": ["Nama", "Kantor", "Saldo", "Action"],
+    "rupiahRegex": "^Rp\\. ?-?[\\d.,]+$",
+    "tellerModal": "#editAccountId",
+    "employeeModal": "#editUserId"
+  },
+  "timeouts": {
+    "page": 30000
+  }
+}

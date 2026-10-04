@@ -1,0 +1,91 @@
+{
+  "modul": "Kantor",
+  "kode": "KTR",
+  "aksi": "EDIT",
+  "halaman": "/office (modal #editOffice)",
+  "spec": "cypress/e2e/cbs/03-Kantor/kantor-edit.cy.js",
+  "notion": [
+    {
+      "judul": "Penamaan Cabang dan Penanda Tangan Dokumen",
+      "url": "https://app.notion.com/3b9f80e3bbf181189d28d58db83a2abf"
+    }
+  ],
+  "catatan": "Modal Edit TIDAK pernah disubmit: submit = Office::renameTo pada kantor ASLI (rename akun GL, anak kantor, saldo) dan tidak ada kantor milik test (tidak ada fitur tambah kantor) → rename/ubah tipe tidak diuji sama sekali (juga tidak di-gate flag). Source develop office/index.blade.php:170-286 berisi blok duplikat (toolbar + tabel + modal kedua tersarang di dalam modal pertama) → TC-001/003 diperkirakan GAGAL (kandidat bug).",
+  "cases": [
+    {
+      "id": "TC-KTR-EDIT-001",
+      "kategori": "Happy",
+      "skenario": "Klik Edit membuka modal 'Edit Tipe Kantor' dengan Nama Kantor terisi",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /office",
+        "Klik Edit pada baris pertama"
+      ],
+      "test_data": "Baris pertama tabel",
+      "expected": "Modal 'Edit Tipe Kantor' tampil; input Nama Kantor terlihat dan berisi nama kantor baris tsb.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: form asli ada di modal #editOffice KEDUA yang tersarang & tersembunyi; modal yang terbuka berisi tombol Open/Closed operation + tabel duplikat (office/index.blade.php:170-286)."
+    },
+    {
+      "id": "TC-KTR-EDIT-002",
+      "kategori": "Positif",
+      "skenario": "Pilihan Tipe Kantor = Wilayah / Cabang (tanpa istilah Unit)",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka modal Edit",
+        "Baca opsi select office-role"
+      ],
+      "test_data": "-",
+      "expected": "Opsi: Pilih Tipe Kantor, Wilayah, Cabang.",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "AC-1a/b."
+    },
+    {
+      "id": "TC-KTR-EDIT-003",
+      "kategori": "Positif",
+      "skenario": "Modal Edit tidak menampilkan istilah Unit / kode role mentah",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka modal Edit",
+        "Baca teks yang tampil di modal"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada 'UNIT'/'BRANCH' maupun kata 'Unit' pada teks modal.",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug: tabel duplikat di dalam modal mencetak {{$office['role']}} mentah (office/index.blade.php:267)."
+    },
+    {
+      "id": "TC-KTR-EDIT-004",
+      "kategori": "Positif",
+      "skenario": "Alamat Kantor dan Kepala Kantor tampil read-only terisi dari data kantor",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka modal Edit",
+        "Periksa input Alamat Kantor & Kepala Kantor"
+      ],
+      "test_data": "-",
+      "expected": "Kedua input terlihat, disabled, nilainya = kolom Alamat & Kepala Kantor baris tsb.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTR-EDIT-005",
+      "kategori": "Negatif",
+      "skenario": "Menutup modal tanpa Ubah tidak mengirim perubahan apa pun",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka modal Edit",
+        "Klik tombol tutup (×)"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup; tidak ada request POST; nama kantor di tabel tidak berubah.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

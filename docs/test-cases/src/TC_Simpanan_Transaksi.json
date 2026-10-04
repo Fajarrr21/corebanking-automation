@@ -1,0 +1,70 @@
+{
+  "modul": "Nasabah - Simpanan",
+  "kode": "SMP",
+  "aksi": "TRX",
+  "halaman": "/saving/{refId}?menu=deposit|withdraw",
+  "notion": [
+    {
+      "judul": "List Simpanan Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf1819cbb00d802b517c943"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-transaction.irreversible.cy.js",
+  "catatan": "Tidak ada PRD setoran/penarikan; TC diturunkan dari source (Asumsi).",
+  "cases": [
+    {
+      "id": "TC-SMP-TRX-001",
+      "kategori": "Happy",
+      "skenario": "Setoran tunai tanpa buku",
+      "precondition": "allowSavingTransaction=true; akun teller cabang; --env tellerPin; fixture transaction.refId = rekening ACTIVE milik test (nama QA...)",
+      "langkah": [
+        "Tab Setoran",
+        "Isi Jumlah 10000",
+        "Proses",
+        "Isi PIN",
+        "Proses"
+      ],
+      "test_data": "10000",
+      "expected": "Alert 'Transaksi setoran berhasil diproses'; saldo +10000",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (jurnal kas teller)"
+    },
+    {
+      "id": "TC-SMP-TRX-002",
+      "kategori": "Negatif",
+      "skenario": "Setoran PIN salah",
+      "precondition": "allowSavingTransaction=true; akun teller cabang; --env tellerPin; fixture transaction.refId = rekening ACTIVE milik test (nama QA...)",
+      "langkah": [
+        "Tab Setoran",
+        "Isi Jumlah",
+        "Proses",
+        "PIN salah",
+        "Proses"
+      ],
+      "test_data": "PIN 000000",
+      "expected": "Alert 'PIN salah!'; saldo tetap",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Request ditolak CheckPinRule"
+    },
+    {
+      "id": "TC-SMP-TRX-003",
+      "kategori": "Happy",
+      "skenario": "Penarikan tunai",
+      "precondition": "allowSavingTransaction=true; akun teller cabang; --env tellerPin; fixture transaction.refId = rekening ACTIVE milik test (nama QA...); rekening punya buku tabungan; saldo >= 10000",
+      "langkah": [
+        "Tab Penarikan",
+        "Isi Jumlah 10000",
+        "Proses",
+        "Isi PIN",
+        "Proses"
+      ],
+      "test_data": "10000",
+      "expected": "Alert 'Transaksi pencairan berhasil diproses'; saldo -10000",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE; menyeimbangkan setoran TC-001"
+    }
+  ]
+}

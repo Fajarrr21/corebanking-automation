@@ -1,0 +1,83 @@
+{
+  "modul": "Import - Tabungan",
+  "kode": "IMP",
+  "aksi": "TAB",
+  "halaman": "/import/saving",
+  "spec": "cypress/e2e/cbs/11-Import/import-tabungan.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk menu Import; TC diturunkan dari source (ImportController.php, resources/views/import/*.blade.php). Hak akses: menu dirender untuk role 'teller' (navigation.blade.php:544) tetapi controller hanya mengizinkan 'supervisor' & 'customer-service' (ImportController.php:33). Akun test (kemungkinan super-admin) diperkirakan dialihkan -> TC positif gagal dengan pesan precondition.",
+  "cases": [
+    {
+      "id": "TC-IMP-TAB-001",
+      "kategori": "Happy",
+      "skenario": "Halaman Upload Tabungan Nasabah tampil",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Buka /import/saving"
+      ],
+      "test_data": "-",
+      "expected": "Tidak dialihkan; breadcrumb aktif 'Upload Tabungan Nasabah'; judul tab memuat 'Upload Simpanan'; caption 'Upload Simpanan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-IMP-TAB-002",
+      "kategori": "Positif",
+      "skenario": "Download template Excel",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Ambil href link 'disini' di note info",
+        "Request file"
+      ],
+      "test_data": "-",
+      "expected": "Href menuju 'Saving - Core Banking System CAZH.xlsx'; respons 200 dan berisi data",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "File diunduh via cy.request (bukan membuka tab)."
+    },
+    {
+      "id": "TC-IMP-TAB-003",
+      "kategori": "Positif",
+      "skenario": "Struktur form upload",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Periksa form"
+      ],
+      "test_data": "-",
+      "expected": "Form POST multipart/form-data ke /import/importsaving; input file name=file id=CSVTabungan; label 'Upload Excel'; tombol 'Proses'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-IMP-TAB-004",
+      "kategori": "Negatif",
+      "skenario": "Upload file selain Excel",
+      "precondition": "Akun ber-role supervisor/customer-service; write-guard aktif (POST /import/importsaving diizinkan)",
+      "langkah": [
+        "Pilih file .txt",
+        "Klik Proses"
+      ],
+      "test_data": "qa-bukan-excel.txt",
+      "expected": "Kembali ke /import/saving; alert-danger 'Import gagal! Silahkan gunakan template yang disediakan.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi SERVER: ekstensi dicek sebelum Excel::import -> tidak ada data tercipta. Input file tanpa atribut accept (tidak ada validasi client-side)."
+    },
+    {
+      "id": "TC-IMP-TAB-005",
+      "kategori": "Negatif",
+      "skenario": "Proses tanpa file",
+      "precondition": "Akun ber-role supervisor/customer-service; write-guard aktif (POST /import/importsaving diizinkan)",
+      "langkah": [
+        "Klik Proses tanpa memilih file"
+      ],
+      "test_data": "-",
+      "expected": "Kembali ke /import/saving; alert-danger 'Import gagal! File kosong.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi SERVER (hasFile) sebelum import -> aman."
+    }
+  ]
+}

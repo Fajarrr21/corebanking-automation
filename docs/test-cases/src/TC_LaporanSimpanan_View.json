@@ -1,0 +1,62 @@
+{
+  "modul": "Laporan - Sub-laporan Simpanan",
+  "kode": "LSP",
+  "aksi": "VIEW",
+  "halaman": "/saving-transaction, /saving-statistic, /saving-bookkeeping",
+  "spec": "cypress/e2e/cbs/09-Laporan/laporan-simpanan.cy.js",
+  "notion": [],
+  "catatan": "Menu tanpa PRD (Cashflow punya file TC sendiri). Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-LSP-VIEW-001",
+      "kategori": "Positif",
+      "skenario": "Lap Transaksi Simpanan: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-transaction",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Transaksi Simpanan'; header = Tanggal | Nama Kasir Penerima | Jenis Transaksi | Cabang | Nama Nasabah | Nomor Rekening | Nominal | Notes; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LSP-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Lap Statistik Simpanan: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-statistic",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Statistik Simpanan'; header = Nama Produk | Transaksi Masuk | Jml Orang | Transaksi Keluar | Jml Orang; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LSP-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Lap Pembukuan Simpanan: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /saving-bookkeeping",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan Pembukuan Bunga Simpanan'; header = Tanggal Pembukuan | Nama Nasabah | Produk | Nomor Rekening | Bunga yang diberikan; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    }
+  ]
+}

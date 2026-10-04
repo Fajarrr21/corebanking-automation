@@ -1,0 +1,171 @@
+{
+  "modul": "Produk",
+  "kode": "PRODUK",
+  "aksi": "CREATE",
+  "halaman": "/product/loan (form Tambah Pinjaman, POST /product/loan)",
+  "spec": "cypress/e2e/cbs/05-Produk/produk-create.cy.js",
+  "notion": [
+    {
+      "judul": "Pengaturan Produk Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf181e1a121f28abf0d6566"
+    }
+  ],
+  "catatan": "001-007 read-only (guardWrites). 008-010 mengirim POST nyata tetapi memakai nama+kode produk yang sudah ada sehingga pasti ditolak rule unique (CreateProductLoanRequest) — tidak ada data tercipta. Happy-path tambah IRREVERSIBLE dipindah ke TC_Produk_Irreversible (produk tidak bisa dihapus + loanCreate membuat akun SUB GL per kantor) → produk-lifecycle.irreversible.cy.js, flag allowProdukCreate, cleanup = nonaktifkan produk QA.",
+  "cases": [
+    {
+      "id": "TC-PRODUK-CREATE-001",
+      "kategori": "Happy",
+      "skenario": "Form Tambah Pinjaman menampilkan seluruh field dan tombol Simpan",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Periksa field form 'Tambah Pinjaman'"
+      ],
+      "test_data": "-",
+      "expected": "Field name, code, installment_type, interest_rates (number), interest_type, collateral, need_saving, online, descriptions ada; name required; tombol 'Simpan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari loan.blade.php"
+    },
+    {
+      "id": "TC-PRODUK-CREATE-002",
+      "kategori": "Positif",
+      "skenario": "Form memiliki field Satuan Periode Bunga (required) terpisah dari Bunga",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Cari field Satuan Periode Bunga di form tambah"
+      ],
+      "test_data": "-",
+      "expected": "Field Satuan Periode Bunga ada dan wajib diisi",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: field tidak ada di loan.blade.php (113-124 hanya interest_rates) & tidak ada kolom di ProductLoan. Diharapkan GAGAL."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-003",
+      "kategori": "Positif",
+      "skenario": "Pilihan Jenis Angsuran hanya Bulanan dan Mingguan",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Baca opsi select installment_type"
+      ],
+      "test_data": "-",
+      "expected": "Opsi hanya MONTHLY (Bulanan) dan WEEKLY (Mingguan)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: ada opsi 'Sekaligus Lunas' (ONE_TIME) di loan.blade.php:102-106. Diharapkan GAGAL."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-004",
+      "kategori": "Positif",
+      "skenario": "Form tambah memiliki field Status Aktif/Tidak Aktif",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Cari select status di form tambah"
+      ],
+      "test_data": "-",
+      "expected": "Select status dengan pilihan ACTIVE dan INACTIVE",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: form tambah tidak punya Status; loanCreate selalu set ACTIVE (ProductController.php loanCreate). Diharapkan GAGAL."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-005",
+      "kategori": "Positif",
+      "skenario": "Toggle Simpanan Wajib menampilkan/menyembunyikan field persentase",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Pilih Simpanan Wajib = Ya",
+        "Pilih Simpanan Wajib = Tidak"
+      ],
+      "test_data": "need_saving YES/NO",
+      "expected": "Ya → grup #depositRate (Simpanan Wajib % dari Pokok) tampil; Tidak → tersembunyi",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD menyebut 'nominal atau persentase'; aplikasi hanya persentase."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-006",
+      "kategori": "Negatif",
+      "skenario": "Simpan dengan field wajib kosong tidak mengirim form",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Kosongkan Nama, Kode, Bunga",
+        "Klik Simpan"
+      ],
+      "test_data": "field kosong",
+      "expected": "Browser menahan submit (name valueMissing), tetap di /product/loan, tidak ada request POST",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi a. guardWrites aktif."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-007",
+      "kategori": "Negatif",
+      "skenario": "Field Bunga tidak menerima input selain angka",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /product/loan",
+        "Ketik 'abc' di Suku Bunga"
+      ],
+      "test_data": "abc",
+      "expected": "Nilai field tetap kosong (input type=number)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi c"
+    },
+    {
+      "id": "TC-PRODUK-CREATE-008",
+      "kategori": "Negatif",
+      "skenario": "Bunga bernilai negatif ditolak",
+      "precondition": "Minimal 1 produk pinjaman (nama & kodenya dipakai ulang agar request pasti ditolak)",
+      "langkah": [
+        "Buka /product/loan",
+        "Isi form dengan bunga -1 (nama & kode = produk yang sudah ada)",
+        "Submit (validasi HTML5 dilewati agar validasi server teruji)"
+      ],
+      "test_data": "interest_rates = -1",
+      "expected": "Kembali ke /product/loan dengan alert-danger berisi 'The interest rates must be at least 0'",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "POST nyata ke /product/loan; dijamin ditolak (unique name+code) → tidak ada data tercipta. Pesan dari lang/en (locale id tidak punya file lang)."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-009",
+      "kategori": "Negatif",
+      "skenario": "Nama produk yang sudah ada ditolak",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka /product/loan",
+        "Isi Nama & Kode = produk yang sudah ada, field lain valid",
+        "Submit"
+      ],
+      "test_data": "nama produk existing",
+      "expected": "Alert-danger 'The name has already been taken'; input nama terisi kembali (old input)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi b. Request pasti ditolak — aman."
+    },
+    {
+      "id": "TC-PRODUK-CREATE-010",
+      "kategori": "Negatif",
+      "skenario": "Kode produk yang sudah ada ditolak",
+      "precondition": "Minimal 1 produk pinjaman",
+      "langkah": [
+        "Buka /product/loan",
+        "Isi Kode (dan Nama) = produk yang sudah ada",
+        "Submit"
+      ],
+      "test_data": "kode produk existing",
+      "expected": "Alert-danger 'The code has already been taken'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Rule unique:products (code) dari CreateProductLoanRequest; PRD tidak menyebut Kode Produk."
+    }
+  ]
+}

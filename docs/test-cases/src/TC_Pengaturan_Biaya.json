@@ -1,0 +1,73 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "FEE",
+  "halaman": "/setting?menu=fee (POST /setting/fee)",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-biaya.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD. Pengaturan GLOBAL: setiap test capture nilai asli (cy.request) di beforeEach dan restore + verifikasi di afterEach. 001-002 guardWrites; 003 POST nilai negatif yang pasti ditolak (SettingFeeRequest min:0); 004 menyimpan sungguhan lalu di-restore.",
+  "cases": [
+    {
+      "id": "TC-SET-FEE-001",
+      "kategori": "Happy",
+      "skenario": "Form biaya antar cabang menampilkan 3 field angka wajib berisi nilai tersimpan",
+      "precondition": "Login sebagai super-admin; pengaturan biaya sudah pernah diisi",
+      "langkah": [
+        "Buka /setting?menu=fee"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'Pengaturan Biaya Biaya'; Tarik Tunai, Setor Tunai, Transfer = input number required berisi nilai tersimpan; tombol Simpan",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-FEE-002",
+      "kategori": "Negatif",
+      "skenario": "Tarik Tunai dikosongkan lalu Simpan",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Biaya",
+        "Kosongkan Tarik Tunai",
+        "Klik Simpan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit (field pertama invalid = withdrawal_fee_between_branch), tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-FEE-003",
+      "kategori": "Negatif",
+      "skenario": "Biaya negatif ditolak server",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Biaya",
+        "Isi Tarik Tunai -1",
+        "Klik Simpan"
+      ],
+      "test_data": "-1",
+      "expected": "Alert-danger 'The withdrawal fee between branch must be at least 0', tidak ada alert sukses",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Input number tanpa atribut min sehingga request terkirim; pasti ditolak SettingFeeRequest. Restore tetap dijalankan sebagai pengaman."
+    },
+    {
+      "id": "TC-SET-FEE-004",
+      "kategori": "Happy",
+      "skenario": "Ubah biaya Tarik Tunai tersimpan",
+      "precondition": "Login sebagai super-admin; pengaturan biaya sudah pernah diisi",
+      "langkah": [
+        "Buka tab Biaya",
+        "Isi Tarik Tunai = nilai asli + 1",
+        "Klik Simpan"
+      ],
+      "test_data": "nilai asli + 1",
+      "expected": "Alert 'Pengaturan biaya antar cabang berhasil disimpan', URL menu=fee, field berisi nilai baru; afterEach mengembalikan nilai asli",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Mengubah pengaturan global sesaat — restore di afterEach (cy.request POST /setting/fee) + verifikasi."
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "UMUM",
+  "halaman": "/setting",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-umum.cy.js",
+  "notion": [
+    {
+      "judul": "Penamaan Cabang dan Penanda Tangan Dokumen",
+      "url": "https://app.notion.com/3b9f80e3bbf181189d28d58db83a2abf"
+    }
+  ],
+  "catatan": "Read-only. Tidak ada PRD khusus halaman Pengaturan; TC-SET-UMUM-006 memakai PRD Penamaan Cabang (istilah Unit → Cabang). Error JS yang sudah dikenal ('$ is not defined' dari setting/signature.blade.php, 'employeeID is not defined' dari setting/index.blade.php) diabaikan di TC lain lewat ignoreKnownJsErrors dan diuji eksplisit di TC-SET-UMUM-007.",
+  "cases": [
+    {
+      "id": "TC-SET-UMUM-001",
+      "kategori": "Happy",
+      "skenario": "Halaman Pengaturan tampil dengan 10 tab dan tab Biaya aktif default",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Pengaturan'; tab berurutan: Biaya, Kolektibilitas, Pajak & Bunga, Jurnal, Level Approval, Jatuh Tempo, Sub Account, Saldo Teller, Saldo Karyawan, Tanda Tangan SPH; hanya tab Biaya aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Dari setting/index.blade.php"
+    },
+    {
+      "id": "TC-SET-UMUM-002",
+      "kategori": "Positif",
+      "skenario": "Menu sidebar Pengaturan membuka /setting",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /home",
+        "Klik menu sidebar 'Pengaturan'"
+      ],
+      "test_data": "-",
+      "expected": "Pindah ke /setting, breadcrumb 'Pengaturan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-UMUM-003",
+      "kategori": "Positif",
+      "skenario": "Klik setiap tab menampilkan panelnya dan menulis ?menu ke URL",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting",
+        "Klik tiap tab satu per satu"
+      ],
+      "test_data": "10 tab",
+      "expected": "Tab & panel yang diklik aktif/terlihat; URL memuat menu=<key> (history.pushState)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-UMUM-004",
+      "kategori": "Positif",
+      "skenario": "Deep link ?menu=<tab> mengaktifkan tab sesuai",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=<key> untuk tiap tab"
+      ],
+      "test_data": "fee, collectibility, tax, journal, level_approval, due_date, sub_account, teller_balance, employee_balance, signature",
+      "expected": "Tab & panel sesuai aktif; hanya 1 tab aktif",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Redirect sukses tiap aksi simpan memakai ?menu= (Helpers::successRedirect)"
+    },
+    {
+      "id": "TC-SET-UMUM-005",
+      "kategori": "Edge",
+      "skenario": "Parameter menu tidak dikenal",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting?menu=qa_tidak_ada",
+        "Klik tab Biaya"
+      ],
+      "test_data": "menu=qa_tidak_ada",
+      "expected": "Halaman tetap tampil (10 tab, tanpa alert error); tab Biaya dapat diaktifkan manual",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Perilaku saat ini: tidak ada tab yang aktif saat menu tidak dikenal."
+    },
+    {
+      "id": "TC-SET-UMUM-006",
+      "kategori": "Positif",
+      "skenario": "Label statis halaman Pengaturan tidak memakai istilah Unit",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka /setting",
+        "Kumpulkan teks label, header tabel, judul portlet, tab, judul modal"
+      ],
+      "test_data": "regex \\bUnit\\b",
+      "expected": "Tidak ada label yang memuat kata 'Unit' (diganti 'Cabang')",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tab Level Approval berlabel 'Kantor Unit' (setting/level_approval.blade.php:16). Diharapkan GAGAL."
+    },
+    {
+      "id": "TC-SET-UMUM-007",
+      "kategori": "Negatif",
+      "skenario": "Halaman Pengaturan dimuat tanpa error JavaScript",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Pasang pencatat uncaught:exception",
+        "Buka /setting"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada uncaught JS error",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: setting/signature.blade.php:178-190 memanggil $(...).select2 di dalam section content, sebelum jQuery dimuat (layouts/navigation.blade.php:639 vs 661) → 'ReferenceError: $ is not defined'. Diharapkan GAGAL."
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "_sumber": "cazh-core-banking-konvensional-v1 origin/develop: routes/web.php:312-341, TransactionController, resources/views/transaction/**, layouts/navigation.blade.php:516-542",
+  "roleHint": "akun test bukan teller/super-admin — butuh akun dengan role 'teller' (menu) atau 'super-admin' (akses URL)",
+  "roleHintMenu": "akun test bukan teller — menu Transaksi hanya untuk role 'teller' (navigation.blade.php:516)",
+  "roleHintDenied": "TANPA role 'teller' maupun 'super-admin' (mis. auditor/customer-service)",
+  "home": "/home",
+  "deniedMessage": "Akses anda terbatas!",
+  "menu": {
+    "title": "Transaksi",
+    "sub": [
+      { "label": "Kas", "path": "/transaction/cash" },
+      { "label": "General Ledger", "path": "/transaction/general_ledger" },
+      { "label": "Riwayat Kasir", "path": "/transaction/history" },
+      { "label": "Riwayat Massal", "path": "/transaction/mass-history" }
+    ]
+  },
+  "kas": {
+    "path": "/transaction/cash",
+    "title": "Kas",
+    "breadcrumb": "Kas",
+    "tabs": [
+      { "hash": "#in", "label": "Bon Kas Teller", "menu": "cash_in" },
+      { "hash": "#out", "label": "Setor Kas Teller", "menu": "cash_out" },
+      { "hash": "#ininduk", "label": "Setor Kas Induk Tunai", "menu": "cash_in_induk" },
+      { "hash": "#outinduk", "label": "Tarik Kas Induk tunai", "menu": "cash_out_induk" },
+      { "hash": "#cash_in_other_branch", "label": "Bon Kas Cabang Lain", "menu": "cash_in_other_branch" },
+      { "hash": "#cash_out_other_branch", "label": "Setor Kas Cabang Lain", "menu": "cash_out_other_branch" },
+      { "hash": "#history", "label": "Riwayat", "menu": "history" }
+    ],
+    "denominations": ["100_000", "50_000", "20_000", "10_000", "5_000", "2_000", "1_000", "500", "200", "100"],
+    "denomValues": { "100_000": 100000, "50_000": 50000, "20_000": 20000, "10_000": 10000, "5_000": 5000, "2_000": 2000, "1_000": 1000, "500": 500, "200": 200, "100": 100 },
+    "sampleCount": { "100_000": 2, "50_000": 1, "1_000": 3 },
+    "sampleTotal": 253000,
+    "alertBonKosong": "Silahkan masukan jumlah Bon Kas Anda",
+    "alertSetorKosong": "Silahkan masukan jumlah Setor Kas Anda",
+    "pinModalTitle": "Masukan PIN Supervisor Anda",
+    "historyHeaders": ["Status", "Jenis transaksi", "ID Transaksi", "Tgl Transaksi", "Officer", "Supervisor", "Nominal"],
+    "historyDataUrl": "/transaction/cash/data*"
+  },
+  "gl": {
+    "path": "/transaction/general_ledger",
+    "title": "General Ledger",
+    "breadcrumb": "General Ledger",
+    "tabs": [
+      { "hash": "#accounting", "label": "Pembukuan", "menu": "accounting" },
+      { "hash": "#overbooking", "label": "Overbooking GL", "menu": "overbooking" },
+      { "hash": "#history", "label": "Riwayat", "menu": "history" },
+      { "hash": "#historygl", "label": "Riwayat Akun GL", "menu": "historygl" },
+      { "hash": "#masstransaction", "label": "Overbooking Massal", "menu": "masstransaction" },
+      { "hash": "#mass_saving_transaction", "label": "Transaksi Massal Simpanan", "menu": "mass_saving_transaction" }
+    ],
+    "accountingCaption": "Pembukuan General Ledger",
+    "overbookingCaption": "Overbooking General Ledger",
+    "tellerHelp": "Saldo teller ini ikut bergerak bila jurnalnya menyentuh Kas Teller.",
+    "tellerOptionPattern": "^.+ - IDR [0-9.,]+$",
+    "backdateHelp": "Tanggal efektif transaksi",
+    "pinModalTitle": "Masukan PIN Supervisor Anda",
+    "historyHeaders": ["Status", "Transaksi", "ID Transaksi", "Tgl Transaksi", "Officer", "Supervisor", "Nominal", "Akun Debit", "Akun Kredit", "Catatan"],
+    "historyGlHeaders": ["Status", "ID Transaksi", "Tgl Transaksi", "Akun", "Officer", "Saldo Awal", "Nominal Debit", "Nominal Kredit", "Saldo Akhir", "Catatan"],
+    "historyDataUrl": "/transaction/general_ledger/history/data*",
+    "historyGlDataUrl": "/transaction/general_ledger/history_gl/data2*",
+    "historyRange": { "from": "2026-09-01", "to": "2026-09-30" },
+    "searchNoMatch": "QA-TIDAK-ADA-ZZZ999"
+  },
+  "massGl": {
+    "menu": "masstransaction",
+    "caption": "Overbooking Massal",
+    "typeOptions": ["Pilih Jenis", "Debit (1 Debit → Multiple Kredit)", "Kredit (Multiple Debit → 1 Kredit)"],
+    "errors": {
+      "jenis": "Pilih jenis transaksi terlebih dahulu",
+      "akunDebitUtama": "Pilih akun debit utama terlebih dahulu",
+      "minKredit": "Tambah minimal satu akun kredit",
+      "akunKredit": "Pilih akun kredit"
+    },
+    "processButton": "Proses Overbooking Massal",
+    "pinTitle": "Masukan PIN Anda",
+    "prdNamaTransaksiLabel": "Nama Transaksi",
+    "sampleAmount": "1000"
+  },
+  "massSaving": {
+    "menu": "mass_saving_transaction",
+    "caption": "Transaksi Simpanan Massal",
+    "jenisOptions": ["Pilih Jenis Transaksi", "Setoran", "Penarikan"],
+    "posisiOptions": ["Pilih Posisi GL", "Debit", "Credit"],
+    "templateText": "Download template di sini",
+    "templateHref": "Setoran Simpanan - Core Banking System.xlsx",
+    "errors": {
+      "jenis": "Jenis transaksi harus dipilih",
+      "posisi": "Posisi GL harus dipilih",
+      "file": "This field is required.",
+      "extension": "Format file harus xlsx, xls, atau csv",
+      "accountGl": "Account GL harus dipilih"
+    },
+    "wrongFile": { "name": "qa-bukan-excel.txt", "content": "QA file bukan excel", "mime": "text/plain" },
+    "excelFile": { "name": "qa-transaksi-massal.xlsx", "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+    "prdJenisSatuanLabel": "Satuan"
+  },
+  "riwayatKasir": {
+    "path": "/transaction/history",
+    "title": "Riwayat Kasir",
+    "breadcrumb": "Riwayat Kasir",
+    "note": "Riwayat transaksi kasir hanya bisa dibatalkan jika pada hari yang sama",
+    "headers": ["Tanggal Transaksi", "Reff ID", "Officer", "Transaksi", "Nama General Ledger", "Credit", "Debit", "No Rekening", "Status", "Catatan", "Action"],
+    "filterOptions": ["Semua Transaksi", "Angsuran Pinjaman", "Pencairan Pinjaman", "Pelunasan Pinjaman", "Setoran Simpanan", "Penarikan Simpanan", "Jurnal", "Pembatalan Transaksi", "Bon Kas", "Setor Kas", "Admin Fee"],
+    "dataUrl": "/transaction/general_ledger/history_gl/data*",
+    "range": { "from": "2026-09-01", "to": "2026-09-30" },
+    "voidModalTitle": "Masukan PIN Supervisor Anda"
+  },
+  "riwayatMassal": {
+    "path": "/transaction/mass-history",
+    "title": "Riwayat Massal",
+    "breadcrumb": "Riwayat Massal",
+    "note": "Riwayat transaksi massal menampilkan semua transaksi overbooking massal",
+    "headers": ["ID", "Tanggal Transaksi", "Reff ID", "Officer", "Transaksi", "Nama General Ledger", "Credit", "Debit", "No Rekening", "Status", "Catatan", "Aksi"],
+    "dataUrl": "/transaction/mass-history/data*",
+    "range": { "from": "2026-09-01", "to": "2026-09-30" }
+  },
+  "posting": {
+    "_note": "Hanya untuk *.irreversible.cy.js (flag allowTransaction). PIN/ID supervisor & PIN user diambil dari Cypress.env (cypress.env.json), BUKAN dari fixture.",
+    "envSpvId": "trxSpvUserId",
+    "envSpvPin": "trxSpvPin",
+    "envUserPin": "trxUserPin",
+    "amount": "1000",
+    "overbookingSuccess": "Overbooking General Ledger Berhasil",
+    "sameAccountError": "Rekening posisi debit dan rekening posisi credit tidak boleh sama",
+    "wrongPinError": "PIN Supervisor salah",
+    "tellerInsufficientPrefix": "Saldo kas teller",
+    "massSavingInvalidAccount": "tidak ditemukan",
+    "massSavingFixture": "transaksi/qa-mass-saving-invalid.csv"
+  },
+  "timeouts": { "table": 30000 }
+}

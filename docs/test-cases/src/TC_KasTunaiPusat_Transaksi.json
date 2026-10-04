@@ -1,0 +1,44 @@
+{
+  "modul": "Kas Tunai Pusat - Transaksi (irreversible)",
+  "kode": "KTP",
+  "aksi": "TRX",
+  "halaman": "/account/center/{officeId}",
+  "spec": "cypress/e2e/cbs/12-KasTunaiPusat/kas-tunai-pusat.irreversible.cy.js",
+  "notion": [],
+  "catatan": "Di-gate flag allowTransaction. Setoran IDR 1 bercatatan QA<ts> langsung di-void (saldo kembali); baris riwayat + VOID tetap tersimpan (tidak bisa dihapus).",
+  "cases": [
+    {
+      "id": "TC-KTP-TRX-001",
+      "kategori": "Happy",
+      "skenario": "Setoran lalu Void",
+      "precondition": "Akun super-admin; flag allowTransaction",
+      "langkah": [
+        "Catat saldo",
+        "Setoran IDR 1 catatan QA",
+        "Cek saldo",
+        "Void baris QA di Riwayat",
+        "Cek saldo"
+      ],
+      "test_data": "IDR 1, QA<ts> KTP",
+      "expected": "'Transaksi setoran berhasil diproses'; saldo +1; 'Transaksi berhasil divoid'; saldo kembali semula",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (riwayat)."
+    },
+    {
+      "id": "TC-KTP-TRX-002",
+      "kategori": "Negatif",
+      "skenario": "Penarikan melebihi saldo",
+      "precondition": "Akun super-admin; flag allowTransaction",
+      "langkah": [
+        "Isi nominal saldo+1.000.000",
+        "Proses"
+      ],
+      "test_data": "saldo + 1.000.000",
+      "expected": "alert-danger 'Saldo tidak mencukupi'; saldo tidak berubah",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "paths": {
+    "list": "/saving",
+    "data": "/saving/data",
+    "detail": "/saving/",
+    "export": "/export/saving",
+    "printDocument": "/saving/print/document/"
+  },
+  "breadcrumb": {
+    "list": "Daftar Simpanan",
+    "detail": "Detail Simpanan"
+  },
+  "list": {
+    "sourceHeaders": ["", "ID", "Kantor Cabang", "Account Officer", "Produk", "Suku Bunga", "Kode CIF", "Nama", "NIK", "No Rekening", "Saldo", "Status"],
+    "prdHeaders": ["Tanggal Buka Rekening", "Nomor Rekening", "Nama Nasabah", "Produk Simpanan", "Cabang", "Saldo", "Status"],
+    "col": { "id": 1, "office": 2, "product": 4, "name": 7, "accountNumber": 9, "balance": 10, "status": 11 },
+    "summaryCards": ["JUMLAH NASABAH", "SALDO REKENING AKTIF", "SALDO REKENING DORMANT", "SALDO REKENING ON HOLD"],
+    "viewLabel": "Lihat",
+    "prdStatusValues": ["Aktif", "Tidak Aktif"],
+    "statusActiveValue": "ACTIVE",
+    "statusActiveLabel": "Aktif",
+    "notFoundKeyword": "ZZQA-TIDAK-ADA-0000000000",
+    "resetFilterLabel": "Reset Filter",
+    "openDateFilterHints": ["Tanggal Buka", "Tanggal Buka Rekening"],
+    "exportLabel": "Export Excel",
+    "exportQueuedMsg": "File telah masuk dalam antrian sistem"
+  },
+  "balanceFilter": {
+    "min": "100000",
+    "max": "500000",
+    "minFormatted": "100.000",
+    "typedMillion": "1000000",
+    "typedMillionFormatted": "1.000.000",
+    "typedWithLetters": "12ab3",
+    "typedWithLettersFormatted": "123",
+    "invalidMin": "500000",
+    "invalidMax": "100000",
+    "rangeError": "Saldo minimum tidak boleh lebih besar dari saldo maksimum."
+  },
+  "detail": {
+    "notFoundRef": "QA-TIDAK-ADA-000",
+    "notFoundMsg": "Nomor Rekening tidak ditemukan",
+    "tabData": "Data Simpanan",
+    "tabHistory": "Riwayat Transaksi",
+    "tabApplication": "Formulir Permohonan",
+    "cards": ["Informasi Rekening", "Buku Tabungan", "Nasabah", "Kantor"],
+    "accountKeys": ["Nomor Rekening", "Produk", "Status", "Tanggal Buat"],
+    "historyHeaders": ["ID", "Ref ID", "Tgl Transaksi", "Cabang Transaksi", "Officer", "Tipe Transaksi", "Debit", "Kredit", "Saldo Akhir", "Aksi"],
+    "printCoverLabel": "Cetak Cover Buku Tabungan",
+    "pdfContentType": "application/pdf",
+    "excelContentType": "spreadsheetml"
+  },
+  "application": {
+    "title": "FORMULIR PERMOHONAN SIMPANAN",
+    "headLabels": ["Tanggal Permohonan", "No Berkas"],
+    "customerLabels": ["NIK", "Nama Lengkap", "Alamat", "Jenis Nasabah", "No Rek Simpanan"],
+    "jobLabels": ["Pekerjaan", "Penghasilan Per Bulan", "Sumber Dana"],
+    "facilityLabels": ["Nama Produk", "Jumlah Setoran Awal"],
+    "statement": "PERNYATAAN DAN PERSETUJUAN NASABAH",
+    "headOfficeSelect": "#filter_head_office",
+    "accountOfficerSelect": "#filter_account_officer",
+    "printLabel": "Print",
+    "defaultWord": "DEFAULT"
+  },
+  "open": {
+    "buttonLabel": "BUAT REKENING BARU",
+    "modalTitle": "Buka Rekening Baru",
+    "productPlaceholder": "Pilih Produk Simpanan",
+    "cancelLabel": "Batal",
+    "submitLabel": "Oke",
+    "successMsg": "Rekening Simpanan berhasil dibuat",
+    "waitingLabel": "Menunggu Persetujuan",
+    "productRequiredMsg": "product id"
+  },
+  "transaction": {
+    "refId": "",
+    "amount": "10000",
+    "wrongPin": "000000",
+    "depositTab": "Setoran",
+    "withdrawTab": "Penarikan",
+    "depositSuccess": "Transaksi setoran berhasil diproses",
+    "withdrawSuccess": "Transaksi pencairan berhasil diproses",
+    "wrongPinMsg": "PIN salah!",
+    "qaNamePrefix": "QA"
+  },
+  "timeout": 30000
+}

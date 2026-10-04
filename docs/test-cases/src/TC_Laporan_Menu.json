@@ -1,0 +1,115 @@
+{
+  "modul": "Laporan - Menu & Indeks",
+  "kode": "LAP",
+  "aksi": "MENU",
+  "halaman": "/report/general, /report/loan, /report/saving",
+  "spec": "cypress/e2e/cbs/09-Laporan/menu-laporan.cy.js",
+  "notion": [
+    {
+      "judul": "Laporan Neraca BKD Pekalongan",
+      "url": "https://app.notion.com/1dff80e3bbf1806a9278fc03d8bbb458"
+    },
+    {
+      "judul": "Laporan Laba Rugi BKD Pekalongan",
+      "url": "https://app.notion.com/1e0f80e3bbf180869840e9f14e900333"
+    },
+    {
+      "judul": "Laporan Cashflow Simpanan",
+      "url": "https://app.notion.com/247f80e3bbf180c7a275e3a7a8f2635a"
+    },
+    {
+      "judul": "Laporan Penyesuaian Pinjaman",
+      "url": "https://app.notion.com/3b9f80e3bbf1812b9e19e86108299764"
+    }
+  ],
+  "catatan": "Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-LAP-MENU-001",
+      "kategori": "Happy",
+      "skenario": "Menu Laporan berisi submenu Umum, Pinjaman, Simpanan, Laporan AI",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Baca submenu Laporan di sidebar",
+        "Klik menu Laporan"
+      ],
+      "test_data": "-",
+      "expected": "4 submenu ada dengan href /report/general, /report/loan, /report/saving, /report/ai dan tampil saat menu dibuka",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD Neraca/Laba Rugi/Cashflow menyebut 'menu laporan > submenu umum/simpanan'. Laporan AI hanya untuk role tertentu."
+    },
+    {
+      "id": "TC-LAP-MENU-002",
+      "kategori": "Negatif",
+      "skenario": "Menu 'Laporan Penyesuaian Pinjaman' ada di kelompok Laporan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Baca submenu Laporan"
+      ],
+      "test_data": "-",
+      "expected": "Submenu 'Laporan Penyesuaian Pinjaman' tersedia",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: tidak ada menu/route laporan penyesuaian di develop (navigation.blade.php:487-514, routes/web.php)."
+    },
+    {
+      "id": "TC-LAP-MENU-003",
+      "kategori": "Positif",
+      "skenario": "Halaman Laporan Umum menampilkan kartu laporan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/general"
+      ],
+      "test_data": "fixture indexPages.general.cards",
+      "expected": "Judul 'Laporan Umum'; kartu Neraca, Lap Laba/Rugi, COA, NPL/PPAP, RKA, Produktivitas Sales dengan href benar",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD hanya menyebut Neraca & Laba Rugi di Umum; kartu lain dari source."
+    },
+    {
+      "id": "TC-LAP-MENU-004",
+      "kategori": "Positif",
+      "skenario": "Halaman Laporan Pinjaman menampilkan kartu laporan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/loan"
+      ],
+      "test_data": "fixture indexPages.loan.cards",
+      "expected": "8 kartu laporan pinjaman dengan href benar",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAP-MENU-005",
+      "kategori": "Positif",
+      "skenario": "Halaman Laporan Simpanan menampilkan kartu laporan",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/saving"
+      ],
+      "test_data": "fixture indexPages.saving.cards",
+      "expected": "Kartu Transaksi, Statistik, Pembukuan, Cashflow dengan href benar",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD Cashflow: 'submenu simpanan > menu laporan cashflow'."
+    },
+    {
+      "id": "TC-LAP-MENU-006",
+      "kategori": "Edge",
+      "skenario": "Semua tautan 'Lihat Detail' dapat dibuka",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Untuk setiap href kartu di 3 halaman indeks: GET href"
+      ],
+      "test_data": "19 tautan",
+      "expected": "Semua HTTP 200 dan tidak diarahkan ke /login",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Temuan source: /report/salesproductivity tidak punya route (route dikomentari) sehingga diperkirakan 404."
+    }
+  ]
+}

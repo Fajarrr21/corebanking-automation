@@ -1,0 +1,22 @@
+{
+  "modul": "Nasabah - Pinjaman",
+  "kode": "LOAN",
+  "aksi": "FORM",
+  "halaman": "/loan/{refId}?menu=application, /loan/print/document/{refId}",
+  "spec": "cypress/e2e/cbs/06-Nasabah/Pinjaman/loan-application-form.cy.js",
+  "notion": [
+    {"judul": "Formulir Permohonan Pinjaman - Cetak", "url": "https://app.notion.com/3b9f80e3bbf181378eefdc64d4e0029b"},
+    {"judul": "Penamaan Cabang dan Penanda Tangan Dokumen", "url": "https://app.notion.com/3b9f80e3bbf181189d28d58db83a2abf"}
+  ],
+  "catatan": "Preview = partial _application-body di #tab_application; cetak = GET /loan/print/document/{refId}?head_office=..&account_officer=.. (HTML). window.open di-stub; window.confirm ditangani cy.on. Read-only + write-guard. PRD menyebut 'detail pengajuan'; di source formulir hanya bisa dibuka dari detail pinjaman (status APPROVED/ACTIVE/PAID/BLACKLIST).",
+  "cases": [
+    {"id": "TC-LOAN-FORM-001", "kategori": "Happy", "skenario": "Preview formulir permohonan", "precondition": "Pinjaman aktif bulanan", "langkah": ["Buka /loan/{refId}?menu=application"], "test_data": "-", "expected": "Judul 'FORMULIR PERMOHONAN PINJAMAN', 4 pilihan penanda tangan, tombol Print", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-FORM-002", "kategori": "Positif", "skenario": "Tanggal permohonan beserta jam", "precondition": "Preview formulir terbuka", "langkah": ["Baca baris 'Tanggal:'"], "test_data": "-", "expected": "Tanggal memuat jam pola 24 jam HH.mm", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Source: formatDate(created_at, true) = isoFormat('LLLL'); bergantung locale Carbon (id → 'pukul HH.mm')."},
+    {"id": "TC-LOAN-FORM-003", "kategori": "Negatif", "skenario": "Zona waktu cabang ditulis", "precondition": "Preview formulir terbuka", "langkah": ["Cari WIB/WITA/WIT pada surat"], "test_data": "-", "expected": "Zona waktu tertulis (contoh 14.30 WIB)", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Source tidak menulis zona waktu → GAGAL (kandidat bug)."},
+    {"id": "TC-LOAN-FORM-004", "kategori": "Positif", "skenario": "Kolom tanda tangan & jabatan", "precondition": "Preview formulir terbuka", "langkah": ["Baca jabatan tiap kolom tanda tangan"], "test_data": "-", "expected": ">= 4 kolom; jabatan default Kepala Unit, Pengelola III, Pengelola II, Pengelola I", "sumber": "PRD-ambigu", "status": "Belum dijalankan", "catatan": "PRD hanya menyebut 'bertambah satu kolom'; urutan dari pengaturan cabang."},
+    {"id": "TC-LOAN-FORM-005", "kategori": "Negatif", "skenario": "Peringatan penanda tangan kosong", "precondition": "Belum ada penanda tangan dipilih", "langkah": ["Klik Print", "Jawab Batal pada konfirmasi"], "test_data": "-", "expected": "Muncul konfirmasi 'Jabatan berikut belum dipilih penanda tangannya'; cetak tidak dibuka", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD Blok tanda tangan e"},
+    {"id": "TC-LOAN-FORM-006", "kategori": "Positif", "skenario": "Penanda tangan dipilih ikut tercetak", "precondition": "Ada data tanda tangan kantor pinjaman", "langkah": ["Pilih penanda tangan di keempat dropdown", "Klik Print", "GET URL cetak"], "test_data": "Nama penanda tangan pertama", "expected": "Nama tampil di preview; tidak ada peringatan; URL membawa nama; nama tercetak", "sumber": "PRD", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-LOAN-FORM-007", "kategori": "Positif", "skenario": "Hasil cetak = preview", "precondition": "Preview formulir terbuka", "langkah": ["Klik Print (konfirmasi = OK)", "GET URL cetak", "Bandingkan teks badan surat"], "test_data": "-", "expected": "Teks badan surat cetak identik dengan preview", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD Preview dan cetak a,b"},
+    {"id": "TC-LOAN-FORM-008", "kategori": "Negatif", "skenario": "Nomor permohonan & Officer Pengelola", "precondition": "Preview formulir terbuka", "langkah": ["Cari 'Nomor Permohonan' dan 'Officer Pengelola'"], "test_data": "-", "expected": "Keduanya tertulis pada formulir", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD Susunan isi b & g; tidak ada di _application-body → GAGAL (kandidat bug)."}
+  ]
+}

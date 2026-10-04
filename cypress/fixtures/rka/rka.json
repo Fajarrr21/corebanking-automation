@@ -1,0 +1,179 @@
+{
+  "_note": "Fixture modul 07-RKA (menu RKA: Account Officer & Cabang, Laporan RKA AO/Unit). Teks/label/pesan disalin persis dari source cazh-core-banking-konvensional-v1 origin/develop.",
+  "timeout": {
+    "page": 30000,
+    "ajax": 20000,
+    "redirect": 20000
+  },
+  "sidebar": {
+    "parent": "RKA",
+    "aoLink": "/rka/accountofficer",
+    "unitLink": "/rka/unit"
+  },
+  "endpoints": {
+    "aoTarget": "/rka/accountofficer/target",
+    "aoDetails": "**/rka/accountofficer/*/details",
+    "aoWeight": "**/rka/accountofficer/*/weight",
+    "aoWeightSave": "/rka/accountofficer/weight/save",
+    "aoToggle": "**/rka/accountofficer/*/toggle-status",
+    "aoDelete": "**/rka/accountofficer/*",
+    "officers": "/rka/accountofficer/officers",
+    "officersTable": "**/rka/accountofficer/officers/datatable*",
+    "officersOffices": "**/rka/accountofficer/officers/offices/list*",
+    "officersAssign": "/rka/accountofficer/officers/assign",
+    "unitTarget": "/rka/unit/target",
+    "unitDetails": "**/rka/unit/*/details",
+    "unitsByBranch": "**/rka/unit/units/*",
+    "unitToggle": "**/rka/unit/*/toggle-status",
+    "reportAoData": "**/report/rka-officer/data*",
+    "reportUnitData": "**/report/rka-unit/data*",
+    "reportUnitUnits": "**/report/rka-unit/units/*"
+  },
+  "ao": {
+    "path": "/rka/accountofficer",
+    "documentTitle": "RKA Account Officer",
+    "pills": {
+      "rka": { "href": "#customer_approval", "label": "RKA Management", "menu": "customer_approval" },
+      "officer": { "href": "#office_approval", "label": "Account Officer", "menu": "office_approval" }
+    },
+    "labels": {
+      "aoSelect": "Pilih Account Officer",
+      "yearSelect": "Pilih Tahun",
+      "aoPlaceholder": "-- Pilih Account Officer --",
+      "listTitle": "Daftar RKA Account Officer",
+      "namaRka": "Nama RKA"
+    },
+    "listHeaders": ["Status RKA", "Nama Account Officer", "Cabang", "Tahun", "Produk", "Parameter", "Tanggal Dibuat", "Terakhir Diubah", "Aksi"],
+    "col": { "status": 0, "name": 1, "office": 2, "year": 3, "produk": 4, "parameter": 5 },
+    "messages": {
+      "saved": "Target KPI berhasil disimpan",
+      "updated": "Target KPI berhasil diperbarui",
+      "deleted": "RKA berhasil dihapus",
+      "activated": "RKA berhasil diaktifkan",
+      "deactivated": "RKA berhasil dinonaktifkan",
+      "weightSaved": "Pengaturan bobot berhasil disimpan"
+    }
+  },
+  "unit": {
+    "path": "/rka/unit",
+    "documentTitle": "KPI Planning Form",
+    "breadcrumb": "RKA Cabang",
+    "labels": {
+      "branchSelect": "Pilih Wilayah",
+      "officeSelect": "Pilih Cabang",
+      "yearSelect": "Pilih Tahun",
+      "officeDisabledPlaceholder": "-- Pilih Wilayah Terlebih Dahulu --",
+      "listTitle": "Daftar RKA Cabang"
+    },
+    "listHeaders": ["Status RKA", "Nama Cabang", "Tahun", "Produk", "Parameter", "Tanggal Dibuat", "Terakhir Diubah", "Aksi"],
+    "col": { "status": 0, "name": 1, "year": 2, "produk": 3, "parameter": 4 },
+    "_testOfficeNote": "Kantor untuk spec ber-flag allowRkaTarget. null = dipilih otomatis (wilayah pertama, cabang terakhir). Kombinasi kantor + tahun uji WAJIB belum punya RKA — dicek di before().",
+    "testBranchName": null,
+    "testOfficeName": null,
+    "testYearOffset": 2,
+    "messages": {
+      "saved": "Target KPI berhasil disimpan",
+      "updated": "Target KPI berhasil diperbarui",
+      "deleted": "RKA berhasil dihapus",
+      "activated": "RKA berhasil diaktifkan",
+      "nplRequired": "NPL target type is required",
+      "pickBranch": "Harap pilih cabang terlebih dahulu"
+    }
+  },
+  "form": {
+    "tabs": ["Pinjaman", "Simpanan", "Lainnya"],
+    "targetTypes": ["Kenaikan", "Penurunan"],
+    "othersRows": ["NPL (DR, MCT)", "Daftar Hitam", "Laba Tahun Berjalan"],
+    "othersCount": 3,
+    "tableHeaders": ["Produk", "Jenis Target", "Target Tahun Lalu (IDR)", "Persentase (%)", "Target Tahun Ini"],
+    "yearRange": 2,
+    "alerts": {
+      "pinjamanFirst": "Harap lengkapi data Pinjaman terlebih dahulu"
+    }
+  },
+  "target": {
+    "increase": { "type": "kenaikan", "lastYear": 1000000, "percentage": 10, "expectedThisYear": 1100000, "expectedDisplay": "IDR 1.100.000" },
+    "decrease": { "type": "penurunan", "lastYear": 1000000, "percentage": 10, "expectedThisYear": 900000, "expectedDisplay": "IDR 900.000" },
+    "edit": { "type": "kenaikan", "lastYear": 1000000, "percentage": 15, "expectedThisYear": 1150000 },
+    "negativePercentage": -5
+  },
+  "delete": {
+    "modalTitle": "Konfirmasi Hapus RKA",
+    "question": "Apakah Anda yakin ingin menghapus RKA ini?",
+    "confirm": "Ya, Hapus RKA",
+    "cancel": "Batal"
+  },
+  "toggle": {
+    "modalTitle": "Konfirmasi Ubah Status",
+    "activateText": "mengaktifkan",
+    "confirm": "Ya, Ubah Status",
+    "badgeActive": "Aktif",
+    "badgeInactive": "Tidak Aktif"
+  },
+  "weight": {
+    "modalTitlePrefix": "Pengaturan Bobot",
+    "sections": ["Bobot Pinjaman", "Bobot Simpanan", "Bobot Lainnya"],
+    "help": {
+      "exact": "Sempurna! Total bobot tepat 100%",
+      "over": "Total bobot melebihi 100%. Harap kurangi bobot.",
+      "under": "Total bobot kurang dari 100%. Harap sesuaikan bobot."
+    },
+    "underTotal": 90,
+    "overTotal": 110,
+    "serverErrorPrefix": "Total bobot harus tepat 100%. Total saat ini:",
+    "settingPath": "/setting",
+    "settingTabText": "Bobot"
+  },
+  "officer": {
+    "tableHeaders": ["No", "Code", "Name", "Email", "Phone", "Assigned Offices", "Status", "Actions"],
+    "addTitle": "Tambah Account Officer",
+    "editTitle": "Edit Account Officer",
+    "assignTitlePrefix": "Penugasan Cabang",
+    "noAssignment": "Belum ada penugasan cabang",
+    "phoneEdit": "081200000000",
+    "swal": {
+      "successTitle": "Success!",
+      "errorTitle": "Error!",
+      "deletedTitle": "Terhapus!",
+      "assignTitle": "Berhasil!",
+      "confirmDelete": "Ya, hapus!"
+    },
+    "messages": {
+      "created": "Account Officer berhasil ditambahkan",
+      "updated": "Account Officer berhasil diperbarui",
+      "deleted": "Account Officer berhasil dihapus",
+      "assigned": "Office assignments berhasil disimpan",
+      "hasRka": "Tidak dapat menghapus Account Officer yang memiliki RKA assignments",
+      "emailTaken": "email"
+    }
+  },
+  "reportAo": {
+    "path": "/report/rka-officer",
+    "generalPath": "/report/general",
+    "breadcrumb": "Laporan RKA Account Officer",
+    "documentTitle": "Laporan RKA Account Officer",
+    "prdHeaders": ["No", "Indikator", "Realisasi Tahun Lalu", "Target Tahun Ini", "CW1", "CW2", "CW3", "Realisasi", "Pencapaian Target (%)", "Bobot Penilaian (%)", "Score Nilai"],
+    "messages": {
+      "pickOfficer": "Harap pilih Account Officer terlebih dahulu",
+      "noActive": "Tidak ada data RKA aktif untuk Account Officer dan tahun yang dipilih",
+      "emptyInitial": "Pilih filter untuk menampilkan laporan"
+    },
+    "exportContentType": "spreadsheetml"
+  },
+  "reportUnit": {
+    "path": "/report/rka-unit",
+    "breadcrumb": "Laporan RKA Unit",
+    "documentTitle": "Laporan RKA Unit",
+    "semanticHeaders": ["Realisasi", "Target", "Pencapaian", "Bobot", "Score"],
+    "messages": {
+      "pickBranch": "Harap pilih cabang terlebih dahulu",
+      "noActive": "Tidak ada data RKA aktif untuk office dan tahun yang dipilih",
+      "emptyInitial": "Pilih filter untuk menampilkan laporan"
+    }
+  },
+  "prd": {
+    "lengthOptions": ["5", "15", "20", "All"],
+    "exportButtons": ["CSV", "Excel"],
+    "monthFilterLabel": "Bulan"
+  }
+}

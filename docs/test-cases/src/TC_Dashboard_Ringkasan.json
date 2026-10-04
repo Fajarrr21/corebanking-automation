@@ -1,0 +1,92 @@
+{
+  "modul": "Dashboard",
+  "kode": "DSB",
+  "aksi": "VIEW",
+  "halaman": "/home",
+  "spec": "cypress/e2e/cbs/01-Dashboard/dashboard.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD khusus untuk bagian Ringkasan/Aksi Cepat/Statistik/Transaksi Terbaru (PRD 'Dashboard - Rasio Keuangan' hanya mengatur rasio, lihat TC_Dashboard_Rasio). TC diturunkan dari source develop: HomeController@index/chartData/recentTransactions, resources/views/dashboard/index.blade.php. Semua TC read-only (cy.guardWrites); tombol Sinkronkan Data tidak diklik.",
+  "cases": [
+    {
+      "id": "TC-DSB-VIEW-001", "kategori": "Happy",
+      "skenario": "Dashboard terbuka setelah login dengan judul & breadcrumb Dashboard",
+      "precondition": "Akun test valid (cypress.env.json).",
+      "langkah": ["Login (cy.session)", "Buka /home"],
+      "test_data": "-",
+      "expected": "URL /home, tidak dilempar ke /login; h1 = 'Dashboard'; breadcrumb aktif 'Dashboard'; document title memuat 'Dashboard'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-002", "kategori": "Positif",
+      "skenario": "Kartu Ringkasan tampil dengan format nilai yang benar",
+      "precondition": "Akun test bukan teller (spec gagal dengan pesan jelas bila menu Transaksi tampil).",
+      "langkah": ["Buka /home", "Baca nilai tile Realisasi Pinjaman Hari Ini, Saldo Kas Teller, NPL - <tanggal>, Total Nasabah (CIF)"],
+      "test_data": "-",
+      "expected": "Nominal berformat ribuan titik (mis. 1.500.000); NPL = angka 2 desimal + '%'; Total Nasabah angka; tile 'Saldo Teller Anda' tidak tampil untuk non-teller.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Helpers::formatCurrency tanpa unit menghasilkan ' 1.500.000' (spasi depan) — di-trim."
+    },
+    {
+      "id": "TC-DSB-VIEW-003", "kategori": "Positif",
+      "skenario": "Aksi Cepat menautkan ke halaman CIF yang benar",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Periksa tile Buat CIF Baru, Buat Simpanan, Buat Pinjaman"],
+      "test_data": "-",
+      "expected": "Buat CIF Baru → /cif/create; Buat Simpanan & Buat Pinjaman → /cif; teks bantu 'N nasabah terdaftar' / 'N rekening aktif' / 'N pinjaman tercatat'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-004", "kategori": "Positif",
+      "skenario": "Total Nasabah (CIF) konsisten dengan jumlah di Aksi Cepat 'Buat CIF Baru'",
+      "precondition": "Akun test bukan teller.",
+      "langkah": ["Buka /home", "Bandingkan nilai tile Total Nasabah (CIF) dengan angka di 'N nasabah terdaftar'"],
+      "test_data": "-",
+      "expected": "Kedua angka sama (sumber sama: cif_count).",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-005", "kategori": "Positif",
+      "skenario": "Tombol Sinkronkan Data & info waktu sinkron tampil",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Periksa #btnSync dan #syncInfo (tanpa klik)"],
+      "test_data": "-",
+      "expected": "Tombol 'Sinkronkan Data' tampil & enabled; info = 'Terakhir diperbarui: <waktu>' atau 'Belum pernah disinkronkan'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Tombol tidak diklik (POST /dashboard/sync menghitung ulang cache untuk seluruh kantor)."
+    },
+    {
+      "id": "TC-DSB-VIEW-006", "kategori": "Positif",
+      "skenario": "Tautan 'Lihat detail' Saldo Kas Teller mengarah ke pengaturan saldo teller (super-admin)",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": ["Buka /home", "Periksa tautan 'Lihat detail' pada tile Saldo Kas Teller"],
+      "test_data": "-",
+      "expected": "href = /setting?menu=teller_balance.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-007", "kategori": "Positif",
+      "skenario": "Ganti periode grafik ke Mingguan memuat data periode weekly",
+      "precondition": "-",
+      "langkah": ["Buka /home (grafik default Bulanan)", "Klik tombol 'Mingguan'"],
+      "test_data": "period=weekly",
+      "expected": "Request awal GET /dashboard/chart-data?period=monthly; setelah klik terkirim GET ?period=weekly (200); tombol Mingguan aktif, Bulanan tidak aktif.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-008", "kategori": "Positif",
+      "skenario": "Tabel 10 Transaksi Terbaru tampil sesuai respon server",
+      "precondition": "Data transaksi boleh ada atau kosong — kedua kemungkinan ditangani.",
+      "langkah": ["Buka /home", "Tunggu GET /dashboard/recent-transactions", "Periksa tabel #trxTable"],
+      "test_data": "-",
+      "expected": "Header: Waktu, Ref ID, Rekening, Jenis, Jumlah, Catatan; maks 10 baris = jumlah item respon; Ref ID baris pertama = respon[0].ref_id; bila kosong tampil 'Belum ada transaksi'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-DSB-VIEW-009", "kategori": "Positif",
+      "skenario": "Menu sidebar Dashboard membuka /home dari halaman lain",
+      "precondition": "-",
+      "langkah": ["Buka /profile", "Klik menu sidebar Dashboard"],
+      "test_data": "-",
+      "expected": "Pindah ke /home dan judul 'Dashboard' tampil.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    }
+  ]
+}

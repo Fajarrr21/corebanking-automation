@@ -1,0 +1,69 @@
+{
+  "modul": "Import - Hak Akses",
+  "kode": "IMP",
+  "aksi": "AKSES",
+  "halaman": "/import/*",
+  "spec": "cypress/e2e/cbs/11-Import/import-akses.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk menu Import; TC diturunkan dari source (ImportController.php, resources/views/import/*.blade.php). Hak akses: menu dirender untuk role 'teller' (navigation.blade.php:544) tetapi controller hanya mengizinkan 'supervisor' & 'customer-service' (ImportController.php:33). Akun test (kemungkinan super-admin) diperkirakan dialihkan -> TC positif gagal dengan pesan precondition.",
+  "cases": [
+    {
+      "id": "TC-IMP-AKSES-001",
+      "kategori": "Happy",
+      "skenario": "Menu Import tampil dengan 4 sub-menu",
+      "precondition": "Akun ber-role teller",
+      "langkah": [
+        "Buka /home",
+        "Periksa menu Import"
+      ],
+      "test_data": "-",
+      "expected": "Menu 'Import' dengan sub-menu CIF Nasabah, Tabungan Nasabah, Pinjaman Nasabah, Neraca (href /import/cif, /import/saving, /import/loan, /import/neraca)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Gagal dgn pesan precondition bila akun bukan teller."
+    },
+    {
+      "id": "TC-IMP-AKSES-002",
+      "kategori": "Edge",
+      "skenario": "Sub-menu Import membuka halaman upload (menu vs hak akses konsisten)",
+      "precondition": "Akun ber-role teller (yang melihat menu)",
+      "langkah": [
+        "Buka /home",
+        "Klik Import > CIF Nasabah"
+      ],
+      "test_data": "-",
+      "expected": "Halaman /import/cif terbuka (tidak dialihkan ke /home)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Kandidat bug (source vs source): teller tanpa role supervisor/customer-service melihat menu tetapi dialihkan 'Akses anda terbatas!' (navigation.blade.php:544 vs ImportController.php:33)."
+    },
+    {
+      "id": "TC-IMP-AKSES-003",
+      "kategori": "Negatif",
+      "skenario": "Akun tanpa role supervisor/CS membuka /import/cif",
+      "precondition": "Akun TANPA role supervisor & customer-service",
+      "langkah": [
+        "Buka /import/cif langsung"
+      ],
+      "test_data": "-",
+      "expected": "Dialihkan ke /home; alert-danger 'Akses anda terbatas!'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Perilaku Helpers::checkRole -> errorRedirect('home'). Bukan 403. Gagal dgn pesan precondition bila akun ternyata punya akses."
+    },
+    {
+      "id": "TC-IMP-AKSES-004",
+      "kategori": "Negatif",
+      "skenario": "Akun tanpa role supervisor/CS membuka /import/neraca",
+      "precondition": "Akun TANPA role supervisor & customer-service",
+      "langkah": [
+        "Buka /import/neraca langsung"
+      ],
+      "test_data": "-",
+      "expected": "Dialihkan ke /home; alert-danger 'Akses anda terbatas!'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

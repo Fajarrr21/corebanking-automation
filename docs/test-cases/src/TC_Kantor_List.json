@@ -1,0 +1,166 @@
+{
+  "modul": "Kantor",
+  "kode": "KTR",
+  "aksi": "LIST",
+  "halaman": "/office",
+  "spec": "cypress/e2e/cbs/03-Kantor/kantor-list.cy.js",
+  "notion": [
+    {
+      "judul": "Penamaan Cabang dan Penanda Tangan Dokumen",
+      "url": "https://app.notion.com/3b9f80e3bbf181189d28d58db83a2abf"
+    }
+  ],
+  "catatan": "PRD 'Penamaan Cabang dan Penanda Tangan Dokumen' relevan untuk bagian istilah Unit→Cabang (label kolom/filter). Bagian 'Nama Penanda Tangan per cabang' TIDAK ada di halaman Kantor — di source diimplementasikan di Pengaturan (/setting?menu=signature, SettingController + SettingSignature) → milik grup 13-Pengaturan. Selain itu TC diturunkan dari source (OfficeController@index, office/index.blade.php). Tidak ada fitur tambah/hapus kantor ('Silahkan hubungi vendor...'). Read-only.",
+  "cases": [
+    {
+      "id": "TC-KTR-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Halaman Kantor tampil dengan breadcrumb, catatan vendor, dan tabel kantor",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /office"
+      ],
+      "test_data": "-",
+      "expected": "Breadcrumb aktif 'daftar Kantor'; note 'Silahkan hubungi vendor anda untuk menambahkan kantor operasional'; tombol 'Open operation' & 'Closed operation'; tabel kantor berisi data.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Breadcrumb ditulis huruf kecil 'daftar Kantor' persis seperti source."
+    },
+    {
+      "id": "TC-KTR-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Header kolom tabel kantor sesuai",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /office",
+        "Baca header tabel"
+      ],
+      "test_data": "-",
+      "expected": "Header: (checkbox/ID), Kode Cabang, Nama Kantor, Alamat, No Telepon, Kepala Kantor, No Handphone, Auto Debit, Role, Wilayah, Action, Status.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Kolom 0 dirender plugin checkbox (gyrocode) sehingga teks 'ID' tidak dibandingkan."
+    },
+    {
+      "id": "TC-KTR-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Kolom Status dan Auto Debit hanya berisi Aktif / Non Aktif",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Tampilkan All",
+        "Baca kolom Status & Auto Debit tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "Setiap baris: Status ∈ {Aktif, Non Aktif}; Auto Debit ∈ {Aktif, Non Aktif}.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTR-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Kolom Role menampilkan Wilayah/Cabang, bukan kode BRANCH/UNIT",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Tampilkan All",
+        "Baca kolom Role"
+      ],
+      "test_data": "-",
+      "expected": "Setiap baris Role ∈ {Wilayah, Cabang}.",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD Penamaan Cabang AC-1a/b: label kolom tidak memakai Unit."
+    },
+    {
+      "id": "TC-KTR-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Filter jenis kantor berisi Semua Jenis Kantor, Wilayah, Cabang",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka dropdown filter jenis kantor"
+      ],
+      "test_data": "-",
+      "expected": "Opsi persis: Semua Jenis Kantor, Wilayah, Cabang.",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "AC-1b label filter."
+    },
+    {
+      "id": "TC-KTR-LIST-006",
+      "kategori": "Positif",
+      "skenario": "Filter Cabang/Wilayah hanya menampilkan kantor dengan jenis tersebut",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Tampilkan All",
+        "Pilih filter Wilayah lalu Cabang",
+        "Kembalikan ke Semua"
+      ],
+      "test_data": "BRANCH→Wilayah, UNIT→Cabang",
+      "expected": "Saat filter aktif semua baris Role = label filter (atau empty state); filter Semua menampilkan data lagi.",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "AC-1c: pengelompokan tidak berubah, hanya istilah."
+    },
+    {
+      "id": "TC-KTR-LIST-007",
+      "kategori": "Positif",
+      "skenario": "Label UI halaman Kantor tidak memakai istilah 'Unit'",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /office",
+        "Kumpulkan teks breadcrumb, note, header, opsi filter, kontrol DataTables, tombol toolbar"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada kata 'Unit' (whole word, tidak peka huruf).",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "Data nama kantor sengaja tidak ikut diperiksa (data, bukan label)."
+    },
+    {
+      "id": "TC-KTR-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Pencarian nama kantor menyaring baris tabel",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Ambil nama kantor baris pertama",
+        "Ketik di kotak Search DataTables"
+      ],
+      "test_data": "Nama kantor dinamis",
+      "expected": "Kantor tsb ada di hasil; setiap baris hasil memuat semua kata kunci.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KTR-LIST-009",
+      "kategori": "Edge",
+      "skenario": "Kolom Wilayah kantor Cabang merujuk nama kantor Wilayah yang ada",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Tampilkan All",
+        "Kumpulkan nama kantor ber-Role Wilayah",
+        "Cocokkan kolom Wilayah tiap kantor Cabang yang terisi"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada kantor Cabang yang kolom Wilayah-nya menunjuk nama yang bukan kantor Wilayah.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Jebakan domain: offices.branch menyimpan NAMA induk; rename tanpa renameTo() membuat anak 'yatim' dan laporan cabang salah alamat. Wilayah kosong tidak dianggap gagal."
+    },
+    {
+      "id": "TC-KTR-LIST-010",
+      "kategori": "Positif",
+      "skenario": "Menu sidebar Kantor membuka halaman /office",
+      "precondition": "Akun test super-admin (menu Kantor tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /home",
+        "Klik menu sidebar Kantor"
+      ],
+      "test_data": "-",
+      "expected": "Pindah ke /office dengan breadcrumb 'daftar Kantor'.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

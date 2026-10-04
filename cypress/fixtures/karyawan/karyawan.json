@@ -1,0 +1,58 @@
+{
+  "_note": "Karyawan (/user, UserController, view user/index|create|edit.blade.php). Menu hanya super-admin. Tidak ada PRD. JANGAN pernah menyentuh akun login test (Cypress.env('appEmail')).",
+  "urls": {
+    "list": "/user",
+    "create": "/user/create",
+    "editPrefix": "/user/",
+    "home": "/home",
+    "createPostPath": "^/user/create$",
+    "invalidUserId": "999999999"
+  },
+  "labels": {
+    "superAdminMenu": "Karyawan",
+    "breadcrumbList": "Daftar Karyawan",
+    "breadcrumbCreate": "Tambah Karyawan",
+    "breadcrumbEdit": "Edit Karyawan",
+    "addButton": "Tambah Karyawan",
+    "headers": ["Status", "Tgl Buat", "Kantor", "Nama", "Email", "No Handphone", "Role", "Actions"],
+    "statusValues": ["Aktif", "Tidak Aktif"],
+    "statusOptionByLabel": { "Aktif": "ACTIVE", "Tidak Aktif": "INACTIVE" },
+    "deleteModalTitle": "Hapus Karyawan",
+    "deleteModalBody": "Apakah anda yakin untuk mengahapus data karyawan",
+    "createNote": "Silahkan tambahkan karyawan sesuai dengan penempatan kantor dan hak akses",
+    "createFormLabels": ["Nama Lengkap", "Email Address", "Kantor Cabang", "Nomor Handphone", "Hak Akses"],
+    "roleOptions": [
+      { "value": "supervisor", "label": "Supervisor" },
+      { "value": "customer-service", "label": "Admin / Customer Service" },
+      { "value": "sales-funding", "label": "Sales Funding" },
+      { "value": "sales-lending", "label": "Sales Lending" },
+      { "value": "teller", "label": "Teller" },
+      { "value": "auditor", "label": "Auditor" }
+    ],
+    "noOfficeOption": "Tanpa Kantor",
+    "submitButton": "Submit",
+    "updateButton": "Ubah",
+    "forbiddenTermPattern": "\\bunit\\b",
+    "botRolePattern": "\\bbot\\b"
+  },
+  "columns": { "status": 0, "created": 1, "office": 2, "name": 3, "email": 4, "phone": 5, "role": 6, "actions": 7 },
+  "messages": {
+    "created": "User berhasil ditambahkan!",
+    "updated": "Data user berhasil diubah",
+    "deleted": "Data user berhasil dihapus",
+    "notFound": "Data user tidak ditemukan",
+    "invalidPhone": "Nomor handphone \"12345\" tidak valid. Nomor handphone harus dimulai dengan angka 08 atau 62.",
+    "rolesRequired": "The roles field is required.",
+    "emailTaken": "The email has already been taken."
+  },
+  "testData": {
+    "validPhone": "081234567890",
+    "invalidPhone": "12345",
+    "role": "auditor",
+    "roleLabel": "auditor",
+    "officeValue": "0",
+    "editedNameSuffix": "Edit",
+    "editedStatus": "INACTIVE",
+    "editedStatusLabel": "Tidak Aktif"
+  }
+}

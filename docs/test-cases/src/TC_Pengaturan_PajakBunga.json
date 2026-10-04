@@ -1,0 +1,94 @@
+{
+  "modul": "Pengaturan",
+  "kode": "SET",
+  "aksi": "TAX",
+  "halaman": "/setting?menu=tax (POST /setting/tax_interest)",
+  "spec": "cypress/e2e/cbs/13-Pengaturan/pengaturan-pajak-bunga.cy.js",
+  "notion": [
+    {
+      "judul": "Pembukuan Bunga (dicek — bukan halaman ini)",
+      "url": "https://app.notion.com/3b9f80e3bbf18111b8dec5846c443ce2"
+    }
+  ],
+  "catatan": "PRD 'Pembukuan Bunga' ternyata menu baru (kelompok Keuangan) untuk posting bunga PINJAMAN — tidak ada di /setting maupun route mana pun di develop. Tab ini (bunga simpanan & tanggal pembukuan) tanpa PRD → Asumsi. Pengaturan GLOBAL: capture → ubah → restore di afterEach.",
+  "cases": [
+    {
+      "id": "TC-SET-TAX-001",
+      "kategori": "Happy",
+      "skenario": "Form Pajak & Bunga menampilkan pilihan sistem bunga dan tanggal pembukuan tersimpan",
+      "precondition": "Login sebagai super-admin; pengaturan pajak & bunga sudah pernah diisi",
+      "langkah": [
+        "Buka /setting?menu=tax"
+      ],
+      "test_data": "-",
+      "expected": "Opsi sistem bunga: Saldo Rata-Rata/Terendah/Terakhir dalam bulan; nilai terpilih = tersimpan; 2 field tanggal pembukuan required berisi nilai tersimpan",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-TAX-002",
+      "kategori": "Negatif",
+      "skenario": "Tanggal pembukuan bunga 32 ditolak",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Pajak & Bunga",
+        "Isi Periode tanggal Pembukuan = 32",
+        "Klik Simpan"
+      ],
+      "test_data": "32",
+      "expected": "Alert-danger 'Tanggal pembukuan bunga maksimal 31.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "SettingTaxInterestRequest max:31; restore sebagai pengaman"
+    },
+    {
+      "id": "TC-SET-TAX-003",
+      "kategori": "Negatif",
+      "skenario": "Tanggal pembukuan pajak 0 ditolak",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Pajak & Bunga",
+        "Isi Periode tanggal Pembukuan Pajak = 0",
+        "Klik Simpan"
+      ],
+      "test_data": "0",
+      "expected": "Alert-danger 'Tanggal pembukuan pajak minimal 1.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "SettingTaxInterestRequest min:1"
+    },
+    {
+      "id": "TC-SET-TAX-004",
+      "kategori": "Negatif",
+      "skenario": "Tanggal pembukuan bunga dikosongkan",
+      "precondition": "Login sebagai super-admin",
+      "langkah": [
+        "Buka tab Pajak & Bunga",
+        "Kosongkan tanggal pembukuan bunga",
+        "Klik Simpan"
+      ],
+      "test_data": "kosong",
+      "expected": "Browser menahan submit (bookkeeping_date_of_interest invalid), tidak ada request",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SET-TAX-005",
+      "kategori": "Happy",
+      "skenario": "Ubah tanggal pembukuan pajak tersimpan",
+      "precondition": "Login sebagai super-admin; pengaturan sudah pernah diisi",
+      "langkah": [
+        "Buka tab Pajak & Bunga",
+        "Isi tanggal pembukuan pajak = hari aman (≤28, bukan nilai asli/hari ini/besok)",
+        "Klik Simpan"
+      ],
+      "test_data": "hari aman",
+      "expected": "Alert 'Pengaturan bunga dan pajak berhasil disimpan', URL menu=tax, nilai baru tampil, sistem bunga tidak berubah; afterEach restore",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Hari pengganti dipilih agar job pembukuan terjadwal tidak terpicu selama jendela perubahan."
+    }
+  ]
+}

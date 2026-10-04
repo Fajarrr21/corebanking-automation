@@ -1,0 +1,163 @@
+{
+  "modul": "Download",
+  "kode": "DL",
+  "aksi": "LIST",
+  "halaman": "/downloads",
+  "spec": "cypress/e2e/cbs/14-Download/download.cy.js",
+  "notion": [
+    {
+      "judul": "Download Pinjaman Aktif",
+      "url": "https://app.notion.com/278f80e3bbf180e4aa74e8db14ee3034"
+    }
+  ],
+  "catatan": "Read-only (GET daftar & unduh). Tabel DataTables client-side; semua baris dibaca via API DataTables. Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-DL-LIST-001",
+      "kategori": "Happy",
+      "skenario": "Membuka Download lewat menu sidebar",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /home",
+        "Klik menu Download"
+      ],
+      "test_data": "-",
+      "expected": "URL /downloads, breadcrumb 'Download', tabel tampil",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD menyebut Download di bawah menu Pengaturan; di source Download = menu utama sidebar."
+    },
+    {
+      "id": "TC-DL-LIST-002",
+      "kategori": "Positif",
+      "skenario": "Informasi Download File",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /downloads"
+      ],
+      "test_data": "-",
+      "expected": "Judul 'Download File' + deskripsi antrean & retensi 7 hari sesuai PRD",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-003",
+      "kategori": "Positif",
+      "skenario": "Kolom tabel memuat kolom PRD",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /downloads"
+      ],
+      "test_data": "-",
+      "expected": "Header memuat ID, File, Jadwal Hapus, Status (urutan source: ID | File | Dibuat | Oleh | Prompt | Jadwal Hapus | Status)",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-004",
+      "kategori": "Positif",
+      "skenario": "Status hanya Diproses / Selesai / Gagal",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file di daftar.",
+      "langkah": [
+        "Buka /downloads",
+        "Baca status semua baris"
+      ],
+      "test_data": "-",
+      "expected": "Setiap status salah satu dari Diproses, Selesai, Gagal",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: source menampilkan 'Processing' untuk status SCHEDULED (downloads/index.blade.php:235). Hanya gagal bila saat dijalankan ada file yang sedang diproses."
+    },
+    {
+      "id": "TC-DL-LIST-005",
+      "kategori": "Positif",
+      "skenario": "Tautan unduh hanya untuk file Selesai",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file di daftar.",
+      "langkah": [
+        "Buka /downloads",
+        "Periksa kolom File tiap baris"
+      ],
+      "test_data": "-",
+      "expected": "File Selesai = tautan /downloads/{id}/file; Diproses/Gagal = teks biasa",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-006",
+      "kategori": "Edge",
+      "skenario": "Format nama file export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file export non Laporan AI.",
+      "langkah": [
+        "Buka /downloads",
+        "Periksa nama file"
+      ],
+      "test_data": "Regex <Nama-Data>-YYYY-MM-DD HH:MM:SS.xlsx",
+      "expected": "Semua nama file export sesuai format PRD",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-007",
+      "kategori": "Negatif",
+      "skenario": "Jadwal hapus = 7 hari setelah export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file di daftar.",
+      "langkah": [
+        "Buka /downloads",
+        "Bandingkan tanggal Dibuat dan Jadwal Hapus"
+      ],
+      "test_data": "Retensi 7 hari",
+      "expected": "Selisih tanggal = 7 hari untuk setiap file",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: deleted_time = now()+1 hari (DownloadController.php:68,93,117; AiReportController.php:115)."
+    },
+    {
+      "id": "TC-DL-LIST-008",
+      "kategori": "Positif",
+      "skenario": "Unduh file Selesai menghasilkan Excel",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file berstatus Selesai.",
+      "langkah": [
+        "Buka /downloads",
+        "GET tautan file Selesai terbaru"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 200, content-type spreadsheet, isi diawali signature PK",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-009",
+      "kategori": "Negatif",
+      "skenario": "File belum Selesai tidak dapat diunduh via URL",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 file berstatus Diproses/Gagal (bila tidak ada, TC gagal dengan pesan precondition).",
+      "langkah": [
+        "Buka /downloads",
+        "GET /downloads/{id}/file untuk file non-Selesai"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 404",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-DL-LIST-010",
+      "kategori": "Negatif",
+      "skenario": "ID file tidak ada menghasilkan 404",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "GET /downloads/{id-tidak-ada}/file"
+      ],
+      "test_data": "ID = max ID + 100000",
+      "expected": "HTTP 404",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "modul": "Laporan - Sub-laporan Umum",
+  "kode": "LUM",
+  "aksi": "VIEW",
+  "halaman": "/general-ledger, /risk-indicator, /kas-teller",
+  "spec": "cypress/e2e/cbs/09-Laporan/laporan-umum.cy.js",
+  "notion": [],
+  "catatan": "COA punya PRD 'Menu COA BKD Pekalongan' tetapi belum dicakup mendalam (hanya smoke). Neraca/Laba Rugi punya file TC sendiri; RKA Unit/AO ditangani grup 07-RKA. Write-guard aktif (semua POST/PUT/PATCH/DELETE diblok) dan diverifikasi tidak ada yang bocor.",
+  "cases": [
+    {
+      "id": "TC-LUM-VIEW-001",
+      "kategori": "Positif",
+      "skenario": "Chart Of Accounts (COA): halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /general-ledger",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Chart Of Accounts'; header = NAMA AKUN | NO. AKUN | BUKU BESAR | POS | POSISI NORMAL | SALDO; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LUM-VIEW-002",
+      "kategori": "Positif",
+      "skenario": "Lap NPL dan PPAP Harian: halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /risk-indicator",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Laporan PPAP dan NPL'; header = ID | Nama Kantor | NPL % | Amount | Selisih | Tanggal; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    },
+    {
+      "id": "TC-LUM-VIEW-003",
+      "kategori": "Positif",
+      "skenario": "Saldo Kas Teller Kantor Cabang (tanpa tautan menu): halaman, header, data, tombol export",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /kas-teller",
+        "Periksa breadcrumb & header",
+        "Tunggu request data",
+        "Periksa tombol CSV & Excel"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ke /login; breadcrumb memuat 'Saldo Kas Teller Kantor Cabang'; header = Nama Kantor Cabang | Saldo Tersedia; request data GET 200; tabel selesai dimuat (data atau empty-state); tombol CSV & Excel tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Tidak ada PRD; teks & kolom dari source origin/develop."
+    }
+  ]
+}

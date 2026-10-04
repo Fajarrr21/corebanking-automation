@@ -1,0 +1,143 @@
+{
+  "modul": "RKA - Kelola Account Officer",
+  "kode": "RKAOFC",
+  "aksi": "CRUD",
+  "halaman": "/rka/accountofficer?menu=office_approval",
+  "spec": "cypress/e2e/cbs/07-RKA/rka-officer.cy.js",
+  "notion": [
+    {
+      "judul": "BKDP RKA - Unit",
+      "url": "https://app.notion.com/268f80e3bbf180709473ee3a62efe09e"
+    }
+  ],
+  "catatan": "Tidak ada PRD khusus CRUD officer. Data: officer QA, dihapus afterEach (penugasan → officer, soft delete).",
+  "cases": [
+    {
+      "id": "TC-RKAOFC-CRUD-001",
+      "kategori": "Happy",
+      "skenario": "Tambah Account Officer",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka tab Account Officer",
+        "Klik Add Account Officer",
+        "Isi nama & email",
+        "Simpan"
+      ],
+      "test_data": "QA<ts> AO / qa+<ts>@example.invalid",
+      "expected": "Swal 'Success!' + 'Account Officer berhasil ditambahkan'; officer tampil di tabel",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-002",
+      "kategori": "Negatif",
+      "skenario": "Nama kosong",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Klik Add",
+        "Isi email saja",
+        "Simpan"
+      ],
+      "test_data": "-",
+      "expected": "Tidak ada request; input nama invalid (required)",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-003",
+      "kategori": "Negatif",
+      "skenario": "Email duplikat",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA sudah ada.",
+      "langkah": [
+        "Tambah officer dengan email officer QA"
+      ],
+      "test_data": "Email sama",
+      "expected": "HTTP 422, swal 'Error!' memuat pesan email",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi server menolak, tidak ada data."
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-004",
+      "kategori": "Happy",
+      "skenario": "Edit telepon officer",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA sudah ada.",
+      "langkah": [
+        "Klik Edit",
+        "Ubah telepon",
+        "Simpan"
+      ],
+      "test_data": "081200000000",
+      "expected": "Modal 'Edit Account Officer' terisi; swal 'Account Officer berhasil diperbarui'; data tersimpan",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-005",
+      "kategori": "Happy",
+      "skenario": "Hapus officer",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA tanpa RKA.",
+      "langkah": [
+        "Klik Hapus",
+        "Konfirmasi 'Ya, hapus!'"
+      ],
+      "test_data": "-",
+      "expected": "Swal 'Terhapus!' + 'Account Officer berhasil dihapus'; officer hilang dari tabel",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-006",
+      "kategori": "Negatif",
+      "skenario": "Hapus officer yang punya RKA",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA punya target RKA.",
+      "langkah": [
+        "Klik Hapus",
+        "Konfirmasi"
+      ],
+      "test_data": "-",
+      "expected": "HTTP 422, swal 'Error!' 'Tidak dapat menghapus Account Officer yang memiliki RKA assignments...'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-007",
+      "kategori": "Edge",
+      "skenario": "Pindah tab bolak-balik lalu tambah officer",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil).",
+      "langkah": [
+        "Buka tab Account Officer",
+        "Klik RKA Management",
+        "Klik Account Officer lagi",
+        "Tambah officer"
+      ],
+      "test_data": "-",
+      "expected": "Hanya 1 POST tambah officer",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "KANDIDAT BUG: initOfficerManagement() dipanggil tiap tab tampil dan mengikat ulang handler submit (officer-management.blade.php) → POST ganda."
+    },
+    {
+      "id": "TC-RKAOFC-CRUD-008",
+      "kategori": "Positif",
+      "skenario": "Penugasan cabang tampil di 'Penugasan Cabang Saat Ini'",
+      "precondition": "Login akun supervisor/super-admin (menu RKA tampil). Officer QA tanpa penugasan.",
+      "langkah": [
+        "Klik Assign Offices",
+        "Pilih 1 cabang",
+        "Simpan Penugasan",
+        "Buka Assign Offices lagi"
+      ],
+      "test_data": "Kantor pertama",
+      "expected": "Swal 'Berhasil!'; tabel penugasan saat ini memuat cabang tsb",
+      "sumber": "PRD-ambigu",
+      "status": "Belum dijalankan",
+      "catatan": "PRD Unit: 'Menambahkan AO pada setiap Unit'. KANDIDAT BUG: JS membaca response.assignments, controller mengembalikan 'data' → selalu 'Belum ada penugasan cabang'."
+    }
+  ]
+}

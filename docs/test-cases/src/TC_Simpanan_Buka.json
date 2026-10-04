@@ -1,0 +1,95 @@
+{
+  "modul": "Nasabah - Simpanan",
+  "kode": "SMP",
+  "aksi": "BUKA",
+  "halaman": "/cif/{code} (tab Simpanan)",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    }
+  ],
+  "spec": [
+    "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-open.cy.js",
+    "cypress/e2e/cbs/06-Nasabah/Simpanan/saving-open.irreversible.cy.js"
+  ],
+  "catatan": "Tidak ada PRD khusus pembukaan rekening; TC diturunkan dari source (Asumsi).",
+  "cases": [
+    {
+      "id": "TC-SMP-BUKA-001",
+      "kategori": "Positif",
+      "skenario": "Tombol BUAT REKENING BARU tampil",
+      "precondition": "Login; akun user cabang (office_id != 0); CIF pertama di list; write-guard aktif",
+      "langkah": [
+        "Buka detail CIF",
+        "Klik tab Simpanan"
+      ],
+      "test_data": "-",
+      "expected": "Tombol 'BUAT REKENING BARU' tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Source: hanya untuk user cabang"
+    },
+    {
+      "id": "TC-SMP-BUKA-002",
+      "kategori": "Positif",
+      "skenario": "Modal Buka Rekening Baru",
+      "precondition": "Login; akun user cabang (office_id != 0); CIF pertama di list; write-guard aktif",
+      "langkah": [
+        "Klik BUAT REKENING BARU"
+      ],
+      "test_data": "-",
+      "expected": "Modal 'Buka Rekening Baru', select produk (placeholder + >=1 produk aktif), tombol Batal & Oke",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-BUKA-003",
+      "kategori": "Negatif",
+      "skenario": "Oke tanpa memilih produk",
+      "precondition": "Login; akun user cabang (office_id != 0); CIF pertama di list; POST /cif/{code}/saving diizinkan guard",
+      "langkah": [
+        "Buka modal",
+        "Klik Oke tanpa produk"
+      ],
+      "test_data": "product_id kosong",
+      "expected": "Kembali ke detail CIF dengan alert-danger; tidak ada alert sukses; jumlah rekening tetap",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Submit sungguhan tanpa product_id → pasti ditolak CreateSavingRequest (required)"
+    },
+    {
+      "id": "TC-SMP-BUKA-004",
+      "kategori": "Positif",
+      "skenario": "Batal menutup modal",
+      "precondition": "Login; akun user cabang (office_id != 0); CIF pertama di list; write-guard aktif",
+      "langkah": [
+        "Buka modal",
+        "Klik Batal"
+      ],
+      "test_data": "-",
+      "expected": "Modal tertutup, tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-SMP-BUKA-005",
+      "kategori": "Happy",
+      "skenario": "Buka rekening pada CIF milik test",
+      "precondition": "allowCreateSaving=true & allowCreateCif=true; akun user cabang",
+      "langkah": [
+        "Buat CIF QA",
+        "Tab Simpanan → BUAT REKENING BARU",
+        "Pilih produk pertama",
+        "Oke"
+      ],
+      "test_data": "Nama QA<ts>; produk aktif pertama",
+      "expected": "Alert 'Rekening Simpanan berhasil dibuat...'; 1 rekening produk tsb berstatus 'Menunggu Persetujuan'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE: rekening & Approval WAITING_APPROVAL tidak bisa dihapus"
+    }
+  ]
+}

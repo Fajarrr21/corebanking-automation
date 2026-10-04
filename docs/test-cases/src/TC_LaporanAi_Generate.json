@@ -1,0 +1,121 @@
+{
+  "modul": "Laporan - Laporan AI",
+  "kode": "LAI",
+  "aksi": "GEN",
+  "halaman": "/report/ai",
+  "spec": [
+    "cypress/e2e/cbs/09-Laporan/laporan-ai.cy.js",
+    "cypress/e2e/cbs/09-Laporan/laporan-ai.irreversible.cy.js"
+  ],
+  "notion": [],
+  "catatan": "Tidak ada PRD (Asumsi dari AiReportController & ai-report/index.blade.php). Generate sungguhan memanggil layanan AI eksternal berbiaya: TC-007 di spec irreversible dengan flag allowAiReport.",
+  "cases": [
+    {
+      "id": "TC-LAI-GEN-001",
+      "kategori": "Happy",
+      "skenario": "Membuka Laporan AI lewat menu Laporan > Laporan AI",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Role termasuk super-admin/supervisor/auditor/customer-service/sales-lending/sales-funding.",
+      "langkah": [
+        "Buka /home",
+        "Klik Laporan > Laporan AI"
+      ],
+      "test_data": "-",
+      "expected": "URL /report/ai, breadcrumb 'Laporan AI', form tampil",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAI-GEN-002",
+      "kategori": "Positif",
+      "skenario": "Elemen halaman Laporan AI",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/ai"
+      ],
+      "test_data": "-",
+      "expected": "Info Laporan AI; portlet 'Data yang Dapat Diakses' (>=1 badge) & 'Buat Laporan'; select model AI (atau peringatan tanpa model + submit disabled); textarea placeholder, maxlength 500, required; counter '0 / 500 karakter'; 8 chip contoh; tombol 'Buat Laporan' & 'Lihat Download'; catatan batas 20 laporan/hari",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAI-GEN-003",
+      "kategori": "Positif",
+      "skenario": "Chip contoh mengisi prompt",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/ai",
+        "Klik chip contoh pertama"
+      ],
+      "test_data": "'Laporan semua pinjaman aktif yang sudah jatuh tempo'",
+      "expected": "Prompt terisi teks contoh; counter = panjang teks / 500 karakter",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAI-GEN-004",
+      "kategori": "Edge",
+      "skenario": "Prompt > 500 karakter terpotong",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller).",
+      "langkah": [
+        "Buka /report/ai",
+        "Ketik 520 karakter"
+      ],
+      "test_data": "'a' x 520",
+      "expected": "Nilai prompt 500 karakter; counter '500 / 500 karakter'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAI-GEN-005",
+      "kategori": "Negatif",
+      "skenario": "Submit prompt kosong dicegah browser",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 model AI terkonfigurasi.",
+      "langkah": [
+        "Buka /report/ai",
+        "Kosongkan prompt",
+        "Klik Buat Laporan"
+      ],
+      "test_data": "Prompt kosong",
+      "expected": "Textarea invalid (required), tetap di /report/ai, tidak ada request tulis",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-LAI-GEN-006",
+      "kategori": "Negatif",
+      "skenario": "Prompt < 10 karakter ditolak server",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 model AI terkonfigurasi.",
+      "langkah": [
+        "Buka /report/ai",
+        "Isi prompt 3 karakter",
+        "Klik Buat Laporan"
+      ],
+      "test_data": "'abc'",
+      "expected": "POST /report/ai/generate -> 302 kembali ke /report/ai dengan .alert-danger berisi pesan validasi prompt; tidak ada laporan dibuat",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "POST di-allow write-guard: validasi `prompt min:10` berjalan SEBELUM Download dibuat/AI dipanggil, jadi pasti ditolak tanpa efek samping."
+    },
+    {
+      "id": "TC-LAI-GEN-007",
+      "kategori": "Happy",
+      "skenario": "Generate Laporan AI masuk antrean dan muncul di Download",
+      "precondition": "Login akun test (cypress.env.json) = user pusat (office_id 0) dengan role laporan (super-admin/supervisor/auditor/customer-service/sales-lending/teller). Minimal 1 model AI dengan kuota tersisa. Jalankan dengan --env allowAiReport=true.",
+      "langkah": [
+        "Buka /report/ai",
+        "Isi prompt valid diawali QA<timestamp>",
+        "Klik Buat Laporan"
+      ],
+      "test_data": "'QA<ts> Laporan semua rekening simpanan yang masih aktif'",
+      "expected": "Redirect /downloads, alert sukses 'Laporan sedang diproses', baris baru AI-Report-<YmdHis>-<userId>.xlsx dengan prompt QA dan status Processing/Selesai/Gagal",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "IRREVERSIBLE (flag allowAiReport): membuat baris Download, memakai kuota, memanggil AI eksternal berbiaya."
+    }
+  ]
+}

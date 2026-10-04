@@ -1,0 +1,74 @@
+{
+  "modul": "Profile",
+  "kode": "PRF",
+  "aksi": "VIEW",
+  "halaman": "/profile",
+  "spec": "cypress/e2e/cbs/18-Profile/profile.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk Profile. TC Asumsi dari source develop: ProfileController@profile → resources/views/dashboard/profile.blade.php (profile/index.blade.php ada tapi tidak dipakai). READ-ONLY sesuai instruksi: tidak ada TC ganti password / PIN / lupa PIN / edit profil; tidak ada input diketik maupun submit; semua request tulis diblok guard.",
+  "cases": [
+    {
+      "id": "TC-PRF-VIEW-001", "kategori": "Happy",
+      "skenario": "Halaman Profile tampil dengan tab Info Akun aktif secara default",
+      "precondition": "Akun test login.",
+      "langkah": ["Buka /profile"],
+      "test_data": "-",
+      "expected": "Breadcrumb 'Profile'; caption 'Profile Instansi'; tab Info Akun, Password, PIN; Info Akun aktif & memuat catatan 'Jika ada perubahan silahkan hubungi instansi pusat anda atau email ke hello@cazh.id'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Teks catatan di source diawali typo 'Infromasi' — tidak diassert."
+    },
+    {
+      "id": "TC-PRF-VIEW-002", "kategori": "Positif",
+      "skenario": "Email akun tampil read-only dan sesuai akun login",
+      "precondition": "-",
+      "langkah": ["Buka /profile", "Periksa field Email"],
+      "test_data": "Email login dari cypress.env.json (tidak ditampilkan)",
+      "expected": "Field Email readonly dan nilainya = email akun login.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-PRF-VIEW-003", "kategori": "Positif",
+      "skenario": "Nama Lengkap di profil sama dengan nama di header",
+      "precondition": "-",
+      "langkah": ["Buka /profile", "Bandingkan field Nama Lengkap dengan nama di dropdown user header"],
+      "test_data": "-",
+      "expected": "Nilai sama.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Field tidak diubah."
+    },
+    {
+      "id": "TC-PRF-VIEW-004", "kategori": "Positif",
+      "skenario": "Data instansi konsisten dengan kantor di header (read-only)",
+      "precondition": "Dua kemungkinan ditangani: user pusat (header 'Tanpa Office') atau user kantor.",
+      "langkah": ["Buka /profile", "Baca kantor di header", "Periksa blok instansi"],
+      "test_data": "-",
+      "expected": "User pusat: field 'Nama Instansi*' tidak dirender. User kantor: Nama Instansi = kantor di header; Nama Instansi Pusat, Nama Instansi, Nama Penanggung Jawab, No HP Penanggung Jawab readonly.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-PRF-VIEW-005", "kategori": "Positif",
+      "skenario": "Tautan ?menu=password membuka tab Password tanpa mengubah apa pun",
+      "precondition": "-",
+      "langkah": ["Buka /profile?menu=password"],
+      "test_data": "menu=password",
+      "expected": "Tab Password aktif, pane #tab_1_2 aktif dengan catatan 'Ubah password anda secara berkala'; Info Akun tidak aktif. Tidak ada input diisi / submit.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": "Hanya verifikasi navigasi tab (dipakai menu header 'Ubah Password')."
+    },
+    {
+      "id": "TC-PRF-VIEW-006", "kategori": "Positif",
+      "skenario": "Menu header 'Akun Saya' membuka halaman Profile",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Klik dropdown user di header", "Klik 'Akun Saya'"],
+      "test_data": "-",
+      "expected": "Pindah ke /profile, breadcrumb 'Profile'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    },
+    {
+      "id": "TC-PRF-VIEW-007", "kategori": "Positif",
+      "skenario": "Menu sidebar Profile membuka halaman Profile",
+      "precondition": "-",
+      "langkah": ["Buka /home", "Klik menu sidebar Profile"],
+      "test_data": "-",
+      "expected": "Pindah ke /profile, breadcrumb 'Profile'.",
+      "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "modul": "Nasabah - Menu",
+  "kode": "NSB",
+  "aksi": "MENU",
+  "halaman": "/customer",
+  "notion": [
+    {
+      "judul": "Data CIF Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf181c19f47cb02bb170448"
+    },
+    {
+      "judul": "List Simpanan Nasabah",
+      "url": "https://app.notion.com/3b9f80e3bbf1819cbb00d802b517c943"
+    }
+  ],
+  "spec": "cypress/e2e/cbs/06-Nasabah/customer.cy.js",
+  "catatan": "",
+  "cases": [
+    {
+      "id": "TC-NSB-MENU-001",
+      "kategori": "Happy",
+      "skenario": "Menu sidebar Nasabah membuka halaman /customer",
+      "precondition": "Login akun test (cy.session); write-guard aktif; role auditor/super-admin/customer-service",
+      "langkah": [
+        "Buka /home",
+        "Klik menu sidebar 'Nasabah'"
+      ],
+      "test_data": "-",
+      "expected": "URL /customer, breadcrumb aktif 'Nasabah', tidak dilempar ke /login",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD CIF & List Simpanan: 'buka menu Nasabah'"
+    },
+    {
+      "id": "TC-NSB-MENU-002",
+      "kategori": "Positif",
+      "skenario": "Kartu daftar nasabah tampil lengkap, kartu Deposito tidak tampil",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /customer",
+        "Baca judul kartu"
+      ],
+      "test_data": "-",
+      "expected": "Kartu: Data CIF, Simpanan, Pinjaman Aktif, Daftar Hitam, Pinjaman Lunas (urut); tiap kartu punya tombol 'Lihat Detail'; Deposito tidak ada",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Diturunkan dari customer/index.blade.php (kartu Deposito di-comment)"
+    },
+    {
+      "id": "TC-NSB-MENU-003",
+      "kategori": "Positif",
+      "skenario": "Lihat Detail kartu Data CIF membuka list CIF",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /customer",
+        "Klik 'Lihat Detail' pada kartu Data CIF"
+      ],
+      "test_data": "-",
+      "expected": "Pindah ke /cif",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-NSB-MENU-004",
+      "kategori": "Positif",
+      "skenario": "Lihat Detail kartu Simpanan membuka list simpanan",
+      "precondition": "Login akun test (cy.session); write-guard aktif",
+      "langkah": [
+        "Buka /customer",
+        "Klik 'Lihat Detail' pada kartu Simpanan"
+      ],
+      "test_data": "-",
+      "expected": "Pindah ke /saving",
+      "sumber": "PRD",
+      "status": "Belum dijalankan",
+      "catatan": "PRD List Simpanan: 'buka menu Nasabah kemudian klik submenu Simpanan'"
+    }
+  ]
+}

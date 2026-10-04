@@ -1,0 +1,101 @@
+{
+  "modul": "Karyawan",
+  "kode": "KRY",
+  "aksi": "CREATE",
+  "halaman": "/user/create",
+  "spec": "cypress/e2e/cbs/04-Karyawan/karyawan-create.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk menu Karyawan (/user): fitur Notion bermodul 'Karyawan' (BKDP RKA - AO/Unit/Setting Target dst.) adalah RKA → grup 07-RKA. TC diturunkan dari source develop (UserController, CreateUserRequest, EditUserRequest, PhoneNumberRule, user/*.blade.php). Akun login test tidak pernah diedit/dihapus. Tidak ada user tercipta: TC-003 diblok guard; TC-004..006 submit sungguhan tapi SELALU gagal CreateUserRequest (No HP '12345' sengaja dipakai di ketiganya sebagai pengaman ganda) lalu dicek email QA tidak ada di daftar. Pesan validasi bahasa Inggris (resources/lang/id tidak ada). Tombol Cancel di form Tambah tidak punya aksi (button type=button tanpa link) — tidak diuji karena tanpa PRD.",
+  "cases": [
+    {
+      "id": "TC-KRY-CREATE-001",
+      "kategori": "Happy",
+      "skenario": "Form Tambah Karyawan menampilkan field wajib dan catatan",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /user/create"
+      ],
+      "test_data": "-",
+      "expected": "Note 'Silahkan tambahkan karyawan sesuai dengan penempatan kantor dan hak akses'; label: Nama Lengkap, Email Address, Kantor Cabang, Nomor Handphone, Hak Akses; nama/email/HP/kantor ber-atribut required; tombol 'Submit'.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KRY-CREATE-002",
+      "kategori": "Positif",
+      "skenario": "Pilihan Hak Akses sesuai dan tidak menawarkan super-admin",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /user/create",
+        "Baca checkbox Hak Akses & opsi Kantor"
+      ],
+      "test_data": "-",
+      "expected": "Hak Akses: Supervisor, Admin / Customer Service, Sales Funding, Sales Lending, Teller, Auditor (tanpa super-admin); opsi kantor pertama 'Tanpa Kantor'.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KRY-CREATE-003",
+      "kategori": "Negatif",
+      "skenario": "Submit form kosong dicegah validasi wajib isi browser",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Buka /user/create",
+        "Klik Submit tanpa isi"
+      ],
+      "test_data": "-",
+      "expected": "Nama Lengkap ditandai valueMissing; tetap di /user/create; tidak ada POST.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KRY-CREATE-004",
+      "kategori": "Negatif",
+      "skenario": "Nomor handphone tidak diawali 08/62 ditolak server",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Isi Nama QA, email qa+..@example.invalid, HP 12345, kantor Tanpa Kantor, role auditor",
+        "Submit"
+      ],
+      "test_data": "HP=12345",
+      "expected": "Tetap di /user/create dengan error 'Nomor handphone \"12345\" tidak valid. Nomor handphone harus dimulai dengan angka 08 atau 62.'; email QA tidak ada di daftar.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KRY-CREATE-005",
+      "kategori": "Negatif",
+      "skenario": "Tanpa Hak Akses ditolak server",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Isi data tanpa centang Hak Akses (HP 12345)",
+        "Submit"
+      ],
+      "test_data": "roles kosong",
+      "expected": "Error 'The roles field is required.'; email QA tidak ada di daftar.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-KRY-CREATE-006",
+      "kategori": "Negatif",
+      "skenario": "Email yang sudah terdaftar ditolak server",
+      "precondition": "Akun test super-admin (menu Karyawan tampil) — bila tidak, test gagal dengan pesan jelas.",
+      "langkah": [
+        "Ambil email karyawan yang ada",
+        "Isi form dengan email tsb (HP 12345)",
+        "Submit"
+      ],
+      "test_data": "Email existing dinamis",
+      "expected": "Error 'The email has already been taken.'; tetap hanya 1 karyawan dengan email tsb.",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    }
+  ]
+}

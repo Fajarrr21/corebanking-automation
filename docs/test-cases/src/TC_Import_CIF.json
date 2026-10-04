@@ -1,0 +1,83 @@
+{
+  "modul": "Import - CIF",
+  "kode": "IMP",
+  "aksi": "CIF",
+  "halaman": "/import/cif",
+  "spec": "cypress/e2e/cbs/11-Import/import-cif.cy.js",
+  "notion": [],
+  "catatan": "Tidak ada PRD untuk menu Import; TC diturunkan dari source (ImportController.php, resources/views/import/*.blade.php). Hak akses: menu dirender untuk role 'teller' (navigation.blade.php:544) tetapi controller hanya mengizinkan 'supervisor' & 'customer-service' (ImportController.php:33). Akun test (kemungkinan super-admin) diperkirakan dialihkan -> TC positif gagal dengan pesan precondition.",
+  "cases": [
+    {
+      "id": "TC-IMP-CIF-001",
+      "kategori": "Happy",
+      "skenario": "Halaman Upload CIF tampil",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Buka /import/cif"
+      ],
+      "test_data": "-",
+      "expected": "Tidak dialihkan; breadcrumb aktif 'Upload CIF'; judul tab memuat 'Upload CIF'; caption 'Upload CIF'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-IMP-CIF-002",
+      "kategori": "Positif",
+      "skenario": "Download template Excel",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Ambil href link 'disini' di note info",
+        "Request file"
+      ],
+      "test_data": "-",
+      "expected": "Href menuju 'CIF - Core Banking System CAZH.xlsx'; respons 200 dan berisi data",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "File diunduh via cy.request (bukan membuka tab)."
+    },
+    {
+      "id": "TC-IMP-CIF-003",
+      "kategori": "Positif",
+      "skenario": "Struktur form upload",
+      "precondition": "Akun ber-role supervisor/customer-service",
+      "langkah": [
+        "Periksa form"
+      ],
+      "test_data": "-",
+      "expected": "Form POST multipart/form-data ke /import/importcif; input file name=file id=CSVCif; label 'Upload Excel'; tombol 'Proses'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": ""
+    },
+    {
+      "id": "TC-IMP-CIF-004",
+      "kategori": "Negatif",
+      "skenario": "Upload file selain Excel",
+      "precondition": "Akun ber-role supervisor/customer-service; write-guard aktif (POST /import/importcif diizinkan)",
+      "langkah": [
+        "Pilih file .txt",
+        "Klik Proses"
+      ],
+      "test_data": "qa-bukan-excel.txt",
+      "expected": "Kembali ke /import/cif; alert-danger 'Import gagal! Silahkan gunakan template yang disediakan.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi SERVER: ekstensi dicek sebelum Excel::import -> tidak ada data tercipta. Input file tanpa atribut accept (tidak ada validasi client-side)."
+    },
+    {
+      "id": "TC-IMP-CIF-005",
+      "kategori": "Negatif",
+      "skenario": "Proses tanpa file",
+      "precondition": "Akun ber-role supervisor/customer-service; write-guard aktif (POST /import/importcif diizinkan)",
+      "langkah": [
+        "Klik Proses tanpa memilih file"
+      ],
+      "test_data": "-",
+      "expected": "Kembali ke /import/cif; alert-danger 'Import gagal! File kosong.'",
+      "sumber": "Asumsi",
+      "status": "Belum dijalankan",
+      "catatan": "Validasi SERVER (hasFile) sebelum import -> aman."
+    }
+  ]
+}

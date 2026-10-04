@@ -1,0 +1,22 @@
+{
+  "modul": "Transaksi - Tabungan to GL (Transaksi Massal Simpanan)",
+  "kode": "TRX",
+  "aksi": "TABGL",
+  "halaman": "/transaction/general_ledger?menu=mass_saving_transaction",
+  "spec": "cypress/e2e/cbs/10-Transaksi/tabungan-gl.cy.js",
+  "notion": [
+    {"judul": "Transaksi Tabungan to GL", "url": "https://app.notion.com/269f80e3bbf180808837d295d6075c97"},
+    {"judul": "Transaksi Tabungan to GL (duplikat, berisi acceptance criteria)", "url": "https://app.notion.com/26ff80e3bbf18066beb0f686a71849a3"}
+  ],
+  "catatan": "Dua halaman Notion dibaca: 269f... (kebutuhan utama Setoran/Penarikan x Satuan/Massal) dan 26ff... (acceptance criteria detail). Source hanya mengimplementasikan mode MASSAL (upload Excel). Pemrosesan file ada di TC_Transaksi_Posting (flag allowTransaction).",
+  "cases": [
+    {"id": "TC-TRX-TABGL-001", "kategori": "Happy", "skenario": "Form Transaksi Massal Simpanan tampil", "precondition": "Akun teller/super-admin", "langkah": ["Buka ?menu=mass_saving_transaction"], "test_data": "-", "expected": "Judul 'Transaksi Simpanan Massal'; Jenis Transaksi (Setoran/Penarikan), Posisi GL (Debit/Credit), File Excel wajib, Account GL wajib, tombol proses", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD 26ff a, b, c, e, g."},
+    {"id": "TC-TRX-TABGL-002", "kategori": "Positif", "skenario": "Download template", "precondition": "Akun teller/super-admin", "langkah": ["Ambil href 'Download template di sini'", "Request file"], "test_data": "-", "expected": "Href ke 'Setoran Simpanan - Core Banking System.xlsx'; respons 200 dan berisi data", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD f."},
+    {"id": "TC-TRX-TABGL-003", "kategori": "Positif", "skenario": "Pilihan Jenis Transaksi Satuan/Massal tersedia", "precondition": "Akun teller/super-admin", "langkah": ["Periksa form"], "test_data": "-", "expected": "Ada pilihan 'Satuan' (form pilih nasabah, nominal, keterangan, buku tabungan)", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "Kandidat bug: mass_saving_transaction.blade.php hanya mode massal; tidak ada field jenis Satuan/Massal. Diperkirakan GAGAL."},
+    {"id": "TC-TRX-TABGL-004", "kategori": "Positif", "skenario": "General Ledger dapat dicari berdasarkan nama", "precondition": "Akun teller/super-admin; kantor punya akun GL", "langkah": ["(Akun pusat) pilih Kantor", "Buka dropdown Account GL", "Ketik nama akun"], "test_data": "Nama akun opsi pertama", "expected": "Hasil pencarian memuat akun tsb", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD validasi b."},
+    {"id": "TC-TRX-TABGL-005", "kategori": "Edge", "skenario": "Saldo Bisa Minus default Tidak", "precondition": "Akun teller/super-admin", "langkah": ["Periksa field Saldo Bisa Minus"], "test_data": "-", "expected": "Nilai '0' (Tidak - Saldo GL tidak boleh negatif)", "sumber": "Asumsi", "status": "Belum dijalankan", "catatan": ""},
+    {"id": "TC-TRX-TABGL-006", "kategori": "Negatif", "skenario": "Proses dengan field wajib kosong", "precondition": "Write-guard aktif", "langkah": ["Klik Proses tanpa mengisi"], "test_data": "-", "expected": "Pesan 'Jenis transaksi harus dipilih', 'Posisi GL harus dipilih', error File; modal PIN tidak tampil", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD validasi a."},
+    {"id": "TC-TRX-TABGL-007", "kategori": "Negatif", "skenario": "Upload file non-Excel", "precondition": "Write-guard aktif", "langkah": ["Pilih file .txt", "Klik Proses"], "test_data": "qa-bukan-excel.txt", "expected": "Pesan 'Format file harus xlsx, xls, atau csv'; modal PIN tidak tampil", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD validasi c."},
+    {"id": "TC-TRX-TABGL-008", "kategori": "Positif", "skenario": "Form lengkap membuka modal PIN", "precondition": "Write-guard aktif", "langkah": ["Pilih Setoran, Debit", "Pilih file .xlsx dummy", "Pilih Account GL", "Klik Proses", "Klik Batal"], "test_data": "qa-transaksi-massal.xlsx (dummy, tidak dikirim)", "expected": "Modal PIN (input password) tampil; Batal menutup; tidak ada request tulis", "sumber": "PRD", "status": "Belum dijalankan", "catatan": "PRD form konfirmasi a-d."}
+  ]
+}
